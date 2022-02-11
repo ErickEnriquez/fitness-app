@@ -1,0 +1,41 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Movement{
+  id Int @id @default(autoincrement())
+  name String
+}
+
+//need to work on this model more I think
+model Exercise{
+  id Int @id @default(autoincrement())
+  name String
+  reps Int
+  sets Int
+  weight Int
+  notes String
+}
+
+model Workout{
+  id Int @id @default(autoincrement())
+ 
+}
+
+model Cardio{
+  id Int @id @default(autoincrement())
+}
+
+model Program{
+  id Int @id @default(autoincrement())
+  name String
+}
+
