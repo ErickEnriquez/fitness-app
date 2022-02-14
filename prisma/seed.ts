@@ -89,7 +89,7 @@ async function main() {
 			{id:16,  sets: 5, reps: 5, movementID: 16 },//leg press
 			{id:17,  sets: 5, reps: 5, movementID: 17 },// RDL
 			{id:18,  sets: 3, reps: 8, movementID: 18 },// seated calf raises
-			{id:19,  sets: 3, reps: 8, movementID: 18 },//leg extensions
+			{id:19,  sets: 3, reps: 8, movementID: 19 },//leg extensions
 			{id:20,  sets: 3, reps: 6, movementID: 20 },//leg curls
 			{id:21,  sets: 4, reps: 8, movementID: 21 },//lunges
 
@@ -117,7 +117,7 @@ async function main() {
 			{id:39,  sets: 4, reps: 12, movementID: 36 },//Bulgarian Split Squat
 			{id:40,  sets: 4, reps: 10, movementID: 37 },//Front Squats
 			{id:41,  sets: 4, reps: 12, movementID: 38 },//Hip Thrusts
-			{id:42,  sets: 3, reps: 12, movementID: 20 },//Leg Curls	
+			{id:42,  sets: 3, reps: 12, movementID: 18 },//Leg Curls	
 			{id:43,  sets: 4, reps: 12, movementID: 39 },//1 Legged Leg Press
 		
 		],
