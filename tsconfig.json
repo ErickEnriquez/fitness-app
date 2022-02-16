@@ -16,6 +16,9 @@
       ],
       "@server/*": [
         "src/server/*"
+      ],
+      "@hooks/*": [
+        "src/hooks/*"
       ]
     },
     "target": "es5",
