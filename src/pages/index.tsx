@@ -1,11 +1,21 @@
 import type { NextPage, GetStaticProps } from 'next'
 import styles from '../styles/Home.module.css'
+import { getWorkoutTemplate } from '@server/getWorkoutTemplate'
+import { Workout } from '@prisma/client'
 
-const IndexPage: NextPage = (props) => {
+interface props {
+    workout: Workout[]
+}
+const IndexPage: NextPage = (props: props) => {
+    const workoutOptions = props.workouts.map((item, idx) => {
+        return (
+            <option value={item.type} key={idx}>{item.type}</option>
+        )
+    })
     return (
         <div className={styles.container}>
             <h1>This is the workout for today</h1>
-            <h3>Legs Heavy</h3>
+            {/* <h3>Legs Heavy</h3>
             <ul className='my-4'>
                 <li>
                     <strong>Squat</strong>
@@ -19,7 +29,10 @@ const IndexPage: NextPage = (props) => {
                     </div>
 
                 </li>
-            </ul>
+            </ul> */}
+            <select name="" id="">
+
+            </select>
             <button className='px-5 rounded-full bg-blue-700 mx-1 text-white hover:bg-white hover:text-blue-700 hover:outline'>Save</button>
             <button className='px-5 rounded-full bg-green-700 mx-1 text-white  hover:bg-white hover:text-green-700 hover:outline'>Submit</button>
         </div >
@@ -27,7 +40,8 @@ const IndexPage: NextPage = (props) => {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-    return { props: { a: true } }
+    const workouts = await getWorkoutTemplate()
+    return { props: { workouts } }
 }
 
 export default IndexPage

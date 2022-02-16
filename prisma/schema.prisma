@@ -26,6 +26,8 @@ model ExerciseTemplate {
   movementID Int
   movement   Movement        @relation(fields: [movementID], references: [id]) // an exercise references a single movement while a movement can be referenced by multiple exercises (ie 5x5 bench or 3 sets of 10 on bench)
   entries    ExerciseEntry[]
+  workoutId  Int
+  workout    Workout         @relation(fields: [workoutId], references: [id])
 }
 
 //this is the user input section that we will be adding to whenever we create a new exercise entry
@@ -51,15 +53,23 @@ enum WorkoutType {
 
 //workout model is the a collection of exercises an cardios, a workout type , an overall grade, notes ,and a date created
 model Workout {
-  id        Int             @id @default(autoincrement())
-  type      WorkoutType
-  notes     String?
-  date      DateTime        @default(now())
-  grade     Int?
-  exercises ExerciseEntry[] //array of n number of exercises
-  cardio    Cardio[]
-  programID Int
-  program   Program         @relation(fields: [programID], references: [id])
+  id           Int             @id @default(autoincrement())
+  type         WorkoutType
+  exercises    ExerciseEntry[] //array of n number of exercises
+  cardio       Cardio[]
+  programID    Int
+  program      Program         @relation(fields: [programID], references: [id])
+  workoutEntry WorkoutEntry[]
+  exerciseTemplates ExerciseTemplate[]
+}
+
+model WorkoutEntry {
+  id                Int      @id @default(autoincrement())
+  notes             String?
+  date              DateTime @default(now())
+  grade             Int?
+  workoutTemplateId Int
+  workoutTemplate   Workout  @relation(fields: [workoutTemplateId], references: [id])
 }
 
 //enum of the different types of cardios that I will be likely to be doing for the forseeable future
