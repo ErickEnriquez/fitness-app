@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
+import { useUpdateEffect } from '@hooks/useUpdateEffect'
 import axios from 'axios'
 
 export type TApiResponse = {
@@ -7,16 +8,17 @@ export type TApiResponse = {
 	data: any
 	error: any
 	loading: boolean
+	setUrl:React.Dispatch<React.SetStateAction<string>>
 }
 
-export const useFetch = (url: string): TApiResponse => {
+export const useFetch = ({ uri }: {uri:string}): TApiResponse => {
 	//initialize the states needed
 	const [status, setStatus] = useState<number>(0)
 	const [statusText, setStatusText] = useState<string>('')
 	const [data, setData] = useState<any>()
 	const [error, setError] = useState<any>()
 	const [loading, setLoading] = useState<boolean>(false)
-
+	const [url, setUrl] = useState<string>(uri)
 	const getData = async () => { 
 		setLoading(true)
 		try {
@@ -28,11 +30,13 @@ export const useFetch = (url: string): TApiResponse => {
 		} catch (err) {
 			setError(err)
 		}
-		setLoading(false)
+		finally {
+			setLoading(false)
+		}
 	}
-
-	useEffect(() => {
+	//use update effect to not run on initial render
+	useUpdateEffect(() => {
 		getData()
-	}, [])
-	return {status, statusText, data, error, loading}
+	}, [url])
+	return {status, statusText, data, error, loading, setUrl}
 }
