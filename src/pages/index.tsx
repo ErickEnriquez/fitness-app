@@ -10,24 +10,32 @@ interface props {
 	workouts: Workout[]
 	children: React.ReactNode
 }
-
 interface WorkoutTemplate extends ExerciseTemplate {
 	name: string
-	weights: number[]
-	notes: string
-	intensity?: number
+}
+interface UserEntry extends WorkoutTemplate {
+	weights: number[] | string[],
+	intensity?: number,
+	notes?: string
 }
 
+
 const IndexPage: NextPage = (props: props) => {
-	const [exercises, setExercises] = useState<WorkoutTemplate[]>([])
+	const [exercises, setExercises] = useState<UserEntry[]>([])
 	const [workout, setWorkout] = useState<Workout>()
 
-
 	useUpdateEffect(async () => {
-
 		const exercisesList = await axios.get('/api/getExercises', { params: { workoutId: workout.id } })
 		const data = exercisesList.data
-		setExercises([...data])
+		setExercises(data.map((item: WorkoutTemplate): UserEntry => {
+			return ({
+				...item,
+				name: item.name,
+				weights: Array(item.sets).fill(''),
+				intensity: null,
+				notes: ''
+			})
+		}))
 
 	}, [workout])
 
@@ -37,15 +45,33 @@ const IndexPage: NextPage = (props: props) => {
 		)
 	})
 
+	const changeWeight = (event) => {
+		const number = Number(event.target.value)
+		if (isNaN(number)) { return }
+		// setExercises((prev) => { 
+		// 	prev.map((item, idx) => {
+		// 		{...item, }
+		// 	})
+		// })
+		// console.log(number)
+	}
+
 	const exercisesToDo = exercises.map((item, idx) => {
-		const inputs = Array(item.sets).fill(0)
 		return (
 			<li key={idx}>
 				<strong>{item.name}</strong>
 				<h5 className='mb-4'>Sets {item.sets}x{item.reps}</h5>
-
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 content-center">
-					{inputs.map((item, i) => <input key={i} type="number" value={item} className='outline mx-2 mb-4 lg:mb-0' />)}
+					{item.weights.map((elem, i) => (
+						<input
+							key={i}
+							type="number"
+							value={elem}
+							data-selector={`${item.movementID}-${i}`}
+							onChange={changeWeight}
+							className='outline mx-2 mb-4 lg:mb-0'
+						/>
+					))}
 				</div>
 			</li>
 		)
@@ -63,8 +89,18 @@ const IndexPage: NextPage = (props: props) => {
 			<ul className='my-4'>
 				{exercisesToDo}
 			</ul>
-			<button className='px-5 rounded-full bg-blue-700 mx-1 text-white hover:bg-white hover:text-blue-700 hover:outline'>Save</button>
-			<button className='px-5 rounded-full bg-green-700 mx-1 text-white  hover:bg-white hover:text-green-700 hover:outline'>Submit</button>
+			<button
+				className='px-5 rounded-full bg-blue-700 mx-1 text-white hover:bg-white hover:text-blue-700 hover:outline'
+				onClick={() => alert('TODO')}
+			>
+				Save
+			</button>
+			<button
+				className='px-5 rounded-full bg-green-700 mx-1 text-white  hover:bg-white hover:text-green-700 hover:outline'
+				onClick={() => alert('TODO')}
+			>
+				Submit
+			</button>
 		</div >
 	)
 }
