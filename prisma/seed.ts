@@ -1,6 +1,6 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from '@prisma/client'
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
 
 async function main() {
 	//write you seed data here
@@ -49,7 +49,7 @@ async function main() {
 			{ id:18,name: 'Leg Curls' },
 			{ id:19,name: 'Romanian Deadlift' },
 			{ id:20,name: 'Lunges' },
-			{ id:21,name: 'Butt Raises' },
+			// { id:21,name: 'Butt Raises' },
 			//push light
 			{ id:22,name: 'Incline Dumbbell Press' },
 			{ id:23,name: 'Military Press' },
@@ -98,11 +98,11 @@ async function main() {
 			//legs heavy
 			{id:15,  sets: 5, reps: 5, movementID: 15, workoutId:3 },//back squat
 			{id:16,  sets: 5, reps: 5, movementID: 16, workoutId:3 },//leg press
-			{id:17,  sets: 5, reps: 5, movementID: 17, workoutId:3 },// RDL
-			{id:18,  sets: 3, reps: 8, movementID: 18 , workoutId:3},// seated calf raises
-			{id:19,  sets: 3, reps: 8, movementID: 19, workoutId:3 },//leg extensions
-			{id:20,  sets: 3, reps: 6, movementID: 20, workoutId:3 },//leg curls
-			{id:21,  sets: 4, reps: 8, movementID: 21 , workoutId:3},//lunges
+			{id:17,  sets: 5, reps: 5, movementID: 17, workoutId:3 },//LEG EXTENSIONS
+			{id:18,  sets: 3, reps: 8, movementID: 18 , workoutId:3},// Leg curls
+			{id:19,  sets: 3, reps: 8, movementID: 19, workoutId:3 },//RDL
+			{id:20,  sets: 3, reps: 6, movementID: 20, workoutId:3 },//Lunges
+			{id:21,  sets: 4, reps: 8, movementID: 38 , workoutId:3},//Hip Thrust
 
 			//push light
 			{id:22,  sets: 5, reps: 12, movementID: 22, workoutId:4 },//incline dumbbell press
