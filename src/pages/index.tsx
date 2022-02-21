@@ -17,14 +17,14 @@ interface WorkoutTemplate extends ExerciseTemplate {
 interface UserEntry extends WorkoutTemplate {
 	weights: number[] | string[],
 	intensity?: number,
-	notes?: string
+	notes?: string,
+	order?: number
 }
 
 
 const IndexPage: NextPage = (props: props) => {
-	const [exercises, setExercises] = useState<UserEntry[]>([])
+	const [exercises, setExercises] = useLocalStorage<UserEntry[]>('exercises', [])
 	const [workout, setWorkout] = useState<Workout>()
-	const [name, setName] = useLocalStorage('name', '')
 	//change the workouts that we get when a new type of workout is selected
 	useUpdateEffect(async () => {
 		const exercisesList = await axios.get('/api/getExercises', { params: { workoutId: workout.id } })
@@ -64,6 +64,31 @@ const IndexPage: NextPage = (props: props) => {
 		})
 	}
 
+	const editNotes = (event) => {
+		const movement = Number(event.target.dataset.movement)
+		setExercises((prev) => {
+			return prev.map((item) => ({
+				...item,
+				//if we are correct movement to change then change the notes
+				notes: movement === item.movementID ? event.target.value : item.notes
+			}))
+		})
+	}
+
+	const editIntensity = (event) => {
+		const currentIntensity = Number(event.target.value)
+		if (isNaN(currentIntensity)) { return }
+
+		const movement = Number(event.target.dataset.movement)
+		setExercises((prev) => {
+			return prev.map((item) => ({
+				...item,
+				//if we are correct movement to change then change the notes
+				intensity: movement === item.movementID ? currentIntensity : item.intensity
+			}))
+		})
+	}
+
 	const exercisesToDo = exercises.map((item, idx) => {
 		return (
 			<li key={idx}>
@@ -78,16 +103,47 @@ const IndexPage: NextPage = (props: props) => {
 							data-movement={item.movementID}
 							data-set-number={i}
 							onChange={changeWeight}
-							className='outline mx-2 mb-4 lg:mb-0'
+							placeholder={`Weight for set ${i + 1}`}
+							className='outline outline-orange-700 mx-2 mb-4 lg:mb-0'
 						/>
 					))}
+				</div>
+				<div className="mt-4 grid gap-7 grid-cols-1 md:grid-cols-3 content-center">
+					<input
+						type="text"
+						placeholder='Notes'
+						className='outline my-1 outline-yellow-400'
+						data-movement={item.movementID}
+						value={item.notes}
+						onChange={editNotes}
+					/>
+					<input
+						type="number"
+						placeholder='Intensity 0-10'
+						className='outline my-1 outline-purple-600'
+						data-movement={item.movementID}
+						value={item.intensity}
+						min={0}
+						max={10}
+						onChange={editIntensity}
+					/>
+					<input
+						type="number"
+						placeholder='Order'
+						className='outline my-1 outline-blue-700'
+						data-movement={item.movementID}
+						value={item.order}
+						onChange={editNotes}
+					/>
 				</div>
 			</li>
 		)
 	})
 
 	const submitWorkout = async () => {
-		setName('')
+		// setExercises([])
+		alert('TODO: submit to server')
+		setExercises([])
 		return
 	}
 
@@ -103,30 +159,12 @@ const IndexPage: NextPage = (props: props) => {
 			<ul className='my-4'>
 				{exercisesToDo}
 			</ul>
-			{/* <button
-				className='px-5 rounded-full bg-gray-700 mx-1 text-white  hover:bg-white hover:text-gray-700 hover:outline'
-				onClick={() => alert('TODO')}
-			>
-				Start
-			</button>
-			<button
-				className='px-5 rounded-full bg-blue-700 mx-1 text-white hover:bg-white hover:text-blue-700 hover:outline'
-				onClick={saveProgress}
-			>
-				Save
-			</button> */}
 			<button
 				className='px-5 rounded-full bg-green-700 mx-1 text-white  hover:bg-white hover:text-green-700 hover:outline'
 				onClick={submitWorkout}
 			>
 				Submit
 			</button>
-			<input
-				type="text"
-				placeholder="Enter your name"
-				value={name}
-				onChange={(e) => setName(e.target.value)}
-			/>
 		</div >
 	)
 }
