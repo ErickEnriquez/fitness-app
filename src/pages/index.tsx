@@ -89,6 +89,20 @@ const IndexPage: NextPage = (props: props) => {
 		})
 	}
 
+	const editOrder = (event) => {
+		const order = Number(event.target.value)
+		if (isNaN(order)) { return }
+
+		const movement = Number(event.target.dataset.movement)
+		setExercises((prev) => {
+			return prev.map((item) => ({
+				...item,
+				//if we are correct movement to change then change the notes
+				order: movement === item.movementID ? order : item.order
+			}))
+		})
+	}
+
 	const exercisesToDo = exercises.map((item, idx) => {
 		return (
 			<li key={idx}>
@@ -133,7 +147,7 @@ const IndexPage: NextPage = (props: props) => {
 						className='outline my-1 outline-blue-700'
 						data-movement={item.movementID}
 						value={item.order}
-						onChange={editNotes}
+						onChange={editOrder}
 					/>
 				</div>
 			</li>
@@ -164,6 +178,17 @@ const IndexPage: NextPage = (props: props) => {
 				onClick={submitWorkout}
 			>
 				Submit
+			</button>
+			<button
+				className='px-5 rounded-full bg-red-700 mx-1 text-white  hover:bg-white hover:text-red-700 hover:outline'
+				onClick={() => {
+					const a = confirm('Are you sure you want to clear the workout?')
+					if(a) {
+						setExercises([])
+					}
+				}}
+			>
+				Clear
 			</button>
 		</div >
 	)
