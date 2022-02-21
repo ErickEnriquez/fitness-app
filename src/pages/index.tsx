@@ -6,6 +6,7 @@ import { Workout, ExerciseTemplate, ExerciseEntry } from '@prisma/client'
 import React, { useState } from 'react'
 import { useUpdateEffect } from '@hooks/useUpdateEffect'
 import axios from 'axios'
+import { useLocalStorage } from '@hooks/useLocalStorage'
 interface props {
 	workouts: Workout[]
 	children: React.ReactNode
@@ -40,7 +41,10 @@ const IndexPage: NextPage = (props: props) => {
 
 	}, [workout])
 
-	
+	useUpdateEffect(() => { 
+	},[exercises])
+
+
 
 	const workoutOptions = props.workouts.map((item, idx) => {
 		return (
@@ -88,7 +92,7 @@ const IndexPage: NextPage = (props: props) => {
 	})
 
 	const saveProgress = async () => {
-		
+		return
 	}
 
 	return (
