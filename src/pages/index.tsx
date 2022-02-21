@@ -24,7 +24,7 @@ interface UserEntry extends WorkoutTemplate {
 const IndexPage: NextPage = (props: props) => {
 	const [exercises, setExercises] = useState<UserEntry[]>([])
 	const [workout, setWorkout] = useState<Workout>()
-
+	const [name, setName] = useLocalStorage('name', '')
 	//change the workouts that we get when a new type of workout is selected
 	useUpdateEffect(async () => {
 		const exercisesList = await axios.get('/api/getExercises', { params: { workoutId: workout.id } })
@@ -40,11 +40,6 @@ const IndexPage: NextPage = (props: props) => {
 		}))
 
 	}, [workout])
-
-	useUpdateEffect(() => { 
-	},[exercises])
-
-
 
 	const workoutOptions = props.workouts.map((item, idx) => {
 		return (
@@ -125,6 +120,12 @@ const IndexPage: NextPage = (props: props) => {
 			>
 				Submit
 			</button>
+			<input
+				type="text"
+				placeholder="Enter your name"
+				value={name}
+				onChange={(e) => setName(e.target.value)}
+			/>
 		</div >
 	)
 }
