@@ -86,7 +86,8 @@ const IndexPage: NextPage = (props: props) => {
 		)
 	})
 
-	const saveProgress = async () => {
+	const submitWorkout = async () => {
+		setName('')
 		return
 	}
 
@@ -102,7 +103,7 @@ const IndexPage: NextPage = (props: props) => {
 			<ul className='my-4'>
 				{exercisesToDo}
 			</ul>
-			<button
+			{/* <button
 				className='px-5 rounded-full bg-gray-700 mx-1 text-white  hover:bg-white hover:text-gray-700 hover:outline'
 				onClick={() => alert('TODO')}
 			>
@@ -113,10 +114,10 @@ const IndexPage: NextPage = (props: props) => {
 				onClick={saveProgress}
 			>
 				Save
-			</button>
+			</button> */}
 			<button
 				className='px-5 rounded-full bg-green-700 mx-1 text-white  hover:bg-white hover:text-green-700 hover:outline'
-				onClick={() => alert('TODO')}
+				onClick={submitWorkout}
 			>
 				Submit
 			</button>
