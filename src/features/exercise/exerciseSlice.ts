@@ -10,7 +10,7 @@ interface WorkoutTemplate extends ExerciseTemplate {
 }
 
 interface UserEntry extends WorkoutTemplate { 
-	weights: number[] | string[],
+	weights: number[],
 	intensity?: number,
 	notes?: string,
 	order?: number
@@ -32,7 +32,7 @@ const initialState = {
 export const getWorkoutAsync = createAsyncThunk(
 	'exercise/getWorkout',
 	async () => { 
-		const response = await axios.get('/api/getWorkoutTemplate/')
+		const response = await axios.get('/api/workout-template/')
 		return response.data
 	}
 )
@@ -41,7 +41,7 @@ export const getWorkoutAsync = createAsyncThunk(
 export const getExerciseAsync = createAsyncThunk(
 	'exercise/getExercise',
 	async (id:number) => { 
-		const response = await axios.get('/api/getExercises', { params: { workoutId: id } })
+		const response = await axios.get('/api/exercise-templates', { params: { workoutId: id } })
 		return response.data
 	}
 )
@@ -86,10 +86,10 @@ export const exerciseSlice = createSlice({
 				state.entries = action.payload.map((entry: ExerciseTemplate) => { 
 					return { 
 						...entry,
-						weights: Array(entry.sets).fill(''),
-						intensity: undefined,
+						weights: Array(entry.sets).fill(null),
+						intensity: null,
 						notes: '',
-						order: undefined
+						order: null
 					}
 				})
 			})
