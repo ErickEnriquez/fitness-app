@@ -9,6 +9,8 @@ import {
 	clearEntries,
 	setWeight,
 	setOrder,
+	editNotes,
+	editIntensity,
 	//async actions
 	getWorkoutAsync,
 	getExerciseAsync,
@@ -41,7 +43,7 @@ function Exercise() {
 				key={idx}
 			>
 				<strong>{item.name}</strong>
-				<h5 className='mb-4'>Sets {item.sets}x{item.reps}</h5>
+				<h5 className='mb-4 mx-auto1'>Sets {item.sets}x{item.reps}</h5>
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 content-center">
 					{item.weights.map((elem, i: number) => (
 						<input
@@ -60,6 +62,43 @@ function Exercise() {
 						/>
 					))}
 				</div>
+				<div className="mt-4 grid gap-7 grid-cols-1 md:grid-cols-3 content-center">
+					<input
+						type="text"
+						placeholder='Notes'
+						className='outline my-1 outline-yellow-400'
+						data-movement={item.movementID}
+						value={item.notes}
+						onChange={(e) => dispatch(editNotes({
+							movementID: Number(e.target.dataset.movement),
+							value: e.target.value
+						}))}
+					/>
+					<input
+						type="number"
+						placeholder='Intensity 0-10'
+						className='outline my-1 outline-purple-600'
+						data-movement={item.movementID}
+						value={item.intensity}
+						min={0}
+						max={10}
+						onChange={(e) => dispatch(editIntensity({
+							movementID: Number(e.target.dataset.movement),
+							value: Number(e.target.value)
+						}))}
+					/>
+					<input
+						type="number"
+						placeholder='Order'
+						className='outline my-1 outline-blue-700'
+						data-movement={item.movementID}
+						value={item.order}
+						onChange={(e) => dispatch(setOrder({
+							movementID: Number(e.target.dataset.movement),
+							value: Number(e.target.value)
+						}))}
+					/>
+				</div>
 			</li>
 		)
 	})
@@ -72,6 +111,17 @@ function Exercise() {
 				{workoutOptions}
 			</select>
 			<ul>{exerciseToDos}</ul>
+			<button
+				className='px-5 rounded-full bg-red-700 mx-1 text-white  hover:bg-white hover:text-red-700 hover:outline'
+				onClick={() => {
+					const a = confirm('Are you sure you want to clear the workout?')
+					if (a) {
+						dispatch(clearEntries())
+					}
+				}}
+			>
+				Clear
+			</button>
 		</div >
 	)
 }

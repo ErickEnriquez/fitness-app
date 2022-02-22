@@ -61,6 +61,13 @@ export const exerciseSlice = createSlice({
 			if (isNaN(action.payload.value)) return
 			state.entries.find(entry => entry.id === action.payload.movementID).order = action.payload.value
 		},
+		editNotes: (state, action: PayloadAction<{ movementID: number, value: string }>) => { 
+			state.entries.find(entry => entry.id === action.payload.movementID).notes = action.payload.value
+		},	
+		editIntensity: (state, action: PayloadAction<{ movementID: number, value: number }>) => { 
+			if (isNaN(action.payload.value)) return
+			state.entries.find(entry => entry.id === action.payload.movementID).intensity = action.payload.value
+		}
 	},
 	extraReducers: (builder) => { 
 		builder
@@ -80,7 +87,7 @@ export const exerciseSlice = createSlice({
 					return { 
 						...entry,
 						weights: Array(entry.sets).fill(''),
-						intensity: 0,
+						intensity: undefined,
 						notes: '',
 						order: undefined
 					}
@@ -90,7 +97,7 @@ export const exerciseSlice = createSlice({
 	}
 })
 
-export const { clearEntries, setWeight, setOrder } = exerciseSlice.actions
+export const { clearEntries, setWeight, setOrder, editNotes, editIntensity } = exerciseSlice.actions
 
 export const selectWorkouts = (state: AppState) => state.exercise.workouts
 export const selectEntries = (state: AppState) => state.exercise.entries
