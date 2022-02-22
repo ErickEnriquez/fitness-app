@@ -23,8 +23,8 @@ export interface ExerciseState {
 }
 
 const initialState = {
-	entries: [],
-	workout: [],
+	entries: [] as UserEntry[],
+	workout: [] as Workout[],
 	status: 'idle'
 }
 
