@@ -8,7 +8,7 @@ import {
 	clearEntries,
 	getWorkoutAsync,
 	selectWorkouts,
-	setActiveWorkout,
+	getExerciseAsync
 }
 	from '@features/exercise/exerciseSlice'
 
@@ -23,14 +23,14 @@ function Exercise() {
 
 	const workoutOptions = workouts.map((item, idx) => {
 		return (
-			<option value={item.type} key={idx}>{item.type}</option>
+			<option value={item.id} key={idx}>{item.type}</option>
 		)
 	})
 
 	return (
 		< div >
 			<h1>Exercise to do</h1>
-			<select onChange={(e) => dispatch(setActiveWorkout(e.target.value))}>
+			<select onChange={(e) => dispatch(getExerciseAsync(Number(e.target.value)))}>
 				<option hidden disabled selected>-- select an option --</option>
 				{workoutOptions}
 			</select>

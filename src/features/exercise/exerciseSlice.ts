@@ -19,17 +19,16 @@ interface UserEntry extends WorkoutTemplate {
 export interface ExerciseState { 
 	entries: UserEntry[]
 	workouts: Workout[]
-	activeWorkout: Workout  | null
 	state: 'idle' | 'loading' | 'failed'
 }
 
 const initialState = {
 	entries: [] as UserEntry[],
 	workouts: [] as Workout[],
-	activeWorkout: null,
 	status: 'idle'
 }
 
+//get the list of workouts when we initialize the page , ie pull heavy, legs light etc
 export const getWorkoutAsync = createAsyncThunk(
 	'exercise/getWorkout',
 	async () => { 
@@ -38,13 +37,20 @@ export const getWorkoutAsync = createAsyncThunk(
 	}
 )
 
+//given a workoutID get the template of exercises for that given workout
+export const getExerciseAsync = createAsyncThunk(
+	'exercise/getExercise',
+	async (id:number) => { 
+		const response = await axios.get('/api/getExercises', { params: { workoutId: id } })
+		console.log(response.data)
+		return response.data
+	}
+)
+
 export const exerciseSlice = createSlice({
 	name: 'exercise',
 	initialState,
 	reducers: {
-		setActiveWorkout: (state, action: PayloadAction<string>) => { 
-			state.activeWorkout = state.workouts.find(w => w.type === action.payload)
-		},
 		clearEntries: (state) => { 
 			state.entries = []
 		}
@@ -58,11 +64,18 @@ export const exerciseSlice = createSlice({
 				state.status = 'idle'
 				state.workouts = action.payload
 			})
+			.addCase(getExerciseAsync.pending, (state) => {
+				state.status = 'loading'
+			})
+			.addCase(getExerciseAsync.fulfilled, (state, action) => { 
+				state.status = 'idle'
+				state.entries = action.payload
+			})
 		
 	}
 })
 
-export const { clearEntries, setActiveWorkout } = exerciseSlice.actions
+export const { clearEntries } = exerciseSlice.actions
 
 export const selectWorkouts = (state: AppState) => state.exercise.workouts
 export const selectEntries = (state: AppState) => state.exercise.entries
