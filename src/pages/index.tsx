@@ -105,7 +105,9 @@ const IndexPage: NextPage = (props: props) => {
 
 	const exercisesToDo = exercises.map((item, idx) => {
 		return (
-			<li key={idx}>
+			<li key={idx}
+				className='w-11/12 mx-auto'
+			>
 				<strong>{item.name}</strong>
 				<h5 className='mb-4'>Sets {item.sets}x{item.reps}</h5>
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 content-center">
