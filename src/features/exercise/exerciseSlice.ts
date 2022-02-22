@@ -42,7 +42,6 @@ export const getExerciseAsync = createAsyncThunk(
 	'exercise/getExercise',
 	async (id:number) => { 
 		const response = await axios.get('/api/getExercises', { params: { workoutId: id } })
-		console.log(response.data)
 		return response.data
 	}
 )
@@ -53,6 +52,9 @@ export const exerciseSlice = createSlice({
 	reducers: {
 		clearEntries: (state) => { 
 			state.entries = []
+		},
+		setWeight: (state, action) => { 
+			console.log(state, action)
 		}
 	},
 	extraReducers: (builder) => { 
@@ -69,13 +71,21 @@ export const exerciseSlice = createSlice({
 			})
 			.addCase(getExerciseAsync.fulfilled, (state, action) => { 
 				state.status = 'idle'
-				state.entries = action.payload
+				state.entries = action.payload.map((entry: ExerciseTemplate) => { 
+					return { 
+						...entry,
+						weights: Array(entry.sets).fill(''),
+						intensity: 0,
+						notes: '',
+						order: undefined
+					}
+				})
 			})
 		
 	}
 })
 
-export const { clearEntries } = exerciseSlice.actions
+export const { clearEntries, setWeight } = exerciseSlice.actions
 
 export const selectWorkouts = (state: AppState) => state.exercise.workouts
 export const selectEntries = (state: AppState) => state.exercise.entries
