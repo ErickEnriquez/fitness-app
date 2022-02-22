@@ -18,13 +18,15 @@ interface UserEntry extends WorkoutTemplate {
 
 export interface ExerciseState { 
 	entries: UserEntry[]
-	workout: Workout[]
+	workouts: Workout[]
+	activeWorkout: Workout  | null
 	state: 'idle' | 'loading' | 'failed'
 }
 
 const initialState = {
 	entries: [] as UserEntry[],
-	workout: [] as Workout[],
+	workouts: [] as Workout[],
+	activeWorkout: null,
 	status: 'idle'
 }
 
@@ -40,7 +42,10 @@ export const exerciseSlice = createSlice({
 	name: 'exercise',
 	initialState,
 	reducers: {
-		clear: (state) => { 
+		setActiveWorkout: (state, action: PayloadAction<string>) => { 
+			state.activeWorkout = state.workouts.find(w => w.type === action.payload)
+		},
+		clearEntries: (state) => { 
 			state.entries = []
 		}
 	},
@@ -51,14 +56,16 @@ export const exerciseSlice = createSlice({
 			})
 			.addCase(getWorkoutAsync.fulfilled, (state, action) => {
 				state.status = 'idle'
-				state.workout = action.payload
+				state.workouts = action.payload
 			})
 		
 	}
 })
 
-export const { clear } = exerciseSlice.actions
+export const { clearEntries, setActiveWorkout } = exerciseSlice.actions
 
-export const selectWorkout = (state: AppState) => state.exercise.workout
+export const selectWorkouts = (state: AppState) => state.exercise.workouts
+export const selectEntries = (state: AppState) => state.exercise.entries
+export const selectStatus = (state: AppState) => state.exercise.status
 
 export default exerciseSlice.reducer

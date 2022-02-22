@@ -157,7 +157,7 @@ const IndexPage: NextPage = (props: props) => {
 	})
 
 	const submitWorkout = async () => {
-		// setExercises([])
+		
 		alert('TODO: submit to server')
 		setExercises([])
 		return
