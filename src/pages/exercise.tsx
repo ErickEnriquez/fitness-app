@@ -104,7 +104,7 @@ function Exercise() {
 	})
 	if (status === 'loading') return <Loading />
 	return (
-		< div >
+		<div>
 			<h1>Exercise to do</h1>
 			<select onChange={(e) => dispatch(getExerciseAsync(Number(e.target.value)))}>
 				<option hidden disabled selected>-- select an option --</option>
