@@ -46,6 +46,15 @@ export const getExerciseAsync = createAsyncThunk(
 	}
 )
 
+export const postExerciseEntries = createAsyncThunk(
+	'exercise/postExerciseEntries',
+	async (arg ,{getState}) => {
+		const state = getState() as AppState
+		const response = await axios.post('/api/exercise-entry', state.exercise.entries)
+		return response.data
+	}
+)
+
 export const exerciseSlice = createSlice({
 	name: 'exercise',
 	initialState,
@@ -71,6 +80,7 @@ export const exerciseSlice = createSlice({
 	},
 	extraReducers: (builder) => { 
 		builder
+			//getting list of the workouts
 			.addCase(getWorkoutAsync.pending, (state) => {
 				state.status = 'loading'
 			})
@@ -78,13 +88,14 @@ export const exerciseSlice = createSlice({
 				state.status = 'idle'
 				state.workouts = action.payload
 			})
+			//getting the workout template for a workout
 			.addCase(getExerciseAsync.pending, (state) => {
 				state.status = 'loading'
 			})
-			.addCase(getExerciseAsync.fulfilled, (state, action) => { 
+			.addCase(getExerciseAsync.fulfilled, (state, action) => {
 				state.status = 'idle'
-				state.entries = action.payload.map((entry: ExerciseTemplate) => { 
-					return { 
+				state.entries = action.payload.map((entry: ExerciseTemplate) => {
+					return {
 						...entry,
 						weights: Array(entry.sets).fill(null),
 						intensity: null,
@@ -92,6 +103,12 @@ export const exerciseSlice = createSlice({
 						order: null
 					}
 				})
+			})
+			//posting the exercise entries
+			.addCase(postExerciseEntries.pending, (state) => { state.status = 'loading' })
+			.addCase(postExerciseEntries.fulfilled, (state) => {
+				state.status = 'idle'
+				state.entries = []
 			})
 		
 	}

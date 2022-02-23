@@ -17,6 +17,7 @@ import {
 	//state grabbers
 	selectWorkouts,
 	selectEntries,
+	postExerciseEntries
 }
 	from '@features/exercise/exerciseSlice'
 
@@ -112,12 +113,16 @@ function Exercise() {
 			</select>
 			<ul>{exerciseToDos}</ul>
 			<button
+				className='px-5 rounded-full bg-green-700 mx-1 text-white  hover:bg-white hover:text-green-700 hover:outline'
+				onClick={() => dispatch(postExerciseEntries())}
+			>
+				Submit
+			</button>
+			<button
 				className='px-5 rounded-full bg-red-700 mx-1 text-white  hover:bg-white hover:text-red-700 hover:outline'
 				onClick={() => {
 					const a = confirm('Are you sure you want to clear the workout?')
-					if (a) {
-						dispatch(clearEntries())
-					}
+					if (a) dispatch(clearEntries())
 				}}
 			>
 				Clear
