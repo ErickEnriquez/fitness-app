@@ -24,11 +24,11 @@ const ExerciseList = () => {
 			{exercises.map((item, idx) => {
 				return (
 					<li
-						className='w-11/12 mx-auto'
+						className='w-11/12 mx-auto text-slate-700'
 						key={idx}
 					>
-						<strong>{item.name}</strong>
-						<h5 className='mb-4 mx-auto1'>Sets {item.sets}x{item.reps}</h5>
+						<strong className='text-white'>{item.name}</strong>
+						<h5 className='mb-4 mx-auto1 text-white'>Sets {item.sets}x{item.reps}</h5>
 						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 content-center">
 							{item.weights.map((elem, i: number) => (
 								<input
@@ -43,7 +43,7 @@ const ExerciseList = () => {
 										setNumber: Number(e.target.dataset.setNumber)
 									}))}
 									placeholder={`Weight for set ${i + 1}`}
-									className='outline outline-orange-700 mx-2 mb-4 lg:mb-0'
+									className='outline outline-orange-700 outline-4 rounded-full mx-2 mb-4 lg:mb-0 placeholder:text-slate-600 text-center '
 								/>
 							))}
 						</div>
@@ -51,7 +51,7 @@ const ExerciseList = () => {
 							<input
 								type="text"
 								placeholder='Notes'
-								className='outline my-1 outline-yellow-400'
+								className='outline my-1 outline-yellow-400 outline-4 rounded-full placeholder:text-slate-600 text-center'
 								data-movement={item.movementID}
 								value={item.notes}
 								onChange={(e) => dispatch(editNotes({
@@ -62,7 +62,7 @@ const ExerciseList = () => {
 							<input
 								type="number"
 								placeholder='Intensity 0-10'
-								className='outline my-1 outline-purple-600'
+								className='outline my-1 outline-purple-600 outline-4 rounded-full placeholder:text-slate-600 text-center'
 								data-movement={item.movementID}
 								value={item.intensity}
 								min={0}
@@ -75,7 +75,7 @@ const ExerciseList = () => {
 							<input
 								type="number"
 								placeholder='Order'
-								className='outline my-1 outline-blue-700'
+								className='outline my-1 outline-blue-700 outline-4 rounded-full placeholder:text-slate-600 text-center'
 								data-movement={item.movementID}
 								value={item.order}
 								onChange={(e) => dispatch(setOrder({

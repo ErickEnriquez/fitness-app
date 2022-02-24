@@ -30,16 +30,25 @@ const IndexPage: NextPage = () => {
 	//map the options that we have for a workout ie push heavy , legs light etc
 	const workoutOptions = workouts.map((item, idx) => {
 		return (
-			<option data-workout-type={item.type} value={item.id} key={idx}>{item.type}</option>
+			<option
+				data-workout-type={item.type}
+				value={item.id}
+				key={idx}
+			>
+				{item.type}
+			</option>
 		)
 	})
 
 
 	if (status === 'loading') return <Loading />
 	return (
-		<div className='text-center'>
-			<h1>Exercise to do</h1>
-			<select onChange={(e) => dispatch(getExerciseAsync(Number(e.target.value)))}>
+		<div className='text-center bg-slate-800 text-white'>
+			<h1 className='text-white'>Exercise to do</h1>
+			<select
+				className="text-slate-700 px-4 rounded-full outline outline-green-700 outline-4 mb-4"
+				onChange={(e) => dispatch(getExerciseAsync(Number(e.target.value)))}
+			>
 				<option hidden disabled selected>-- select an option --</option>
 				{workoutOptions}
 			</select>
