@@ -2,7 +2,7 @@ import prisma from 'prisma/prisma'
 
 export async function postExerciseEntries(entries: any): Promise<boolean> {
 	try {
-		const response = await Promise.all(entries.map((entry: any) => {
+		await Promise.all(entries.map((entry: any) => {
 			return prisma.exerciseEntry.create({
 				data: {
 					notes: entry.notes || undefined,
