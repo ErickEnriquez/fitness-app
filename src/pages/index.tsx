@@ -1,115 +1,49 @@
-/* eslint-disable react/prop-types */
-import type { NextPage, GetStaticProps } from 'next'
-import styles from '../styles/Home.module.css'
-import { getWorkoutTemplate } from '@server/getWorkoutTemplate'
-import { Workout, ExerciseTemplate, ExerciseEntry } from '@prisma/client'
-import React, { useState } from 'react'
-import { useUpdateEffect } from '@hooks/useUpdateEffect'
-import axios from 'axios'
-import { useLocalStorage } from '@hooks/useLocalStorage'
-interface props {
-	workouts: Workout[]
-	children: React.ReactNode
+import React, { useEffect } from 'react'
+import { NextPage } from 'next'
+
+import { useAppDispatch, useAppSelector } from '@app/hooks'
+import Loading from '@features/loading/Loading'
+import {
+	//actions
+	clearEntries,
+	setWeight,
+	setOrder,
+	editNotes,
+	editIntensity,
+	//async actions
+	getWorkoutAsync,
+	getExerciseAsync,
+	//state grabbers
+	selectWorkouts,
+	selectEntries,
+	postExerciseEntries
 }
-interface WorkoutTemplate extends ExerciseTemplate {
-	name: string
-}
-interface UserEntry extends WorkoutTemplate {
-	weights: number[] | string[],
-	intensity?: number,
-	notes?: string,
-	order?: number
-}
+	from '@features/exercise/exerciseSlice'
 
 
-const IndexPage: NextPage = (props: props) => {
-	const [exercises, setExercises] = useLocalStorage<UserEntry[]>('exercises', [])
-	const [workout, setWorkout] = useState<Workout>()
-	//change the workouts that we get when a new type of workout is selected
-	useUpdateEffect(async () => {
-		const exercisesList = await axios.get('/api/getExercises', { params: { workoutId: workout.id } })
-		const data = exercisesList.data
-		setExercises(data.map((item: WorkoutTemplate): UserEntry => {
-			return ({
-				...item,
-				name: item.name,
-				weights: Array(item.sets).fill(''),
-				intensity: null,
-				notes: ''
-			})
-		}))
+const IndexPage: NextPage = () => {
+	const dispatch = useAppDispatch()
+	const workouts = useAppSelector(selectWorkouts)
+	const exercises = useAppSelector(selectEntries)
+	const status = useAppSelector(state => state.exercise.status)
+	useEffect(() => {
+		dispatch(getWorkoutAsync())
+	}, [])
 
-	}, [workout])
-
-	const workoutOptions = props.workouts.map((item, idx) => {
+	const workoutOptions = workouts.map((item, idx) => {
 		return (
-			<option value={item.type} key={idx}>{item.type}</option>
+			<option value={item.id} key={idx}>{item.type}</option>
 		)
 	})
 
-	const changeWeight = (event) => {
-		const weight = Number(event.target.value)
-		if (isNaN(weight)) { return }
-		const movement = Number(event.target.dataset.movement)
-		const setNumber = Number(event.target.dataset.setNumber)
-		setExercises((prev) => {
-			return prev.map((item) => ({
-				...item,
-				//if movement matches the movementID then add the weight into the list else return list
-				weights: movement === item.movementID ?
-					//if we are on the correct index set the value else leave it alone
-					item.weights.map((w, j: number) => j === setNumber ? weight : w)
-					: [...item.weights]
-			}))
-		})
-	}
-
-	const editNotes = (event) => {
-		const movement = Number(event.target.dataset.movement)
-		setExercises((prev) => {
-			return prev.map((item) => ({
-				...item,
-				//if we are correct movement to change then change the notes
-				notes: movement === item.movementID ? event.target.value : item.notes
-			}))
-		})
-	}
-
-	const editIntensity = (event) => {
-		const currentIntensity = Number(event.target.value)
-		if (isNaN(currentIntensity)) { return }
-
-		const movement = Number(event.target.dataset.movement)
-		setExercises((prev) => {
-			return prev.map((item) => ({
-				...item,
-				//if we are correct movement to change then change the notes
-				intensity: movement === item.movementID ? currentIntensity : item.intensity
-			}))
-		})
-	}
-
-	const editOrder = (event) => {
-		const order = Number(event.target.value)
-		if (isNaN(order)) { return }
-
-		const movement = Number(event.target.dataset.movement)
-		setExercises((prev) => {
-			return prev.map((item) => ({
-				...item,
-				//if we are correct movement to change then change the notes
-				order: movement === item.movementID ? order : item.order
-			}))
-		})
-	}
-
-	const exercisesToDo = exercises.map((item, idx) => {
+	const exerciseToDos = exercises.map((item, idx) => {
 		return (
-			<li key={idx}
+			<li
 				className='w-11/12 mx-auto'
+				key={idx}
 			>
 				<strong>{item.name}</strong>
-				<h5 className='mb-4'>Sets {item.sets}x{item.reps}</h5>
+				<h5 className='mb-4 mx-auto1'>Sets {item.sets}x{item.reps}</h5>
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 content-center">
 					{item.weights.map((elem, i: number) => (
 						<input
@@ -118,7 +52,11 @@ const IndexPage: NextPage = (props: props) => {
 							value={elem}
 							data-movement={item.movementID}
 							data-set-number={i}
-							onChange={changeWeight}
+							onChange={(e) => dispatch(setWeight({
+								movementID: Number(e.target.dataset.movement),
+								value: Number(e.target.value),
+								setNumber: Number(e.target.dataset.setNumber)
+							}))}
 							placeholder={`Weight for set ${i + 1}`}
 							className='outline outline-orange-700 mx-2 mb-4 lg:mb-0'
 						/>
@@ -131,7 +69,10 @@ const IndexPage: NextPage = (props: props) => {
 						className='outline my-1 outline-yellow-400'
 						data-movement={item.movementID}
 						value={item.notes}
-						onChange={editNotes}
+						onChange={(e) => dispatch(editNotes({
+							movementID: Number(e.target.dataset.movement),
+							value: e.target.value
+						}))}
 					/>
 					<input
 						type="number"
@@ -141,7 +82,10 @@ const IndexPage: NextPage = (props: props) => {
 						value={item.intensity}
 						min={0}
 						max={10}
-						onChange={editIntensity}
+						onChange={(e) => dispatch(editIntensity({
+							movementID: Number(e.target.dataset.movement),
+							value: Number(e.target.value)
+						}))}
 					/>
 					<input
 						type="number"
@@ -149,35 +93,27 @@ const IndexPage: NextPage = (props: props) => {
 						className='outline my-1 outline-blue-700'
 						data-movement={item.movementID}
 						value={item.order}
-						onChange={editOrder}
+						onChange={(e) => dispatch(setOrder({
+							movementID: Number(e.target.dataset.movement),
+							value: Number(e.target.value)
+						}))}
 					/>
 				</div>
 			</li>
 		)
 	})
-
-	const submitWorkout = async () => {
-		
-		alert('TODO: submit to server')
-		setExercises([])
-		return
-	}
-
+	if (status === 'loading') return <Loading />
 	return (
-		<div className={styles.container}>
-			<h1>This is the workout for today</h1>
-			<select name="" id=""
-				onChange={(e) => setWorkout(props.workouts.find(item => item.type === e.target.value))}
-			>
+		<div>
+			<h1>Exercise to do</h1>
+			<select onChange={(e) => dispatch(getExerciseAsync(Number(e.target.value)))}>
 				<option hidden disabled selected>-- select an option --</option>
 				{workoutOptions}
 			</select>
-			<ul className='my-4'>
-				{exercisesToDo}
-			</ul>
+			<ul>{exerciseToDos}</ul>
 			<button
 				className='px-5 rounded-full bg-green-700 mx-1 text-white  hover:bg-white hover:text-green-700 hover:outline'
-				onClick={submitWorkout}
+				onClick={() => dispatch(postExerciseEntries())}
 			>
 				Submit
 			</button>
@@ -185,20 +121,13 @@ const IndexPage: NextPage = (props: props) => {
 				className='px-5 rounded-full bg-red-700 mx-1 text-white  hover:bg-white hover:text-red-700 hover:outline'
 				onClick={() => {
 					const a = confirm('Are you sure you want to clear the workout?')
-					if(a) {
-						setExercises([])
-					}
+					if (a) dispatch(clearEntries())
 				}}
 			>
 				Clear
 			</button>
 		</div >
 	)
-}
-
-export const getStaticProps: GetStaticProps = async () => {
-	const workouts = await getWorkoutTemplate()
-	return { props: { workouts } }
 }
 
 export default IndexPage
