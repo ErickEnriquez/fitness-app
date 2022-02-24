@@ -111,7 +111,7 @@ const IndexPage: NextPage = () => {
 	return (
 		<div className='text-center'>
 			<h1>Exercise to do</h1>
-			<select onChange={(e) => dispatch(getExerciseAsync({workoutID:Number(e.target.value), type:e.target.dataset.workoutType}))}>
+			<select onChange={(e) => dispatch(getExerciseAsync(Number(e.target.value)))}>
 				<option hidden disabled selected>-- select an option --</option>
 				{workoutOptions}
 			</select>
