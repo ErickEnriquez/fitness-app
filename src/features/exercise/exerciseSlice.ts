@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import axios from 'axios'
 
-import type { AppState, AppThunk } from '@app/store'
+import type { AppState } from '@app/store'
 import { ExerciseTemplate, Workout } from '@prisma/client' 
 
 interface WorkoutTemplate extends ExerciseTemplate {
@@ -19,13 +19,15 @@ interface UserEntry extends WorkoutTemplate {
 export interface ExerciseState { 
 	entries: UserEntry[]
 	workouts: Workout[]
+	activeWorkout: number | null
 	state: 'idle' | 'loading' | 'failed'
 }
 
 const initialState = {
 	entries: [] as UserEntry[],
 	workouts: [] as Workout[],
-	status: 'idle'
+	status: 'idle',
+	activeWorkout: null
 }
 
 //get the list of workouts when we initialize the page , ie pull heavy, legs light etc
@@ -42,7 +44,7 @@ export const getExerciseAsync = createAsyncThunk(
 	'exercise/getExercise',
 	async (id:number) => { 
 		const response = await axios.get('/api/exercise-templates', { params: { workoutId: id } })
-		return response.data
+		return { exercises: response.data, workoutId:id }
 	}
 )
 
@@ -50,7 +52,7 @@ export const postExerciseEntries = createAsyncThunk(
 	'exercise/postExerciseEntries',
 	async (arg ,{getState}) => {
 		const state = getState() as AppState
-		const response = await axios.post('/api/exercise-entry', state.exercise.entries)
+		const response = await axios.post('/api/exercise-entry', {entries: state.exercise.entries, templateId: state.exercise.activeWorkout })
 		return response.data
 	}
 )
@@ -94,7 +96,7 @@ export const exerciseSlice = createSlice({
 			})
 			.addCase(getExerciseAsync.fulfilled, (state, action) => {
 				state.status = 'idle'
-				state.entries = action.payload.map((entry: ExerciseTemplate) => {
+				state.entries = action.payload.exercises.map((entry: ExerciseTemplate) => {
 					return {
 						...entry,
 						weights: Array(entry.sets).fill(null),
@@ -103,6 +105,8 @@ export const exerciseSlice = createSlice({
 						order: null
 					}
 				})
+				//mark the type of workout that we are doing
+				state.activeWorkout = action.payload.workoutId
 			})
 			//posting the exercise entries
 			.addCase(postExerciseEntries.pending, (state) => { state.status = 'loading' })

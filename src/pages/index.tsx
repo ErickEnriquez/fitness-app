@@ -26,16 +26,21 @@ const IndexPage: NextPage = () => {
 	const workouts = useAppSelector(selectWorkouts)
 	const exercises = useAppSelector(selectEntries)
 	const status = useAppSelector(state => state.exercise.status)
+
+	//grab the workout templates from the server on page load
 	useEffect(() => {
 		dispatch(getWorkoutAsync())
 	}, [])
 
+	//map the options that we have for a workout ie push heavy , legs light etc
 	const workoutOptions = workouts.map((item, idx) => {
 		return (
-			<option value={item.id} key={idx}>{item.type}</option>
+			<option data-workout-type={item.type} value={item.id} key={idx}>{item.type}</option>
 		)
 	})
 
+	//create array of exercises to be filled out
+	//TODO: make this its own component
 	const exerciseToDos = exercises.map((item, idx) => {
 		return (
 			<li
@@ -104,28 +109,31 @@ const IndexPage: NextPage = () => {
 	})
 	if (status === 'loading') return <Loading />
 	return (
-		<div>
+		<div className='text-center'>
 			<h1>Exercise to do</h1>
 			<select onChange={(e) => dispatch(getExerciseAsync(Number(e.target.value)))}>
 				<option hidden disabled selected>-- select an option --</option>
 				{workoutOptions}
 			</select>
 			<ul>{exerciseToDos}</ul>
-			<button
-				className='px-5 rounded-full bg-green-700 mx-1 text-white  hover:bg-white hover:text-green-700 hover:outline'
-				onClick={() => dispatch(postExerciseEntries())}
-			>
-				Submit
-			</button>
-			<button
-				className='px-5 rounded-full bg-red-700 mx-1 text-white  hover:bg-white hover:text-red-700 hover:outline'
-				onClick={() => {
-					const a = confirm('Are you sure you want to clear the workout?')
-					if (a) dispatch(clearEntries())
-				}}
-			>
-				Clear
-			</button>
+			<div className='my-4'>
+				<button
+					className='px-5 rounded-full bg-green-700 mx-1 text-white  hover:bg-white hover:text-green-700 hover:outline'
+					onClick={() => dispatch(postExerciseEntries())}
+				>
+					Submit
+				</button>
+				<button
+					className='px-5 rounded-full bg-red-700 mx-1 text-white  hover:bg-white hover:text-red-700 hover:outline'
+					onClick={() => {
+						const a = confirm('Are you sure you want to clear the workout?')
+						if (a) dispatch(clearEntries())
+					}}
+				>
+					Clear
+				</button>
+			</div>
+
 		</div >
 	)
 }
