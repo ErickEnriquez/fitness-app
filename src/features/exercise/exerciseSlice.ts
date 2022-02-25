@@ -13,18 +13,15 @@ interface UserEntry extends WorkoutTemplate {
 	weights: number[],
 	intensity?: number,
 	notes?: string,
-	order?: number
-}
-//keep track of the complete status of the specific exercise to mark on the workout page
-interface ExerciseEntry extends UserEntry{
-	complete: boolean
+	order?: number,
+	completed: boolean
 }
 
 export interface ExerciseState { 
 	entries: UserEntry[]
 	workouts: Workout[]
 	activeWorkout: number | null
-	activeEntry: ExerciseEntry
+	activeEntry: number
 	state: 'idle' | 'loading' | 'failed'
 }
 
@@ -33,7 +30,7 @@ const initialState = {
 	workouts: [] as Workout[],
 	status: 'idle',
 	activeWorkout: null,
-	activeEntry: {} as ExerciseEntry
+	activeEntry: null as number
 }
 
 //get the list of workouts when we initialize the page , ie pull heavy, legs light etc
@@ -88,12 +85,7 @@ export const exerciseSlice = createSlice({
 		//set the active entry we are working on when given an ID
 		setActiveEntry(state, action: PayloadAction<number>) { 
 			if (isNaN(action.payload)) return
-			console.log(action)
-			state.activeEntry = {
-				...state.entries.find(entry => entry.id === action.payload),
-				complete: false
-			}
-			
+			state.activeEntry = state.entries.find(entry => entry.id === action.payload).id
 		}
 	},
 	extraReducers: (builder) => { 
@@ -118,7 +110,8 @@ export const exerciseSlice = createSlice({
 						weights: Array(entry.sets).fill(null),
 						intensity: null,
 						notes: '',
-						order: null
+						order: null,
+						completed: false
 					}
 				})
 				//mark the type of workout that we are doing
