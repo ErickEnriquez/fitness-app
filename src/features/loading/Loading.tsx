@@ -9,7 +9,7 @@ const Loading = (): JSX.Element => {
 	}
 	return (
 		<div style={styles}>
-			<ReactLoading type='spin' color='#004A8F' height={100} width={100} />
+			<ReactLoading type='spin' color='#06b6d4' height={100} width={100} />
 		</div>
 	)
 }
