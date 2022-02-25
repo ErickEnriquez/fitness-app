@@ -15,11 +15,16 @@ interface UserEntry extends WorkoutTemplate {
 	notes?: string,
 	order?: number
 }
+//keep track of the complete status of the specific exercise to mark on the workout page
+interface ExerciseEntry extends UserEntry{
+	complete: boolean
+}
 
 export interface ExerciseState { 
 	entries: UserEntry[]
 	workouts: Workout[]
 	activeWorkout: number | null
+	activeEntry: ExerciseEntry
 	state: 'idle' | 'loading' | 'failed'
 }
 
@@ -27,7 +32,8 @@ const initialState = {
 	entries: [] as UserEntry[],
 	workouts: [] as Workout[],
 	status: 'idle',
-	activeWorkout: null
+	activeWorkout: null,
+	activeEntry: {} as ExerciseEntry
 }
 
 //get the list of workouts when we initialize the page , ie pull heavy, legs light etc
@@ -78,6 +84,16 @@ export const exerciseSlice = createSlice({
 		editIntensity: (state, action: PayloadAction<{ movementID: number, value: number }>) => { 
 			if (isNaN(action.payload.value)) return
 			state.entries.find(entry => entry.id === action.payload.movementID).intensity = action.payload.value
+		},
+		//set the active entry we are working on when given an ID
+		setActiveEntry(state, action: PayloadAction<number>) { 
+			if (isNaN(action.payload)) return
+			console.log(action)
+			state.activeEntry = {
+				...state.entries.find(entry => entry.id === action.payload),
+				complete: false
+			}
+			
 		}
 	},
 	extraReducers: (builder) => { 
@@ -118,7 +134,7 @@ export const exerciseSlice = createSlice({
 	}
 })
 
-export const { clearEntries, setWeight, setOrder, editNotes, editIntensity } = exerciseSlice.actions
+export const { clearEntries, setWeight, setOrder, editNotes, editIntensity, setActiveEntry } = exerciseSlice.actions
 
 export const selectWorkouts = (state: AppState) => state.exercise.workouts
 export const selectEntries = (state: AppState) => state.exercise.entries
