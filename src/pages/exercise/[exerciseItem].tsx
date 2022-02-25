@@ -6,9 +6,10 @@ import { useAppDispatch, useAppSelector } from '@app/hooks'
 
 import { setWeight, editNotes, editIntensity, setOrder } from '@features/exercise/exerciseSlice'
 
-const ExerciseEntry = () => {
+const ExerciseItem = () => {
 	const dispatch = useAppDispatch()
 	const { activeEntry } = useAppSelector(state => state.exercise)
+
 	console.log(activeEntry, 'test')
 	return (
 		<Layout>
@@ -19,7 +20,7 @@ const ExerciseEntry = () => {
 						<strong className='text-white'>{activeEntry.name}</strong>
 						<h5 className='mb-4 mx-auto1 text-white'>Sets {activeEntry.sets}x{activeEntry.reps}</h5>
 						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 content-center w-11/12 mx-auto">
-							{activeEntry.weights?.map((weight, i: number) => (
+							{activeEntry.weights.map((weight, i: number) => (
 								<input
 									key={i}
 									type="number"
@@ -75,4 +76,4 @@ const ExerciseEntry = () => {
 	)
 }
 
-export default ExerciseEntry
+export default ExerciseItem
