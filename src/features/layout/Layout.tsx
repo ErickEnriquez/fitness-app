@@ -18,9 +18,9 @@ const Layout = ({ children, title }: LayoutProps) => {
 				{/* Include the favicon when we have one */}
 				{/* <link rel="icon" href="" /> */}
 			</Head>
-			<div className='bg-slate-800 h-full'>
+			<body className='bg-slate-800 absolute inset-0'>
 				{children}
-			</div>
+			</body>
 		</>
 	)
 }
