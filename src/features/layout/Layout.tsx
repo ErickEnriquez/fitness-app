@@ -1,6 +1,6 @@
 import React from 'react'
 import Head from 'next/head'
-import Iamge from 'next/image'
+import Image from 'next/image'
 
 interface LayoutProps {
 	title?: string
@@ -18,9 +18,9 @@ const Layout = ({ children, title }: LayoutProps) => {
 				{/* Include the favicon when we have one */}
 				{/* <link rel="icon" href="" /> */}
 			</Head>
-			<body className='bg-slate-800 absolute inset-0'>
+			<section className='bg-slate-800 absolute inset-0'>
 				{children}
-			</body>
+			</section>
 		</>
 	)
 }
