@@ -34,6 +34,7 @@ const workout = () => {
 								onClick={() => dispatch(getExerciseAsync(item.id))}
 								>
 									<a className="capitalize">{item.type}</a>
+									<p>Last Worked on : N/A</p>
 								</li>
 							</Link>
 						)
