@@ -9,15 +9,18 @@ import { setWeight, editNotes, editIntensity, setOrder } from '@features/exercis
 const ExerciseItem = () => {
 	const dispatch = useAppDispatch()
 	const { activeEntry } = useAppSelector(state => state.exercise)
+
+	//grab the active exercise item from the store
 	const item = useAppSelector(state => state.exercise.entries.find(elem => elem.id === activeEntry))
 	return (
 		<Layout>
 			<main>
 				{item &&
 					<div>
-						<Link href={`/workout/${item.workoutId}`}><a className='text-white'>Back</a></Link>
-						<strong className='text-white'>{item.name}</strong>
-						<h5 className='mb-4 mx-auto1 text-white'>Sets {item.sets}x{item.reps}</h5>
+						<div className='grid grid-cols-4 my-6'>
+							<Link href={`/workout/${item.workoutId}`}><span className="flex items-center "><a className='text-center bg-red-700 px-8 rounded-full w-3/4 mx-auto text-white hover:outline-red-700 hover:outline hover:bg-white hover:text-red-700'>Back</a></span></Link>
+							<h2 className='mb-4 mx-auto1 text-white text-center col-span-2'><span className='underline text-3xl'>{item.name}</span> <br /> Sets {item.sets}x{item.reps}</h2>
+						</div>
 						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 content-center w-11/12 mx-auto">
 							{item.weights.map((weight, i: number) => (
 								<input
