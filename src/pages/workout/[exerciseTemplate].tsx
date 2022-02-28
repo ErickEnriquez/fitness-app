@@ -19,6 +19,15 @@ const ExerciseTemplate = () => {
 				<ul className='w-11/12 mx-auto'>
 					<ExerciseList />
 				</ul>
+				<div className="w-11/12 mx-auto ">
+					<textarea className="w-full rounded mb-10"
+						placeholder="Add notes here"
+					></textarea>
+					<button className='text-white bg-green-500 rounded-full w-11/12 mx-auto hover:bg-white hover:text-green-500 hover:outline outline-green-500 mb-4 h-16'
+						onClick={() => alert('todo')}>
+						Submit
+					</button>
+				</div>
 			</main>
 		</Layout>
 	)
