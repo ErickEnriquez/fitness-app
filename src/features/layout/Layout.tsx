@@ -1,7 +1,7 @@
 import React from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
-
+import styles from '../../styles/Home.module.css'
 interface LayoutProps {
 	title?: string
 	children?: React.ReactNode
@@ -18,7 +18,7 @@ const Layout = ({ children, title }: LayoutProps) => {
 				{/* Include the favicon when we have one */}
 				{/* <link rel="icon" href="" /> */}
 			</Head>
-			<section className='bg-slate-800 absolute inset-0'>
+			<section>
 				{children}
 			</section>
 		</>

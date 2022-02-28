@@ -4,7 +4,8 @@ import Layout from '@features/layout/Layout'
 import Link from 'next/link'
 import { useAppDispatch, useAppSelector } from '@app/hooks'
 
-import { setWeight, editNotes, editIntensity, setOrder } from '@features/exercise/exerciseSlice'
+import { editWeight, editNotes, editIntensity, editOrder } from '@features/exercise/exerciseSlice'
+import Loading from '@features/loading/Loading'
 
 const ExerciseItem = () => {
 	const dispatch = useAppDispatch()
@@ -12,6 +13,10 @@ const ExerciseItem = () => {
 
 	//grab the active exercise item from the store
 	const item = useAppSelector(state => state.exercise.entries.find(elem => elem.id === activeEntry))
+	const status = useAppSelector(state => state.exercise.status)
+
+	if (status === 'loading') return <Loading />
+
 	return (
 		<Layout>
 			<main>
@@ -27,7 +32,7 @@ const ExerciseItem = () => {
 									key={i}
 									type="number"
 									value={weight}
-									onChange={(e) => dispatch(setWeight({
+									onChange={(e) => dispatch(editWeight({
 										movementID: item.movementID,
 										value: Number(e.target.value),
 										setNumber: i
@@ -65,7 +70,7 @@ const ExerciseItem = () => {
 								placeholder='Order'
 								className='outline my-1 outline-blue-700 outline-4 rounded-full placeholder:text-slate-600 text-center'
 								value={item.order}
-								onChange={(e) => dispatch(setOrder({
+								onChange={(e) => dispatch(editOrder({
 									movementID: item.movementID,
 									value: Number(e.target.value)
 								}))}

@@ -67,11 +67,11 @@ export const exerciseSlice = createSlice({
 		clearEntries: (state) => { 
 			state.entries = []
 		},
-		setWeight: (state, action: PayloadAction<{ movementID: number, value: number, setNumber: number }>) => { 
+		editWeight: (state, action: PayloadAction<{ movementID: number, value: number, setNumber: number }>) => { 
 			if (isNaN(action.payload.value)) return
 			state.entries.find(entry => entry.id === action.payload.movementID).weights[action.payload.setNumber] = action.payload.value
 		},
-		setOrder: (state, action: PayloadAction<{ movementID: number, value: number }>) => {
+		editOrder: (state, action: PayloadAction<{ movementID: number, value: number }>) => {
 			if (isNaN(action.payload.value)) return
 			state.entries.find(entry => entry.id === action.payload.movementID).order = action.payload.value
 		},
@@ -107,10 +107,10 @@ export const exerciseSlice = createSlice({
 				state.entries = action.payload.exercises.map((entry: ExerciseTemplate) => {
 					return {
 						...entry,
-						weights: Array(entry.sets).fill(null),
-						intensity: null,
+						weights: Array(entry.sets).fill(''),
+						intensity: '',
 						notes: '',
-						order: null,
+						order: '',
 						completed: false
 					}
 				})
@@ -127,7 +127,7 @@ export const exerciseSlice = createSlice({
 	}
 })
 
-export const { clearEntries, setWeight, setOrder, editNotes, editIntensity, setActiveEntry } = exerciseSlice.actions
+export const { clearEntries, editWeight, editOrder, editNotes, editIntensity, setActiveEntry } = exerciseSlice.actions
 
 export const selectWorkouts = (state: AppState) => state.exercise.workouts
 export const selectEntries = (state: AppState) => state.exercise.entries
