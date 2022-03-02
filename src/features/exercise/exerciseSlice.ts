@@ -43,13 +43,14 @@ export const getWorkoutAsync = createAsyncThunk(
 )
 
 //given a workoutID get the template of exercises for that given workout
-export const getExerciseAsync = createAsyncThunk(
-	'exercise/getExercise',
+export const getExerciseTemplates = createAsyncThunk(
+	'exercise/getExerciseTemplates',
 	async (id:number) => { 
 		const response = await axios.get('/api/exercise-templates', { params: { workoutId: id } })
 		return { exercises: response.data, workoutId:id }
 	}
 )
+
 
 export const postExerciseEntries = createAsyncThunk(
 	'exercise/postExerciseEntries',
@@ -103,10 +104,10 @@ export const exerciseSlice = createSlice({
 				state.workouts = action.payload
 			})
 			//getting the workout template for a workout
-			.addCase(getExerciseAsync.pending, (state) => {
+			.addCase(getExerciseTemplates.pending, (state) => {
 				state.status = 'loading'
 			})
-			.addCase(getExerciseAsync.fulfilled, (state, action) => {
+			.addCase(getExerciseTemplates.fulfilled, (state, action) => {
 				state.status = 'idle'
 				state.entries = action.payload.exercises.map((entry: ExerciseTemplate) => {
 					return {

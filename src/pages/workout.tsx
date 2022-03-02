@@ -5,9 +5,9 @@ import Loading from '@features/loading/Loading'
 import Layout from '@features/layout/Layout'
 
 import { useAppDispatch, useAppSelector } from '@app/hooks'
-import { getWorkoutAsync, selectWorkouts, getExerciseAsync } from '@features/exercise/exerciseSlice'
+import { getWorkoutAsync, selectWorkouts, getExerciseTemplates } from '@features/exercise/exerciseSlice'
 
-const workout = () => {
+const WorkoutPage: NextPage = () => {
 	const dispatch = useAppDispatch()
 	const workouts = useAppSelector(selectWorkouts)
 	const status = useAppSelector(state => state.exercise.status)
@@ -31,7 +31,7 @@ const workout = () => {
 								bg-cyan-500 rounded-full my-12 py-4 hover:bg-white hover:outline outline-cyan-500 text-white
 								hover:text-cyan-500 hover:cursor-pointer w-11/12 mx-auto`
 								}
-								onClick={() => dispatch(getExerciseAsync(item.id))}
+								onClick={() => dispatch(getExerciseTemplates(item.id))}
 								>
 									<a className="capitalize">{item.type}</a>
 									<p>Last Worked on : N/A</p>
@@ -45,4 +45,4 @@ const workout = () => {
 	)
 }
 
-export default workout
+export default WorkoutPage
