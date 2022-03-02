@@ -11,6 +11,7 @@ interface UserEntry extends ExerciseTemplate {
 	notes?: string,
 	order?: number,
 	completed: boolean
+	name: string
 }
 
 export interface ExerciseState { 
@@ -25,7 +26,7 @@ const initialState = {
 	entries: [] as UserEntry[],
 	workouts: [] as Workout[],
 	status: 'idle',
-	activeWorkout: null,
+	activeWorkout: null as number,
 	activeEntry: null as number
 }
 
@@ -105,6 +106,9 @@ export const exerciseSlice = createSlice({
 			})
 			.addCase(getExerciseTemplates.fulfilled, (state, action) => {
 				state.status = 'idle'
+				//mark the type of workout that we are doing
+				state.activeWorkout = action.payload.workoutId
+				//create the entries for the workout
 				state.entries = action.payload.exercises.map((entry: ExerciseTemplate) => {
 					return {
 						...entry,
@@ -115,8 +119,6 @@ export const exerciseSlice = createSlice({
 						completed: false
 					}
 				})
-				//mark the type of workout that we are doing
-				state.activeWorkout = action.payload.workoutId
 			})
 			//posting the exercise entries
 			.addCase(postExerciseEntries.pending, (state) => { state.status = 'loading' })
