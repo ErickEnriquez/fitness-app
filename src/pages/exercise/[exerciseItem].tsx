@@ -37,7 +37,7 @@ const ExerciseItem = () => {
 									setNumber: i
 								}))}
 								placeholder={`Weight for set ${i + 1}`}
-								className='outline outline-orange-700 outline-4 rounded-full mx-2 mb-4 lg:mb-0 placeholder:text-slate-600 text-center '
+								className='outline outline-orange-700 outline-4 rounded-full mx-2 py-3 mb-10 lg:mb-0 placeholder:text-slate-600 text-center '
 							/>
 						))}
 					</div>
@@ -45,7 +45,7 @@ const ExerciseItem = () => {
 						<input
 							type="text"
 							placeholder='Notes'
-							className='outline my-1 outline-yellow-400 outline-4 rounded-full placeholder:text-slate-600 text-center'
+							className='outline my-1 outline-yellow-400 outline-4 rounded-full placeholder:text-slate-600 text-center py-3'
 							value={item.notes}
 							onChange={(e) => dispatch(editNotes({
 								movementID: item.movementID,
@@ -55,7 +55,7 @@ const ExerciseItem = () => {
 						<input
 							type="number"
 							placeholder='Intensity 0-10'
-							className='outline my-1 outline-purple-600 outline-4 rounded-full placeholder:text-slate-600 text-center'
+							className='outline my-1 outline-purple-600 outline-4 rounded-full placeholder:text-slate-600 text-center py-3'
 							value={item.intensity}
 							min={0}
 							max={10}
@@ -67,7 +67,7 @@ const ExerciseItem = () => {
 						<input
 							type="number"
 							placeholder='Order'
-							className='outline my-1 outline-blue-700 outline-4 rounded-full placeholder:text-slate-600 text-center'
+							className='outline my-1 outline-blue-700 outline-4 rounded-full placeholder:text-slate-600 text-center py-3'
 							value={item.order}
 							onChange={(e) => dispatch(editOrder({
 								movementID: item.movementID,
