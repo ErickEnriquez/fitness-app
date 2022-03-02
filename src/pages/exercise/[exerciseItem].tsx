@@ -10,7 +10,10 @@ import Loading from '@features/loading/Loading'
 const ExerciseItem = () => {
 	const dispatch = useAppDispatch()
 	const activeExerciseId = useAppSelector(selectActiveEntry)
+	const list = useAppSelector(state => state.exercise.entries)
 	console.log(`${activeExerciseId} : is the active ID`)
+	console.table(list)
+
 	//grab the active exercise item from the store
 	const item = useAppSelector(state => state.exercise.entries.find(elem => elem.id === activeExerciseId))
 	const status = useAppSelector(selectStatus)
@@ -82,7 +85,7 @@ const ExerciseItem = () => {
 					<div>
 						<h1 className='text-white text-3xl text-center'>No item selected</h1>
 						<Link href='/workout'>
-							<button className='bg-white text-cyan-500' >Back to Workouts</button>
+							<button className='bg-white text-cyan-500 rounded-full' >Back to Workouts</button>
 						</Link>
 					</div>
 				}
