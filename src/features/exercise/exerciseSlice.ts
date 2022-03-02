@@ -5,11 +5,7 @@ import axios from 'axios'
 import type { AppState } from '@app/store'
 import { ExerciseTemplate, Workout } from '@prisma/client' 
 
-interface WorkoutTemplate extends ExerciseTemplate {
-	name: string
-}
-
-interface UserEntry extends WorkoutTemplate { 
+interface UserEntry extends ExerciseTemplate { 
 	weights: number[],
 	intensity?: number,
 	notes?: string,
