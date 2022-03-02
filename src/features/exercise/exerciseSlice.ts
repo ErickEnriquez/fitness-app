@@ -5,16 +5,13 @@ import axios from 'axios'
 import type { AppState } from '@app/store'
 import { ExerciseTemplate, Workout } from '@prisma/client' 
 
-interface WorkoutTemplate extends ExerciseTemplate {
-	name: string
-}
-
-interface UserEntry extends WorkoutTemplate { 
+interface UserEntry extends ExerciseTemplate { 
 	weights: number[],
 	intensity?: number,
 	notes?: string,
 	order?: number,
 	completed: boolean
+	name: string
 }
 
 export interface ExerciseState { 
@@ -29,7 +26,7 @@ const initialState = {
 	entries: [] as UserEntry[],
 	workouts: [] as Workout[],
 	status: 'idle',
-	activeWorkout: null,
+	activeWorkout: null as number,
 	activeEntry: null as number
 }
 
@@ -43,13 +40,14 @@ export const getWorkoutAsync = createAsyncThunk(
 )
 
 //given a workoutID get the template of exercises for that given workout
-export const getExerciseAsync = createAsyncThunk(
-	'exercise/getExercise',
+export const getExerciseTemplates = createAsyncThunk(
+	'exercise/getExerciseTemplates',
 	async (id:number) => { 
 		const response = await axios.get('/api/exercise-templates', { params: { workoutId: id } })
 		return { exercises: response.data, workoutId:id }
 	}
 )
+
 
 export const postExerciseEntries = createAsyncThunk(
 	'exercise/postExerciseEntries',
@@ -84,8 +82,12 @@ export const exerciseSlice = createSlice({
 		},
 		//set the active entry we are working on when given an ID
 		setActiveEntry(state, action: PayloadAction<number>) { 
+			console.log(action.payload)
+
 			if (isNaN(action.payload)) return
-			state.activeEntry = state.entries.find(entry => entry.id === action.payload).id
+			const activeExercise = state.entries.find(entry => entry.id === action.payload)
+			console.log(`Active Exercise: ${activeExercise}`)
+			activeExercise ? state.activeEntry = activeExercise.id : state.activeEntry = null
 		}
 	},
 	extraReducers: (builder) => { 
@@ -99,11 +101,14 @@ export const exerciseSlice = createSlice({
 				state.workouts = action.payload
 			})
 			//getting the workout template for a workout
-			.addCase(getExerciseAsync.pending, (state) => {
+			.addCase(getExerciseTemplates.pending, (state) => {
 				state.status = 'loading'
 			})
-			.addCase(getExerciseAsync.fulfilled, (state, action) => {
+			.addCase(getExerciseTemplates.fulfilled, (state, action) => {
 				state.status = 'idle'
+				//mark the type of workout that we are doing
+				state.activeWorkout = action.payload.workoutId
+				//create the entries for the workout
 				state.entries = action.payload.exercises.map((entry: ExerciseTemplate) => {
 					return {
 						...entry,
@@ -114,8 +119,6 @@ export const exerciseSlice = createSlice({
 						completed: false
 					}
 				})
-				//mark the type of workout that we are doing
-				state.activeWorkout = action.payload.workoutId
 			})
 			//posting the exercise entries
 			.addCase(postExerciseEntries.pending, (state) => { state.status = 'loading' })
@@ -132,5 +135,6 @@ export const { clearEntries, editWeight, editOrder, editNotes, editIntensity, se
 export const selectWorkouts = (state: AppState) => state.exercise.workouts
 export const selectEntries = (state: AppState) => state.exercise.entries
 export const selectStatus = (state: AppState) => state.exercise.status
+export const selectActiveEntry = (state: AppState) => state.exercise.activeEntry
 
 export default exerciseSlice.reducer

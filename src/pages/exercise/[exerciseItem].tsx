@@ -4,23 +4,24 @@ import Layout from '@features/layout/Layout'
 import Link from 'next/link'
 import { useAppDispatch, useAppSelector } from '@app/hooks'
 
-import { editWeight, editNotes, editIntensity, editOrder } from '@features/exercise/exerciseSlice'
+import { editWeight, editNotes, editIntensity, editOrder, selectActiveEntry, selectStatus } from '@features/exercise/exerciseSlice'
 import Loading from '@features/loading/Loading'
 
 const ExerciseItem = () => {
 	const dispatch = useAppDispatch()
-	const { activeEntry } = useAppSelector(state => state.exercise)
-
+	const activeExerciseId = useAppSelector(selectActiveEntry)
+	console.log(`${activeExerciseId} : is the active ID`)
 	//grab the active exercise item from the store
-	const item = useAppSelector(state => state.exercise.entries.find(elem => elem.id === activeEntry))
-	const status = useAppSelector(state => state.exercise.status)
+	const item = useAppSelector(state => state.exercise.entries.find(elem => elem.id === activeExerciseId))
+	const status = useAppSelector(selectStatus)
+
 
 	if (status === 'loading') return <Loading />
 
 	return (
 		<Layout>
 			<main>
-				{item &&
+				{item ?
 					<div>
 						<div className='grid grid-cols-4 my-6'>
 							<Link href={`/workout/${item.workoutId}`}><span className="flex items-center "><a className='text-center bg-red-700 px-8 rounded-full w-3/4 mx-auto text-white hover:outline-red-700 hover:outline hover:bg-white hover:text-red-700'>Back</a></span></Link>
@@ -38,7 +39,7 @@ const ExerciseItem = () => {
 										setNumber: i
 									}))}
 									placeholder={`Weight for set ${i + 1}`}
-									className='outline outline-orange-700 outline-4 rounded-full mx-2 mb-4 lg:mb-0 placeholder:text-slate-600 text-center '
+									className='outline outline-orange-700 outline-4 rounded-full mx-2 py-3 mb-10 lg:mb-0 placeholder:text-slate-600 text-center '
 								/>
 							))}
 						</div>
@@ -46,7 +47,7 @@ const ExerciseItem = () => {
 							<input
 								type="text"
 								placeholder='Notes'
-								className='outline my-1 outline-yellow-400 outline-4 rounded-full placeholder:text-slate-600 text-center'
+								className='outline my-1 outline-yellow-400 outline-4 rounded-full placeholder:text-slate-600 text-center py-3'
 								value={item.notes}
 								onChange={(e) => dispatch(editNotes({
 									movementID: item.movementID,
@@ -56,7 +57,7 @@ const ExerciseItem = () => {
 							<input
 								type="number"
 								placeholder='Intensity 0-10'
-								className='outline my-1 outline-purple-600 outline-4 rounded-full placeholder:text-slate-600 text-center'
+								className='outline my-1 outline-purple-600 outline-4 rounded-full placeholder:text-slate-600 text-center py-3'
 								value={item.intensity}
 								min={0}
 								max={10}
@@ -68,7 +69,7 @@ const ExerciseItem = () => {
 							<input
 								type="number"
 								placeholder='Order'
-								className='outline my-1 outline-blue-700 outline-4 rounded-full placeholder:text-slate-600 text-center'
+								className='outline my-1 outline-blue-700 outline-4 rounded-full placeholder:text-slate-600 text-center py-3'
 								value={item.order}
 								onChange={(e) => dispatch(editOrder({
 									movementID: item.movementID,
@@ -77,8 +78,16 @@ const ExerciseItem = () => {
 							/>
 						</div>
 					</div>
+					:
+					<div>
+						<h1 className='text-white text-3xl text-center'>No item selected</h1>
+						<Link href='/workout'>
+							<button className='bg-white text-cyan-500' >Back to Workouts</button>
+						</Link>
+					</div>
 				}
 			</main>
+
 		</Layout>
 	)
 }
