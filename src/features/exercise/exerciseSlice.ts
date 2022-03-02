@@ -84,8 +84,12 @@ export const exerciseSlice = createSlice({
 		},
 		//set the active entry we are working on when given an ID
 		setActiveEntry(state, action: PayloadAction<number>) { 
+			console.log(action.payload)
+
 			if (isNaN(action.payload)) return
-			state.activeEntry = state.entries.find(entry => entry.id === action.payload).id
+			const activeExercise = state.entries.find(entry => entry.id === action.payload)
+			console.log(`Active Exercise: ${activeExercise}`)
+			activeExercise ? state.activeEntry = activeExercise.id : state.activeEntry = null
 		}
 	},
 	extraReducers: (builder) => { 
@@ -132,5 +136,6 @@ export const { clearEntries, editWeight, editOrder, editNotes, editIntensity, se
 export const selectWorkouts = (state: AppState) => state.exercise.workouts
 export const selectEntries = (state: AppState) => state.exercise.entries
 export const selectStatus = (state: AppState) => state.exercise.status
+export const selectActiveEntry = (state: AppState) => state.exercise.activeEntry
 
 export default exerciseSlice.reducer
