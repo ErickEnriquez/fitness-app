@@ -3,14 +3,11 @@ import Layout from '@features/layout/Layout'
 import Link from 'next/link'
 import { useAppDispatch, useAppSelector } from '@app/hooks'
 
-import { editWeight, editNotes, editIntensity, editOrder, selectActiveEntry } from '@features/exercise/exerciseSlice'
+import { editWeight, editNotes, editIntensity, editOrder, selectActiveEntry, toggleExerciseComplete } from '@features/exercise/exerciseSlice'
 
 const ExerciseItem = () => {
 	const dispatch = useAppDispatch()
 	const activeExerciseId = useAppSelector(selectActiveEntry)
-	const list = useAppSelector(state => state.exercise.entries)
-	console.log(`${activeExerciseId} : is the active ID`)
-	console.table(list)
 
 	//grab the active exercise exerciseEntry from the store
 	const exerciseEntry = useAppSelector(state => state.exercise.entries.find(elem => elem.id === activeExerciseId))
@@ -86,6 +83,12 @@ const ExerciseItem = () => {
 								}))}
 							/>
 						</div>
+
+						<button className={exerciseEntry.completed ? 'bg-red-500 rounded-full mx-auto block mt-8 w-11/12 py-3 text-white' : 'bg-green-500 rounded-full mx-auto block mt-8 w-11/12 py-3 text-white'}
+							onClick={() => dispatch(toggleExerciseComplete(exerciseEntry.id))}
+						>
+							{exerciseEntry.completed ? 'Cancel' : 'Complete'}
+						</button>
 					</div>
 					:
 					(<div>
