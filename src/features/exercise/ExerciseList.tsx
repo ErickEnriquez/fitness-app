@@ -23,7 +23,7 @@ const ExerciseList = () => {
 						<li className='text-white bg-cyan-500 my-12 py-4 rounded-full w-7/8 mx-auto hover:cursor-pointer hover:bg-white hover:outline hover:text-cyan-500 hover:outline-cyan-500'
 							onClick={() => { dispatch(setActiveEntry(item.id)) }}
 						>
-							<button >{item.name} - {item.sets} sets x {item.reps} reps</button>
+							<span >{item.name} - {item.sets} sets x {item.reps} reps : {item.completed ? 'yes' : 'no'}</span>
 						</li>
 					</Link>
 
