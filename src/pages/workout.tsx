@@ -31,7 +31,7 @@ const WorkoutPage: NextPage = () => {
 								bg-cyan-500 rounded-full my-12 py-4 hover:bg-white hover:outline outline-cyan-500 text-white
 								hover:text-cyan-500 hover:cursor-pointer w-11/12 mx-auto`
 								}
-									onClick={() => dispatch(getExerciseTemplates(item.id))}
+								onClick={() => dispatch(getExerciseTemplates(item.id))}
 								>
 									<a className="capitalize">{item.type}</a>
 									<p>Last Worked on : N/A</p>
