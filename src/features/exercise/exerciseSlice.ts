@@ -3,8 +3,12 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 import type { AppState } from '@app/store'
-import { ExerciseTemplate, Workout } from '@prisma/client' 
+import { ExerciseTemplate, Workout, WorkoutEntry } from '@prisma/client' 
 
+
+// interface WorkoutInfo extends Workout {
+	
+// }
 interface UserEntry extends ExerciseTemplate { 
 	weights: number[],
 	intensity?: number,
@@ -35,6 +39,7 @@ export const getWorkoutAsync = createAsyncThunk(
 	'exercise/getWorkout',
 	async () => { 
 		const response = await axios.get('/api/workout-template/')
+		const prevDates = await axios.post('/api/workout-entry', { workoutList: response.data.map((item:Workout) => item.id)})
 		return response.data
 	}
 )
