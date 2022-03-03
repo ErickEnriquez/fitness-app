@@ -26,7 +26,6 @@ const ExerciseList = () => {
 							<span >{item.name} - {item.sets} sets x {item.reps} reps : {item.completed ? 'yes' : 'no'}</span>
 						</li>
 					</Link>
-
 				)
 			})}
 		</>
