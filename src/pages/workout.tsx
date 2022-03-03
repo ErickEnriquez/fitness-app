@@ -5,12 +5,12 @@ import Loading from '@features/loading/Loading'
 import Layout from '@features/layout/Layout'
 
 import { useAppDispatch, useAppSelector } from '@app/hooks'
-import { getWorkoutAsync, selectWorkouts, getExerciseTemplates } from '@features/exercise/exerciseSlice'
+import { getWorkoutAsync, selectWorkouts, getExerciseTemplates, selectStatus } from '@features/exercise/exerciseSlice'
 
 const WorkoutPage: NextPage = () => {
 	const dispatch = useAppDispatch()
 	const workouts = useAppSelector(selectWorkouts)
-	const status = useAppSelector(state => state.exercise.status)
+	const status = useAppSelector(selectStatus)
 
 	//grab the workout templates from the server on page load
 	useEffect(() => {
