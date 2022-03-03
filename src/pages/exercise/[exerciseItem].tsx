@@ -19,7 +19,7 @@ const ExerciseItem = () => {
 					<div>
 						<div className='grid grid-cols-4 my-6'>
 							<Link href={`/workout/${exerciseEntry.workoutId}`}>
-								<span className="flex item-center">
+								<span className="flex items-center">
 									<a className='text-center bg-red-500 px-8 rounded-full w-3/4 mx-auto text-white hover:outline-red-500 hover:outline hover:bg-white hover:text-red-500'
 									>Back
 									</a>
