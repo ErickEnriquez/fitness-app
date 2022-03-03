@@ -82,12 +82,12 @@ export const exerciseSlice = createSlice({
 		},
 		//set the active entry we are working on when given an ID
 		setActiveEntry(state, action: PayloadAction<number>) { 
-			console.log(action.payload)
-
 			if (isNaN(action.payload)) return
-			const activeExercise = state.entries.find(entry => entry.id === action.payload)
-			console.log(`Active Exercise: ${activeExercise}`)
-			activeExercise ? state.activeEntry = activeExercise.id : state.activeEntry = null
+			state.activeEntry = state.entries.find(entry => entry.id === action.payload).id
+		},
+		toggleExerciseComplete(state, action: PayloadAction<number>) { 
+			if (isNaN(action.payload)) return
+			state.entries.find(entry => entry.id === action.payload).completed = !state.entries.find(entry => entry.id === action.payload).completed
 		}
 	},
 	extraReducers: (builder) => { 
@@ -130,7 +130,7 @@ export const exerciseSlice = createSlice({
 	}
 })
 
-export const { clearEntries, editWeight, editOrder, editNotes, editIntensity, setActiveEntry } = exerciseSlice.actions
+export const { clearEntries, editWeight, editOrder, editNotes, editIntensity, setActiveEntry, toggleExerciseComplete } = exerciseSlice.actions
 
 export const selectWorkouts = (state: AppState) => state.exercise.workouts
 export const selectEntries = (state: AppState) => state.exercise.entries
