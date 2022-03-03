@@ -48,6 +48,14 @@ export const getExerciseTemplates = createAsyncThunk(
 	}
 )
 
+// export const getLastWorkoutDates = createAsyncThunk(
+// 	'exercise/getLastWorkoutDates',
+// 	async (id:number) => { 
+// 		const response = await axios.get('/api/workout-entry/', { params: { workoutId: id } })
+// 		return response.data
+// 	}
+// )
+
 
 export const postExerciseEntries = createAsyncThunk(
 	'exercise/postExerciseEntries',
@@ -75,18 +83,18 @@ export const exerciseSlice = createSlice({
 		},
 		editWeight: (state, action: PayloadAction<{ movementID: number, value: number, setNumber: number }>) => { 
 			if (isNaN(action.payload.value)) return
-			state.entries.find(entry => entry.id === action.payload.movementID).weights[action.payload.setNumber] = action.payload.value
+			state.entries.find(entry => entry.movementID === action.payload.movementID).weights[action.payload.setNumber] = action.payload.value
 		},
 		editOrder: (state, action: PayloadAction<{ movementID: number, value: number }>) => {
 			if (isNaN(action.payload.value)) return
-			state.entries.find(entry => entry.id === action.payload.movementID).order = action.payload.value
+			state.entries.find(entry => entry.movementID === action.payload.movementID).order = action.payload.value
 		},
 		editNotes: (state, action: PayloadAction<{ movementID: number, value: string }>) => { 
-			state.entries.find(entry => entry.id === action.payload.movementID).notes = action.payload.value
+			state.entries.find(entry => entry.movementID === action.payload.movementID).notes = action.payload.value
 		},	
 		editIntensity: (state, action: PayloadAction<{ movementID: number, value: number }>) => { 
 			if (isNaN(action.payload.value)) return
-			state.entries.find(entry => entry.id === action.payload.movementID).intensity = action.payload.value
+			state.entries.find(entry => entry.movementID === action.payload.movementID).intensity = action.payload.value
 		},
 		//set the active entry we are working on when given an ID
 		setActiveEntry(state, action: PayloadAction<number>) { 
