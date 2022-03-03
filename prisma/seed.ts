@@ -98,9 +98,9 @@ async function main() {
 			//legs heavy
 			{id:15,  sets: 5, reps: 5, movementID: 15, workoutId:3 },//back squat
 			{id:16,  sets: 5, reps: 5, movementID: 16, workoutId:3 },//leg press
-			{id:17,  sets: 5, reps: 5, movementID: 17, workoutId:3 },//LEG EXTENSIONS
+			{id:17,  sets: 5, reps: 5, movementID: 19, workoutId:3 },//RDL
 			{id:18,  sets: 3, reps: 8, movementID: 18 , workoutId:3},// Leg curls
-			{id:19,  sets: 3, reps: 8, movementID: 19, workoutId:3 },//RDL
+			{id:19,  sets: 3, reps: 8, movementID: 17, workoutId:3 },//RDL Leg extension
 			{id:20,  sets: 3, reps: 6, movementID: 20, workoutId:3 },//Lunges
 			{id:21,  sets: 4, reps: 8, movementID: 38 , workoutId:3},//Hip Thrust
 
