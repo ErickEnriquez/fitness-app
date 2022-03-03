@@ -2,10 +2,12 @@ import React from 'react'
 import Link from 'next/link'
 import Layout from '@features/layout/Layout'
 import ExerciseList from '@features/exercise/ExerciseList'
-import { useAppSelector } from '@app/hooks'
+import { useAppSelector, useAppDispatch } from '@app/hooks'
+import { postExerciseEntries } from '@features/exercise/exerciseSlice'
 import Loading from '@features/loading/Loading'
 const ExerciseTemplate = () => {
 	const status = useAppSelector(state => state.exercise.status)
+	const dispatch = useAppDispatch()
 
 	if (status === 'loading') return <Loading />
 	return (
@@ -24,7 +26,7 @@ const ExerciseTemplate = () => {
 						placeholder="Add notes here"
 					></textarea>
 					<button className='text-white bg-green-500 rounded-full w-11/12 mx-auto hover:bg-white hover:text-green-500 hover:outline outline-green-500 mb-4 h-16'
-						onClick={() => alert('todo')}>
+						onClick={() => dispatch(postExerciseEntries())}>
 						Submit
 					</button>
 				</div>

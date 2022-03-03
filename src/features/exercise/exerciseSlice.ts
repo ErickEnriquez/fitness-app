@@ -51,10 +51,18 @@ export const getExerciseTemplates = createAsyncThunk(
 
 export const postExerciseEntries = createAsyncThunk(
 	'exercise/postExerciseEntries',
-	async (arg ,{getState}) => {
-		const state = getState() as AppState
-		const response = await axios.post('/api/exercise-entry', {entries: state.exercise.entries, templateId: state.exercise.activeWorkout })
-		return response.data
+	async (arg ,{getState, rejectWithValue}) => {
+		const { exercise: { entries, activeWorkout } } = getState() as AppState
+		
+		if (entries.some(e => e.completed !== true)) {
+			console.log('not all entries are completed')
+			rejectWithValue({mes:'You must complete all entries before submitting', entries})
+		}
+		else {
+
+			const response = await axios.post('/api/exercise-entry', { entries, templateId: activeWorkout })
+			return response.data
+		}
 	}
 )
 
@@ -82,12 +90,12 @@ export const exerciseSlice = createSlice({
 		},
 		//set the active entry we are working on when given an ID
 		setActiveEntry(state, action: PayloadAction<number>) { 
-			console.log(action.payload)
-
 			if (isNaN(action.payload)) return
-			const activeExercise = state.entries.find(entry => entry.id === action.payload)
-			console.log(`Active Exercise: ${activeExercise}`)
-			activeExercise ? state.activeEntry = activeExercise.id : state.activeEntry = null
+			state.activeEntry = state.entries.find(entry => entry.id === action.payload).id
+		},
+		toggleExerciseComplete(state, action: PayloadAction<number>) { 
+			if (isNaN(action.payload)) return
+			state.entries.find(entry => entry.id === action.payload).completed = !state.entries.find(entry => entry.id === action.payload).completed
 		}
 	},
 	extraReducers: (builder) => { 
@@ -126,11 +134,14 @@ export const exerciseSlice = createSlice({
 				state.status = 'idle'
 				state.entries = []
 			})
-		
+			.addCase(postExerciseEntries.rejected, (state, action) => { 
+				state.status = 'idle'
+				console.log(console.log(action.payload))
+			})
 	}
 })
 
-export const { clearEntries, editWeight, editOrder, editNotes, editIntensity, setActiveEntry } = exerciseSlice.actions
+export const { clearEntries, editWeight, editOrder, editNotes, editIntensity, setActiveEntry, toggleExerciseComplete } = exerciseSlice.actions
 
 export const selectWorkouts = (state: AppState) => state.exercise.workouts
 export const selectEntries = (state: AppState) => state.exercise.entries
