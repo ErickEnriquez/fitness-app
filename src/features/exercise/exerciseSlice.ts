@@ -6,9 +6,9 @@ import type { AppState } from '@app/store'
 import { ExerciseTemplate, Workout, WorkoutEntry } from '@prisma/client' 
 
 
-// interface WorkoutInfo extends Workout {
-	
-// }
+interface WorkoutInfo extends Workout {
+	prevWorkout:string
+}
 interface UserEntry extends ExerciseTemplate { 
 	weights: number[],
 	intensity?: number,
@@ -20,7 +20,7 @@ interface UserEntry extends ExerciseTemplate {
 
 export interface ExerciseState { 
 	entries: UserEntry[]
-	workouts: Workout[]
+	workouts: WorkoutInfo[]
 	activeWorkout: number | null
 	activeEntry: number
 	state: 'idle' | 'loading' | 'failed'
@@ -28,7 +28,7 @@ export interface ExerciseState {
 
 const initialState = {
 	entries: [] as UserEntry[],
-	workouts: [] as Workout[],
+	workouts: [] as WorkoutInfo[],
 	status: 'idle',
 	activeWorkout: null as number,
 	activeEntry: null as number
@@ -37,10 +37,16 @@ const initialState = {
 //get the list of workouts when we initialize the page , ie pull heavy, legs light etc
 export const getWorkoutAsync = createAsyncThunk(
 	'exercise/getWorkout',
-	async () => { 
-		const response = await axios.get('/api/workout-template/')
-		const prevDates = await axios.post('/api/workout-entry', { workoutList: response.data.map((item:Workout) => item.id)})
-		return response.data
+	async () => {
+		const workoutTemplates = await axios.get('/api/workout-template/')
+		const lastWorkouts = (await axios.post('/api/workout-entry', { workoutTemplates })).data as WorkoutEntry[]
+
+		const data = workoutTemplates.data.map((item) => { 
+			const prevWorkout = lastWorkouts.find(workout => workout.workoutTemplateId === item.id)
+			return {...item, prevWorkout: prevWorkout ? prevWorkout.date : null}
+		})
+
+		return data
 	}
 )
 
@@ -52,15 +58,6 @@ export const getExerciseTemplates = createAsyncThunk(
 		return { exercises: response.data, workoutId:id }
 	}
 )
-
-// export const getLastWorkoutDates = createAsyncThunk(
-// 	'exercise/getLastWorkoutDates',
-// 	async (id:number) => { 
-// 		const response = await axios.get('/api/workout-entry/', { params: { workoutId: id } })
-// 		return response.data
-// 	}
-// )
-
 
 export const postExerciseEntries = createAsyncThunk(
 	'exercise/postExerciseEntries',

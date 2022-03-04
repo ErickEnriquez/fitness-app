@@ -17,6 +17,7 @@ const WorkoutPage: NextPage = () => {
 		dispatch(getWorkoutAsync())
 	}, [])
 
+
 	if (status === 'loading') return <Loading />
 
 	return (
@@ -27,14 +28,15 @@ const WorkoutPage: NextPage = () => {
 					{workouts.map((item, idx) => {
 						return (
 							<Link href={`/workout/${item.id}`} key={idx}>
-								<li className={`
-								bg-cyan-500 rounded-full my-12 py-4 hover:bg-white hover:outline outline-cyan-500 text-white
-								hover:text-cyan-500 hover:cursor-pointer w-11/12 mx-auto`
-								}
-								onClick={() => dispatch(getExerciseTemplates(item.id))}
+								<li
+									className={`
+									bg-cyan-500 rounded-full my-12 py-4 hover:bg-white hover:outline outline-cyan-500 text-white
+									hover:text-cyan-500 hover:cursor-pointer w-11/12 mx-auto`
+									}
+									onClick={() => dispatch(getExerciseTemplates(item.id))}
 								>
 									<a className="capitalize">{item.type}</a>
-									<p>Last Worked on : N/A</p>
+									<p>Last Worked on : {item.prevWorkout ? new Date(item.prevWorkout).toLocaleDateString() : 'N/A'}</p>
 								</li>
 							</Link>
 						)
