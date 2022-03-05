@@ -55,6 +55,8 @@ export const getExerciseTemplates = createAsyncThunk(
 	'exercise/getExerciseTemplates',
 	async (id:number) => { 
 		const response = await axios.get('/api/exercise-templates', { params: { workoutId: id } })
+		const lastWorkout = await axios.get('/api/exercise-entry', { params: { workoutId: id } })
+		
 		return { exercises: response.data, workoutId:id }
 	}
 )
