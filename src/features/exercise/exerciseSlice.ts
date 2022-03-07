@@ -6,8 +6,10 @@ import type { AppState } from '@app/store'
 import { ExerciseTemplate, Workout, WorkoutEntry } from '@prisma/client' 
 
 
-interface WorkoutInfo extends Workout {
-	prevWorkout:string
+//combination of workout templates and workout entries, 
+interface WorkoutInfo extends Workout, Omit<WorkoutEntry, 'date|id'> {
+	prevDate: string
+	prevWorkoutId: number
 }
 interface UserEntry extends ExerciseTemplate { 
 	weights: number[],
@@ -34,16 +36,22 @@ const initialState = {
 	activeEntry: null as number
 }
 
-//get the list of workouts when we initialize the page , ie pull heavy, legs light etc
+//get the list of workouts when we initialize the page , 
+//ie pull heavy, legs light etc and combine with the last workout of that type that was done
 export const getWorkoutAsync = createAsyncThunk(
 	'exercise/getWorkout',
 	async () => {
 		const workoutTemplates = await axios.get('/api/workout-template/')
-		const lastWorkouts = (await axios.post('/api/workout-entry', { workoutTemplates })).data as WorkoutEntry[]
+		const prevWorkouts = (await axios.post('/api/workout-entry', { workoutTemplates })).data as WorkoutEntry[]
 
 		const data = workoutTemplates.data.map((item) => { 
-			const prevWorkout = lastWorkouts.find(workout => workout.workoutTemplateId === item.id)
-			return {...item, prevWorkout: prevWorkout ? prevWorkout.date : null}
+			const prevWorkout = prevWorkouts.find(workout => workout.workoutTemplateId === item.id)
+			return {
+				...prevWorkout,
+				...item,
+				prevWorkoutId: prevWorkout ? prevWorkout.id : null,
+				prevDate: prevWorkout ? prevWorkout.date : null
+			}
 		})
 
 		return data
@@ -55,7 +63,7 @@ export const getExerciseTemplates = createAsyncThunk(
 	'exercise/getExerciseTemplates',
 	async (id:number) => { 
 		const response = await axios.get('/api/exercise-templates', { params: { workoutId: id } })
-		const lastWorkout = await axios.get('/api/exercise-entry', { params: { workoutId: id } })
+		// const lastWorkout = await axios.get('/api/exercise-entry', { params: { workoutId: id } })
 		
 		return { exercises: response.data, workoutId:id }
 	}
