@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 import type { AppState } from '@app/store'
-import { ExerciseTemplate, Workout, WorkoutEntry } from '@prisma/client' 
+import { ExerciseEntry, ExerciseTemplate, Workout, WorkoutEntry } from '@prisma/client' 
 
 
 //combination of workout templates and workout entries, 
@@ -49,8 +49,8 @@ export const getWorkoutAsync = createAsyncThunk(
 			return {
 				...prevWorkout,
 				...item,
+				//label the workoutEntry id key as prevWorkoutId to avoid conflict with the workoutTemplate id key
 				prevWorkoutId: prevWorkout ? prevWorkout.id : null,
-				prevDate: prevWorkout ? prevWorkout.date : null
 			}
 		})
 
@@ -61,11 +61,20 @@ export const getWorkoutAsync = createAsyncThunk(
 //given a workoutID get the template of exercises for that given workout
 export const getExerciseTemplates = createAsyncThunk(
 	'exercise/getExerciseTemplates',
-	async (id:number) => { 
+	async (id:number, {getState}) => { 
 		const response = await axios.get('/api/exercise-templates', { params: { workoutId: id } })
-		// const lastWorkout = await axios.get('/api/exercise-entry', { params: { workoutId: id } })
+		const {exercise:{workouts}} = getState() as AppState
+		const prevWorkoutID = workouts.find(workout => workout.id === id)?.prevWorkoutId
 		
-		return { exercises: response.data, workoutId:id }
+		const previousExercises = prevWorkoutID
+			? await (await axios.get('/api/exercise-entry', { params: { workoutId: prevWorkoutID } })).data as ExerciseEntry[]
+			: null
+		
+		return {
+			exercises: response.data,
+			workoutId: id,
+			previousExercises
+		}
 	}
 )
 
@@ -147,6 +156,7 @@ export const exerciseSlice = createSlice({
 						completed: false
 					}
 				})
+				console.log(action.payload.previousExercises)
 			})
 			//posting the exercise entries
 			.addCase(postExerciseEntries.pending, (state) => { state.status = 'loading' })
