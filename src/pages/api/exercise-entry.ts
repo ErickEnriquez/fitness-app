@@ -37,7 +37,6 @@ async function getWorkoutEntries(req: NextApiRequest, res: NextApiResponse) {
 	//grab the data, which should be an array of user entries and a workoutId
 	const id = Number(req.query.workoutId)
 	const data = await getExerciseEntries(id)
-	console.log(data)
 	data ?
 		res.status(200).json(data) :
 		res.status(200).json({data:null})
