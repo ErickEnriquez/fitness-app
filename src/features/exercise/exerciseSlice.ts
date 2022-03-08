@@ -26,6 +26,8 @@ export interface ExerciseState {
 	activeWorkout: number | null
 	activeEntry: number
 	state: 'idle' | 'loading' | 'failed'
+	//get the stats of the last workout of that given type ie push heavy, pull heavy, etc
+	previousExerciseEntries: ExerciseEntry[]
 }
 
 const initialState = {
@@ -33,7 +35,8 @@ const initialState = {
 	workouts: [] as WorkoutInfo[],
 	status: 'idle',
 	activeWorkout: null as number,
-	activeEntry: null as number
+	activeEntry: null as number,
+	previousExerciseEntries: [] as ExerciseEntry[]
 }
 
 //get the list of workouts when we initialize the page , 
@@ -156,7 +159,7 @@ export const exerciseSlice = createSlice({
 						completed: false
 					}
 				})
-				console.log(action.payload.previousExercises)
+				state.previousExerciseEntries = action.payload.previousExercises
 			})
 			//posting the exercise entries
 			.addCase(postExerciseEntries.pending, (state) => { state.status = 'loading' })
@@ -177,5 +180,5 @@ export const selectWorkouts = (state: AppState) => state.exercise.workouts
 export const selectEntries = (state: AppState) => state.exercise.entries
 export const selectStatus = (state: AppState) => state.exercise.status
 export const selectActiveEntry = (state: AppState) => state.exercise.activeEntry
-
+export const selectPreviousExerciseEntries = (state: AppState) => state.exercise.previousExerciseEntries
 export default exerciseSlice.reducer
