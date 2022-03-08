@@ -10,7 +10,10 @@ const PrevExercise = () => {
 	const exerciseId = useAppSelector(selectActiveEntry)
 
 	//find the info about the last time that this exercise was completed
-	const activePrevExercise = previousExercises.find(item => item.exerciseID === exerciseId)
+	const activePrevExercise = previousExercises
+		? previousExercises.find(item => item.exerciseID === exerciseId)
+		: null
+
 	return (
 		<div className='text-white text-center my-4'>
 			{activePrevExercise &&
@@ -22,12 +25,11 @@ const PrevExercise = () => {
 					<ul>Previous Weight Amounts:
 						{activePrevExercise.weights.map((item, idx) => {
 							return (
-								<li key={idx}>Set {idx+1} : {item}</li>
+								<li key={idx}>Set {idx + 1} : {item}</li>
 							)
 						})}
 					</ul>
 				</>
-
 			}
 		</div>
 	)
