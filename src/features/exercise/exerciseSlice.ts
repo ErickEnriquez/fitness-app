@@ -3,11 +3,13 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 import type { AppState } from '@app/store'
-import { ExerciseTemplate, Workout, WorkoutEntry } from '@prisma/client' 
+import { ExerciseEntry, ExerciseTemplate, Workout, WorkoutEntry } from '@prisma/client' 
 
 
-interface WorkoutInfo extends Workout {
-	prevWorkout:string
+//combination of workout templates and workout entries, 
+interface WorkoutInfo extends Workout, Omit<WorkoutEntry, 'date|id'> {
+	prevDate: string
+	prevWorkoutId: number
 }
 interface UserEntry extends ExerciseTemplate { 
 	weights: number[],
@@ -24,6 +26,8 @@ export interface ExerciseState {
 	activeWorkout: number | null
 	activeEntry: number
 	state: 'idle' | 'loading' | 'failed'
+	//get the stats of the last workout of that given type ie push heavy, pull heavy, etc
+	previousExerciseEntries: ExerciseEntry[]
 }
 
 const initialState = {
@@ -31,19 +35,26 @@ const initialState = {
 	workouts: [] as WorkoutInfo[],
 	status: 'idle',
 	activeWorkout: null as number,
-	activeEntry: null as number
+	activeEntry: null as number,
+	previousExerciseEntries: [] as ExerciseEntry[]
 }
 
-//get the list of workouts when we initialize the page , ie pull heavy, legs light etc
+//get the list of workouts when we initialize the page , 
+//ie pull heavy, legs light etc and combine with the last workout of that type that was done
 export const getWorkoutAsync = createAsyncThunk(
 	'exercise/getWorkout',
 	async () => {
 		const workoutTemplates = await axios.get('/api/workout-template/')
-		const lastWorkouts = (await axios.post('/api/workout-entry', { workoutTemplates })).data as WorkoutEntry[]
+		const prevWorkouts = (await axios.post('/api/workout-entry', { workoutTemplates })).data as WorkoutEntry[]
 
 		const data = workoutTemplates.data.map((item) => { 
-			const prevWorkout = lastWorkouts.find(workout => workout.workoutTemplateId === item.id)
-			return {...item, prevWorkout: prevWorkout ? prevWorkout.date : null}
+			const prevWorkout = prevWorkouts.find(workout => workout.workoutTemplateId === item.id)
+			return {
+				...prevWorkout,
+				...item,
+				//label the workoutEntry id key as prevWorkoutId to avoid conflict with the workoutTemplate id key
+				prevWorkoutId: prevWorkout ? prevWorkout.id : null,
+			}
 		})
 
 		return data
@@ -53,11 +64,20 @@ export const getWorkoutAsync = createAsyncThunk(
 //given a workoutID get the template of exercises for that given workout
 export const getExerciseTemplates = createAsyncThunk(
 	'exercise/getExerciseTemplates',
-	async (id:number) => { 
+	async (id:number, {getState}) => { 
 		const response = await axios.get('/api/exercise-templates', { params: { workoutId: id } })
-		const lastWorkout = await axios.get('/api/exercise-entry', { params: { workoutId: id } })
+		const {exercise:{workouts}} = getState() as AppState
+		const prevWorkoutID = workouts.find(workout => workout.id === id)?.prevWorkoutId
 		
-		return { exercises: response.data, workoutId:id }
+		const previousExercises = prevWorkoutID
+			? await (await axios.get('/api/exercise-entry', { params: { workoutId: prevWorkoutID } })).data as ExerciseEntry[]
+			: null
+		
+		return {
+			exercises: response.data,
+			workoutId: id,
+			previousExercises
+		}
 	}
 )
 
@@ -139,6 +159,7 @@ export const exerciseSlice = createSlice({
 						completed: false
 					}
 				})
+				state.previousExerciseEntries = action.payload.previousExercises
 			})
 			//posting the exercise entries
 			.addCase(postExerciseEntries.pending, (state) => { state.status = 'loading' })
@@ -159,5 +180,5 @@ export const selectWorkouts = (state: AppState) => state.exercise.workouts
 export const selectEntries = (state: AppState) => state.exercise.entries
 export const selectStatus = (state: AppState) => state.exercise.status
 export const selectActiveEntry = (state: AppState) => state.exercise.activeEntry
-
+export const selectPreviousExerciseEntries = (state: AppState) => state.exercise.previousExerciseEntries
 export default exerciseSlice.reducer

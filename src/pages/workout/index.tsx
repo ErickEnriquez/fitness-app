@@ -36,7 +36,7 @@ const WorkoutPage: NextPage = () => {
 									onClick={() => dispatch(getExerciseTemplates(item.id))}
 								>
 									<a className="capitalize">{item.type}</a>
-									<p>Last Worked on : {item.prevWorkout ? new Date(item.prevWorkout).toLocaleDateString() : 'N/A'}</p>
+									<p>Last Worked on : {item.date ? new Date(item.date).toLocaleDateString() : 'N/A'}</p>
 								</li>
 							</Link>
 						)

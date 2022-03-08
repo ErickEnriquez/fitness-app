@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Layout from '@features/layout/Layout'
 import Link from 'next/link'
 import { useAppDispatch, useAppSelector } from '@app/hooks'
-
+import PrevExercise from '@features/exercise/PrevExercise'
 import { editWeight, editNotes, editIntensity, editOrder, selectActiveEntry, toggleExerciseComplete } from '@features/exercise/exerciseSlice'
 
 const ExerciseItem = () => {
@@ -12,6 +12,7 @@ const ExerciseItem = () => {
 	//grab the active exercise exerciseEntry from the store
 	const exerciseEntry = useAppSelector(state => state.exercise.entries.find(elem => elem.id === activeExerciseId))
 
+	const [previousInfo, setPreviousInfo] = useState(false)
 	return (
 		<Layout>
 			<main>
@@ -89,6 +90,8 @@ const ExerciseItem = () => {
 						>
 							{exerciseEntry.completed ? 'Cancel' : 'Complete'}
 						</button>
+						<button className='bg-cyan-500 rounded-full mx-auto block mt-8 w-11/12 py-3 text-white' onClick={() => setPreviousInfo(prev => !prev)}> Show Previous Workout</button>
+						{previousInfo && <PrevExercise />}
 					</div>
 					:
 					(<div>
@@ -100,7 +103,7 @@ const ExerciseItem = () => {
 					)
 				}
 			</main>
-		</Layout>
+		</Layout >
 	)
 }
 
