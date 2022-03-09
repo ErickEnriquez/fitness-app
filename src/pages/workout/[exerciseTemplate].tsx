@@ -26,11 +26,11 @@ const ExerciseTemplate = () => {
 					<textarea className="w-11/12 rounded my-4 h-24 outline outline-yellow-500"
 						placeholder="Include any notes about the workout in general"
 					></textarea>
-					<button className='text-white bg-green-500 rounded-full w-11/12 mx-auto hover:bg-white hover:text-green-500 hover:outline outline-green-500 mb-4 h-16'
-						onClick={() => dispatch(postExerciseEntries())}>
-						Submit
-					</button>
 				</div>
+				<button className='text-white bg-green-500 rounded-full w-11/12 mx-auto hover:bg-white hover:text-green-500 hover:outline outline-green-500 my-4 h-16'
+					onClick={() => dispatch(postExerciseEntries())}>
+					Submit
+				</button>
 			</main>
 		</Layout>
 	)
