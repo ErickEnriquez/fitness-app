@@ -21,7 +21,7 @@ const ExerciseItem = () => {
 						<div className='grid grid-cols-4 my-6'>
 							<Link href={`/workout/${exerciseEntry.workoutId}`}>
 								<span className="flex items-center">
-									<a className='text-center bg-red-500 px-8 rounded-full w-3/4 mx-auto text-white hover:outline-red-500 hover:outline hover:bg-white hover:text-red-500'
+									<a className='text-center bg-red-500 px-8 rounded-full w-3/4 mx-auto text-white shadow-lg shadow-black/70 hover:outline-red-500 hover:outline hover:bg-white hover:text-red-500'
 									>Back
 									</a>
 								</span>
@@ -44,21 +44,24 @@ const ExerciseItem = () => {
 								value: Number(e.target.value)
 							}))}
 						/>
-						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 content-center w-11/12 mx-auto">
-							{exerciseEntry.weights.map((weight, i: number) => (
-								<input
-									key={i}
-									type="number"
-									value={weight}
-									onChange={(e) => dispatch(editWeight({
-										movementID: exerciseEntry.movementID,
-										value: Number(e.target.value),
-										setNumber: i
-									}))}
-									placeholder={`Weight for set ${i + 1}`}
-									className='outline outline-orange-700 outline-4 rounded-full mx-2 py-3 mb-10 lg:mb-0 placeholder:text-slate-600 text-center '
-								/>
-							))}
+						<div className="bg-slate-700 rounded-3xl content-center w-11/12 mx-auto">
+							<h3 className='text-center text-white text-xl'>Weight (lbs)</h3>
+							<div className='grid grid-cols-2 py-4  md:grid-cols-2 lg:grid-cols-5 '>
+								{exerciseEntry.weights.map((weight, i: number) => (
+									<input
+										key={i}
+										type="number"
+										value={weight}
+										onChange={(e) => dispatch(editWeight({
+											movementID: exerciseEntry.movementID,
+											value: Number(e.target.value),
+											setNumber: i
+										}))}
+										placeholder={`Set ${i + 1}`}
+										className='outline outline-orange-700 outline-4 rounded-3xl mx-2 py-4 my-4 shadow-lg shadow-black/70 lg:mb-0 placeholder:text-slate-600 text-center '
+									/>
+								))}
+							</div>
 						</div>
 						<div className="mt-4 grid gap-7 grid-cols-1 md:grid-cols-2 content-center w-11/12 mx-auto">
 							<input
@@ -90,7 +93,7 @@ const ExerciseItem = () => {
 						>
 							{exerciseEntry.completed ? 'Cancel' : 'Complete'}
 						</button>
-						<button className='bg-cyan-500 rounded-full mx-auto block mt-8 w-11/12 py-3 text-white' onClick={() => setPreviousInfo(prev => !prev)}> Show Previous Workout</button>
+						<button className='bg-cyan-500 rounded-full mx-auto block my-8 w-11/12 py-3 text-white' onClick={() => setPreviousInfo(prev => !prev)}> Show Previous Workout</button>
 						{previousInfo && <PrevExercise />}
 					</div>
 					:

@@ -16,7 +16,7 @@ const PrevExercise = () => {
 
 	return (
 		<div className='text-white text-center my-4'>
-			{activePrevExercise &&
+			{activePrevExercise ?
 				<>
 					<h3 className='underline text-2xl'>Previous Info</h3>
 					<p>Previous Order : {activePrevExercise.order}</p>
@@ -30,6 +30,11 @@ const PrevExercise = () => {
 						})}
 					</ul>
 				</>
+				: (
+					<h3 className='text-2xl'>
+						No Previous Data
+					</h3>
+				)
 			}
 		</div>
 	)
