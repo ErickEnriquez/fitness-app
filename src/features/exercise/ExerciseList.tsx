@@ -17,7 +17,7 @@ const ExerciseList = () => {
 	const dispatch = useAppDispatch()
 	const exercises = useAppSelector(selectEntries)
 	return (
-		<ul className='grid grid-cols-2 md:grid-cols-3'>
+		<ul className='grid grid-cols-2 md:grid-cols-3 bg-slate-700 w-11/12 mx-auto my-4 rounded-2xl'>
 			{exercises.map((item, idx) => {
 				return (
 					<Link key={idx} href={`/exercise/${item.id}`}>
@@ -42,7 +42,6 @@ const ExerciseList = () => {
 			})}
 		</ul>
 	)
-
 }
 
 export default ExerciseList
