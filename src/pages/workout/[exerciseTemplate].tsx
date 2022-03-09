@@ -18,13 +18,18 @@ const ExerciseTemplate = () => {
 		<Layout>
 			<main className='text-center mt-4'>
 				<div className='grid grid-cols-4 mb-4'>
-					<Link href='/workout'><a className='text-white bg-red-500 rounded-full w-11/12 mx-auto hover:bg-white hover:text-red-500 hover:outline outline-red-500 shadow-lg shadow-black/70'>Back</a></Link>
+					<Link href='/workout'>
+						<a className='text-white bg-red-500 rounded-full w-11/12 mx-auto hover:bg-white hover:text-red-500 hover:outline outline-red-500 shadow-lg shadow-black/70'
+						>
+							Back
+						</a>
+					</Link>
 					<h1 className='text-white col-span-2 mx-auto underline text-3xl capitalize'>{activeWorkout && activeWorkout.type}</h1>
 				</div>
 				<ExerciseList />
 				<div className="w-11/12 mx-auto bg-slate-700 rounded-3xl">
 					<h2 className='text-white text-xl'>Notes</h2>
-					<textarea className="w-11/12 rounded my-4 h-24 outline outline-yellow-500"
+					<textarea className="w-11/12 rounded my-4 h-24 outline outline-yellow-500 outline-4 shadow-lg shadow-black/70"
 						placeholder="Include any notes about the workout in general"
 					></textarea>
 				</div>
