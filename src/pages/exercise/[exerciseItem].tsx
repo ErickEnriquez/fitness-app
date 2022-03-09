@@ -34,16 +34,6 @@ const ExerciseItem = () => {
 								Sets {exerciseEntry.sets}x{exerciseEntry.reps}
 							</h2>
 						</div>
-						<input
-							type="number"
-							placeholder='Order'
-							className='outline my-1 outline-blue-700 outline-4 rounded-full placeholder:text-slate-600 text-center py-3 w-11/12 block mx-auto mb-10'
-							value={exerciseEntry.order}
-							onChange={(e) => dispatch(editOrder({
-								movementID: exerciseEntry.movementID,
-								value: Number(e.target.value)
-							}))}
-						/>
 						<div className="bg-slate-700 rounded-3xl content-center w-11/12 mx-auto">
 							<h3 className='text-center text-white text-xl'>Weight (lbs)</h3>
 							<div className='grid grid-cols-2 py-4  md:grid-cols-2 lg:grid-cols-5 '>
@@ -63,31 +53,45 @@ const ExerciseItem = () => {
 								))}
 							</div>
 						</div>
-						<div className="mt-4 grid gap-7 grid-cols-1 md:grid-cols-2 content-center w-11/12 mx-auto">
-							<input
-								type="text"
+						<div className="bg-slate-700 rounded-3xl py-4 my-4 w-11/12 mx-auto">
+							<h3 className='text-center text-white text-xl mb-4'>Intensity & Order</h3>
+							<div className="grid grid-cols-2 content-center ">
+								<input
+									type="number"
+									placeholder='Order'
+									className='outline my-1 outline-blue-700 outline-4 rounded-3xl placeholder:text-slate-600 text-center py-3 w-11/12 block mx-auto  shadow-lg shadow-black/70 '
+									value={exerciseEntry.order}
+									onChange={(e) => dispatch(editOrder({
+										movementID: exerciseEntry.movementID,
+										value: Number(e.target.value)
+									}))}
+								/>
+								<input
+									type="number"
+									placeholder='Intensity 0-10'
+									className='outline my-1 outline-purple-600 outline-4 rounded-3xl placeholder:text-slate-600 text-center py-3 w-11/12 block mx-auto  shadow-lg shadow-black/70'
+									value={exerciseEntry.intensity}
+									min={0}
+									max={10}
+									onChange={(e) => dispatch(editIntensity({
+										movementID: exerciseEntry.movementID,
+										value: Number(e.target.value)
+									}))}
+								/>
+							</div>
+						</div>
+						<div className='bg-slate-700 rounded-3xl w-11/12 mx-auto align-center flex flex-col py-4'>
+							<h3 className='text-center text-white text-xl mb-4'>Notes?</h3>
+							<textarea
 								placeholder='Notes'
-								className='outline my-1 outline-yellow-400 outline-4 rounded-full placeholder:text-slate-600 text-center py-3'
+								className='outline my-1 outline-yellow-400 outline-4 rounded-3xl text-center mx-auto placeholder:text-slate-600 py-6 w-11/12'
 								value={exerciseEntry.notes}
 								onChange={(e) => dispatch(editNotes({
 									movementID: exerciseEntry.movementID,
 									value: e.target.value
 								}))}
 							/>
-							<input
-								type="number"
-								placeholder='Intensity 0-10'
-								className='outline my-1 outline-purple-600 outline-4 rounded-full placeholder:text-slate-600 text-center py-3'
-								value={exerciseEntry.intensity}
-								min={0}
-								max={10}
-								onChange={(e) => dispatch(editIntensity({
-									movementID: exerciseEntry.movementID,
-									value: Number(e.target.value)
-								}))}
-							/>
 						</div>
-
 						<button className={exerciseEntry.completed ? 'bg-red-500 rounded-full mx-auto block mt-8 w-11/12 py-3 text-white' : 'bg-green-500 rounded-full mx-auto block mt-8 w-11/12 py-3 text-white'}
 							onClick={() => dispatch(toggleExerciseComplete(exerciseEntry.id))}
 						>
