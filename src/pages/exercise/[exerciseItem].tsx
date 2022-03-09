@@ -44,7 +44,7 @@ const ExerciseItem = () => {
 								value: Number(e.target.value)
 							}))}
 						/>
-						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 content-center w-11/12 mx-auto">
+						<div className="grid grid-cols-2 bg-slate-700 md:grid-cols-2 lg:grid-cols-5 content-center w-11/12 mx-auto">
 							{exerciseEntry.weights.map((weight, i: number) => (
 								<input
 									key={i}
@@ -56,7 +56,7 @@ const ExerciseItem = () => {
 										setNumber: i
 									}))}
 									placeholder={`Weight for set ${i + 1}`}
-									className='outline outline-orange-700 outline-4 rounded-full mx-2 py-3 mb-10 lg:mb-0 placeholder:text-slate-600 text-center '
+									className='outline outline-orange-700 outline-4 rounded-3xl mx-2 py-4 my-4 lg:mb-0 placeholder:text-slate-600 text-center '
 								/>
 							))}
 						</div>
