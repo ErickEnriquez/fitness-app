@@ -5,6 +5,7 @@ import ExerciseList from '@features/exercise/ExerciseList'
 import { useAppSelector, useAppDispatch } from '@app/hooks'
 import { postExerciseEntries } from '@features/exercise/exerciseSlice'
 import Loading from '@features/loading/Loading'
+
 const ExerciseTemplate = () => {
 	const status = useAppSelector(state => state.exercise.status)
 	const workoutID = useAppSelector(state => state.exercise.activeWorkout)
@@ -17,7 +18,7 @@ const ExerciseTemplate = () => {
 		<Layout>
 			<main className='text-center mt-4'>
 				<div className='grid grid-cols-4 mb-4'>
-					<Link href='/workout'><a className='text-white bg-red-500 rounded-full w-11/12 mx-auto hover:bg-white hover:text-red-500 hover:outline outline-red-500'>Back</a></Link>
+					<Link href='/workout'><a className='text-white bg-red-500 rounded-full w-11/12 mx-auto hover:bg-white hover:text-red-500 hover:outline outline-red-500 shadow-lg shadow-black/70'>Back</a></Link>
 					<h1 className='text-white col-span-2 mx-auto underline text-3xl capitalize'>{activeWorkout && activeWorkout.type}</h1>
 				</div>
 				<ExerciseList />
