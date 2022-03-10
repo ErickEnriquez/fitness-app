@@ -19,7 +19,9 @@ const ExerciseTemplate = () => {
 			<main className='text-center mt-4'>
 				<div className='grid grid-cols-4 mb-4'>
 					<Link href='/workout'>
-						<a className='text-white bg-red-500 rounded-full w-11/12 mx-auto hover:bg-white hover:text-red-500 hover:outline outline-red-500 shadow-lg shadow-black/70'
+						<a className={`text-white bg-red-500 rounded-full flex items-center justify-center
+						w-11/12 mx-auto outline-red-500 shadow-lg shadow-black/70
+						hover:bg-white hover:text-red-500 hover:outline`}
 						>
 							Back
 						</a>
