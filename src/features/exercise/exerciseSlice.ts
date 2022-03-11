@@ -6,7 +6,7 @@ import type { AppState } from '@app/store'
 import { ExerciseEntry, ExerciseTemplate, Workout, WorkoutEntry } from '@prisma/client' 
 
 //this holds the miscellaneous data about the workout that isn't tied to a specific exercise instead the entire workout in general
-interface activeWorkoutInfo{
+export interface activeWorkoutInfo{
 	notes?: string,
 	workoutTemplateId: number,
 	preWorkout: boolean,
@@ -97,14 +97,14 @@ export const getExerciseTemplates = createAsyncThunk(
 export const postExerciseEntries = createAsyncThunk(
 	'exercise/postExerciseEntries',
 	async (arg ,{getState, rejectWithValue}) => {
-		const { exercise: { entries, activeWorkout, workoutEntry } } = getState() as AppState
+		const { exercise: { entries, workoutEntry } } = getState() as AppState
 		
 		if (entries.some(e => e.completed !== true)) {
 			console.log('not all entries are completed')
 			rejectWithValue({mes:'You must complete all entries before submitting', entries})
 		}
 		else {
-			const response = await axios.post('/api/exercise-entry', { entries, templateId: activeWorkout, workoutEntry })
+			const response = await axios.post('/api/exercise-entry', { entries, workoutEntry })
 			return response.data
 		}
 	}
