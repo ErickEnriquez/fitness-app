@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { postExerciseEntries } from '@server/postExerciseEntries'
 import {createWorkoutEntry} from '@server/createWorkoutEntry'
 import {getExerciseEntries} from '@server/getExerciseEntries'
-
+import { activeWorkoutInfo } from '@features/exercise/exerciseSlice'
 export default async (req: NextApiRequest, res: NextApiResponse) => { 
 
 	switch (req.method) { 
@@ -19,8 +19,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 async function postEntries(req: NextApiRequest, res: NextApiResponse) {
 	//grab the data, which should be an array of user entries and a workoutId
 	const data = req.body
+	
+	const activeWorkout = data.workoutEntry as activeWorkoutInfo 
 	//create the workout entry in the db first
-	const workoutEntry = await createWorkoutEntry(data.templateId)
+	const workoutEntry = await createWorkoutEntry(activeWorkout)
 	if (!workoutEntry) { 
 		res.status(500).json({ message: 'Failed to create workout' })
 	}

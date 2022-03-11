@@ -13,6 +13,7 @@ const ExerciseItem = () => {
 	const exerciseEntry = useAppSelector(state => state.exercise.entries.find(elem => elem.id === activeExerciseId))
 
 	const [previousInfo, setPreviousInfo] = useState(false)
+
 	return (
 		<Layout>
 			<main>
@@ -21,7 +22,11 @@ const ExerciseItem = () => {
 						<div className='grid grid-cols-4 my-6'>
 							<Link href={`/workout/${exerciseEntry.workoutId}`}>
 								<span className="flex items-center">
-									<a className='text-center bg-red-500 px-8 rounded-full w-3/4 mx-auto text-white shadow-lg shadow-black/70 hover:outline-red-500 hover:outline hover:bg-white hover:text-red-500'
+									<a className={`
+									text-center bg-red-500 px-8 rounded-full w-3/4 mx-auto text-white shadow-lg shadow-black/70 
+									hover:outline-red-500 hover:outline hover:bg-white hover:text-red-500
+									flex items-center justify-center
+									`}
 									>Back
 									</a>
 								</span>

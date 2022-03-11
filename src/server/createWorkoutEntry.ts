@@ -1,10 +1,13 @@
 import prisma from 'prisma/prisma'
-
-export  async function createWorkoutEntry(templateId: number): Promise<number | boolean> { 
+import { activeWorkoutInfo } from '@features/exercise/exerciseSlice'
+export  async function createWorkoutEntry(entry: activeWorkoutInfo): Promise<number | boolean> { 
 	try {
 		const workoutEntry = await prisma.workoutEntry.create({
 			data: {
-				workoutTemplateId: templateId,
+				workoutTemplateId: entry.workoutTemplateId,
+				notes: entry.notes || undefined,
+				grade: entry.grade || undefined,
+				preWorkout: entry.preWorkout || false,
 				date: new Date()
 			}
 		})
