@@ -5,12 +5,22 @@ import axios from 'axios'
 import type { AppState } from '@app/store'
 import { ExerciseEntry, ExerciseTemplate, Workout, WorkoutEntry } from '@prisma/client' 
 
+//this holds the miscellaneous data about the workout that isn't tied to a specific exercise instead the entire workout in general
+interface activeWorkoutInfo{
+	notes?: string,
+	workoutTemplateId: number,
+	preWorkout: boolean,
+	grade: number,
+}
+
 
 //combination of workout templates and workout entries, 
 interface WorkoutInfo extends Workout, Omit<WorkoutEntry, 'date|id'> {
 	prevDate: string
 	prevWorkoutId: number
 }
+
+//holds the info that the user inputs about a specific workout like the weights , the intensity, order etc
 interface UserEntry extends ExerciseTemplate { 
 	weights: number[],
 	intensity?: number,
@@ -28,6 +38,8 @@ export interface ExerciseState {
 	state: 'idle' | 'loading' | 'failed'
 	//get the stats of the last workout of that given type ie push heavy, pull heavy, etc
 	previousExerciseEntries: ExerciseEntry[]
+	workoutEntry:activeWorkoutInfo
+	
 }
 
 const initialState = {
@@ -36,7 +48,8 @@ const initialState = {
 	status: 'idle',
 	activeWorkout: null as number,
 	activeEntry: null as number,
-	previousExerciseEntries: [] as ExerciseEntry[]
+	previousExerciseEntries: [] as ExerciseEntry[],
+	workoutEntry: null as activeWorkoutInfo
 }
 
 //get the list of workouts when we initialize the page , 
@@ -128,6 +141,15 @@ export const exerciseSlice = createSlice({
 		toggleExerciseComplete(state, action: PayloadAction<number>) { 
 			if (isNaN(action.payload)) return
 			state.entries.find(entry => entry.id === action.payload).completed = !state.entries.find(entry => entry.id === action.payload).completed
+		},
+		editWorkoutNotes: (state, action: PayloadAction<string>) => {
+			state.workoutEntry.notes = action.payload
+		},
+		editWorkoutGrade: (state, action: PayloadAction<number>) => { 
+			state.workoutEntry.grade = action.payload
+		},
+		editPreWorkout: (state, action: PayloadAction<boolean>) => { 
+			state.workoutEntry.preWorkout = action.payload
 		}
 	},
 	extraReducers: (builder) => { 
@@ -156,10 +178,18 @@ export const exerciseSlice = createSlice({
 						intensity: '',
 						notes: '',
 						order: '',
-						completed: false
+						completed: false,
 					}
 				})
 				state.previousExerciseEntries = action.payload.previousExercises
+
+				//initialize the workout entry with the data that we need
+				state.workoutEntry = {
+					workoutTemplateId: action.payload.workoutId,
+					preWorkout: false,
+					grade: 0,
+					notes: ''
+				}
 			})
 			//posting the exercise entries
 			.addCase(postExerciseEntries.pending, (state) => { state.status = 'loading' })
@@ -174,7 +204,19 @@ export const exerciseSlice = createSlice({
 	}
 })
 
-export const { clearEntries, editWeight, editOrder, editNotes, editIntensity, setActiveEntry, toggleExerciseComplete } = exerciseSlice.actions
+export const {
+	clearEntries,
+	editWeight,
+	editOrder,
+	editNotes,
+	editIntensity,
+	setActiveEntry,
+	toggleExerciseComplete,
+	editWorkoutNotes,
+	editWorkoutGrade,
+	editPreWorkout,
+}
+	= exerciseSlice.actions
 
 export const selectWorkouts = (state: AppState) => state.exercise.workouts
 export const selectEntries = (state: AppState) => state.exercise.entries
