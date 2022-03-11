@@ -39,7 +39,7 @@ model ExerciseEntry {
   exerciseID Int
   exercise   ExerciseTemplate @relation(fields: [exerciseID], references: [id])
   workoutID  Int
-  workout    Workout          @relation(fields: [workoutID], references: [id])
+  workout    WorkoutEntry     @relation(fields: [workoutID], references: [id])
   order      Int?
 }
 
@@ -56,7 +56,6 @@ enum WorkoutType {
 model Workout {
   id                Int                @id @default(autoincrement())
   type              WorkoutType
-  exercises         ExerciseEntry[] //array of n number of exercises
   cardio            Cardio[]
   programID         Int
   program           Program            @relation(fields: [programID], references: [id])
@@ -65,13 +64,15 @@ model Workout {
 }
 
 model WorkoutEntry {
-  id                Int      @id @default(autoincrement())
+  id                Int             @id @default(autoincrement())
   notes             String?
-  date              DateTime @default(now())
+  date              DateTime        @default(now())
   grade             Int?
-  preWorkout      Boolean? @default(false)
+  preWorkout        Boolean?        @default(false)
   workoutTemplateId Int
-  workoutTemplate   Workout  @relation(fields: [workoutTemplateId], references: [id])
+  workoutTemplate   Workout         @relation(fields: [workoutTemplateId], references: [id])
+  exercises         ExerciseEntry[] //array of n number of exercises
+
 }
 
 //enum of the different types of cardios that I will be likely to be doing for the forseeable future
