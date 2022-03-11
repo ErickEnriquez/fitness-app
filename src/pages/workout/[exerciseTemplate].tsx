@@ -5,7 +5,8 @@ import ExerciseList from '@features/exercise/ExerciseList'
 import { useAppSelector, useAppDispatch } from '@app/hooks'
 import { postExerciseEntries, editWorkoutNotes, editWorkoutGrade, editPreWorkout } from '@features/exercise/exerciseSlice'
 import Loading from '@features/loading/Loading'
-
+import Success from '@features/success/Success'
+import Fail from '@features/fail/Fail'
 const ExerciseTemplate = () => {
 	const status = useAppSelector(state => state.exercise.status)
 	const workoutID = useAppSelector(state => state.exercise.activeWorkout)
@@ -15,6 +16,9 @@ const ExerciseTemplate = () => {
 	const dispatch = useAppDispatch()
 
 	if (status === 'loading') return <Loading />
+	else if (status === 'failed') return <Layout><Fail /></Layout>
+	else if (status === 'success') return <Layout><Success /></Layout>
+	
 	return (
 		<Layout>
 			{workoutEntry &&
