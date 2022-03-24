@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import Layout from '@features/layout/Layout'
 import ExerciseList from '@features/exercise/ExerciseList'
 import { useAppSelector, useAppDispatch } from '@app/hooks'
@@ -15,23 +16,32 @@ const ExerciseTemplate = () => {
 	const workoutEntry = useAppSelector(state => state.exercise.workoutEntry)
 	const dispatch = useAppDispatch()
 
+	const router = useRouter()
+
 	if (status === 'loading') return <Loading />
 	else if (status === 'failed') return <Layout><Fail /></Layout>
 	else if (status === 'success') return <Layout><Success /></Layout>
-	
+
 	return (
 		<Layout>
 			{workoutEntry &&
 				<main className='text-center mt-4'>
 					<div className='grid grid-cols-4 mb-6'>
-						<Link href='/workout'>
-							<a className={`text-white bg-red-500 rounded-full flex items-center justify-center
+
+						<a onClick={(e) => {
+							e.preventDefault()
+							const r = window.confirm('Are you sure you want to cancel this workout?')
+							if (!r) return
+
+							router.push('/workout')
+						}}
+							className={`text-white bg-red-500 rounded-full flex items-center justify-center
 						w-11/12 mx-auto outline-red-500 shadow-lg shadow-black/70
 						hover:bg-white hover:text-red-500 hover:outline`}
-							>
-								Back
-							</a>
-						</Link>
+						>
+							Back
+						</a>
+
 						<h1 className='text-white col-span-2 mx-auto underline text-3xl capitalize'>{activeWorkout && activeWorkout.type}</h1>
 					</div>
 					<ExerciseList />
