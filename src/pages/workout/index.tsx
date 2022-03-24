@@ -24,19 +24,19 @@ const WorkoutPage: NextPage = () => {
 		<Layout>
 			<main className='text-center'>
 				<h1 className="text-white text-3xl underline">Select a workout</h1>
-				<ul>
+				<ul className='grid grid-cols-2 w-11/12 mx-auto'>
 					{workouts.map((item, idx) => {
 						return (
 							<Link href={`/workout/${item.id}`} key={idx}>
 								<li
 									className={`
-									bg-cyan-500 rounded-full my-12 py-4 hover:bg-white hover:outline outline-cyan-500 text-white
-									hover:text-cyan-500 hover:cursor-pointer w-11/12 mx-auto`
+									bg-pink-500 rounded-3xl my-4 py-4 hover:bg-white hover:outline outline-pink-500 text-white
+									hover:text-pink-500 hover:cursor-pointer w-11/12 mx-auto`
 									}
 									onClick={() => dispatch(getExerciseTemplates(item.id))}
 								>
-									<a className="capitalize">{item.type}</a>
-									<p>Last Worked on : {item.date ? new Date(item.date).toLocaleDateString() : 'N/A'}</p>
+									<strong className="capitalize underline">{item.type}</strong>
+									<p>Last Worked<br /> {item.date ? new Date(item.date).toLocaleDateString() : 'N/A'}</p>
 								</li>
 							</Link>
 						)

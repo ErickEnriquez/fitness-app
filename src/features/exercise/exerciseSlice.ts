@@ -35,7 +35,7 @@ export interface ExerciseState {
 	workouts: WorkoutInfo[]
 	activeWorkout: number | null
 	activeEntry: number
-	state: 'idle' | 'loading' | 'failed'
+	state: 'idle' | 'loading' | 'failed '| 'success'
 	//get the stats of the last workout of that given type ie push heavy, pull heavy, etc
 	previousExerciseEntries: ExerciseEntry[]
 	workoutEntry:activeWorkoutInfo
@@ -193,11 +193,11 @@ export const exerciseSlice = createSlice({
 			//posting the exercise entries
 			.addCase(postExerciseEntries.pending, (state) => { state.status = 'loading' })
 			.addCase(postExerciseEntries.fulfilled, (state) => {
-				state.status = 'idle'
+				state.status = 'success'
 				state.entries = []
 			})
 			.addCase(postExerciseEntries.rejected, (state, action) => { 
-				state.status = 'idle'
+				state.status = 'failed'
 				console.log(console.log(action.payload))
 			})
 	}

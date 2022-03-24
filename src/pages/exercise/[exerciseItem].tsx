@@ -23,9 +23,9 @@ const ExerciseItem = () => {
 							<Link href={`/workout/${exerciseEntry.workoutId}`}>
 								<span className="flex items-center">
 									<a className={`
-									text-center bg-red-500 px-8 rounded-full w-3/4 mx-auto text-white shadow-lg shadow-black/70 
-									hover:outline-red-500 hover:outline hover:bg-white hover:text-red-500
-									flex items-center justify-center
+									text-center bg-orange-500 px-8 rounded-full w-3/4 mx-auto text-white shadow-lg shadow-black/70 
+									hover:outline-orange-500 hover:outline hover:bg-white hover:text-orange-500
+									flex items-center justify-center h-10
 									`}
 									>Back
 									</a>
