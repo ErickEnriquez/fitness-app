@@ -8,7 +8,7 @@ export async function postExerciseEntries(entries: any, id:number): Promise<bool
 					notes: entry.notes || undefined,
 					intensity: entry.intensity || undefined,
 					order: entry.order || undefined,
-					weights: entry.weights,
+					weights: entry.weights.map((weight: number) =>  weight || undefined),
 					exerciseID: entry.id,
 					workoutID: id
 				})
