@@ -14,6 +14,18 @@ const ExerciseItem = () => {
 
 	const [previousInfo, setPreviousInfo] = useState(false)
 
+	//check if all of the weight entries are completed and if so, mark the exercise as complete
+	const toggleCompleted = () => {
+		//if all entries are not empty and we are false change to true
+		if (!exerciseEntry.completed && exerciseEntry.weights.every(weight => weight)) {
+			dispatch(toggleExerciseComplete(exerciseEntry.id))
+		}
+		//if some entries get deleted change the completed to false
+		else if (exerciseEntry.completed && exerciseEntry.weights.some(weight => !weight)) {
+			dispatch(toggleExerciseComplete(exerciseEntry.id))
+		}
+	}
+
 	return (
 		<Layout>
 			<main>
@@ -22,7 +34,8 @@ const ExerciseItem = () => {
 						<div className='grid grid-cols-4 my-6'>
 							<Link href={`/workout/${exerciseEntry.workoutId}`}>
 								<span className="flex items-center">
-									<a className={`
+									<a onClick={toggleCompleted}
+										className={`
 									text-center bg-orange-500 px-8 rounded-full w-3/4 mx-auto text-white shadow-lg shadow-black/70 
 									hover:outline-orange-500 hover:outline hover:bg-white hover:text-orange-500
 									flex items-center justify-center h-10
@@ -97,11 +110,11 @@ const ExerciseItem = () => {
 								}))}
 							/>
 						</div>
-						<button className={exerciseEntry.completed ? 'bg-red-500 rounded-full mx-auto block mt-8 w-11/12 py-3 text-white' : 'bg-green-500 rounded-full mx-auto block mt-8 w-11/12 py-3 text-white'}
+						{/* <button className={exerciseEntry.completed ? 'bg-red-500 rounded-full mx-auto block mt-8 w-11/12 py-3 text-white' : 'bg-green-500 rounded-full mx-auto block mt-8 w-11/12 py-3 text-white'}
 							onClick={() => dispatch(toggleExerciseComplete(exerciseEntry.id))}
 						>
 							{exerciseEntry.completed ? 'Cancel' : 'Complete'}
-						</button>
+						</button> */}
 						<button className='bg-cyan-500 rounded-full mx-auto block my-8 w-11/12 py-3 text-white' onClick={() => setPreviousInfo(prev => !prev)}> Show Previous Workout</button>
 						{previousInfo && <PrevExercise />}
 					</div>
