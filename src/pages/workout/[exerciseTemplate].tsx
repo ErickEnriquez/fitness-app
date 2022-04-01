@@ -1,10 +1,9 @@
 import React from 'react'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Layout from '@features/layout/Layout'
 import ExerciseList from '@features/exercise/ExerciseList'
 import { useAppSelector, useAppDispatch } from '@app/hooks'
-import { postExerciseEntries, editWorkoutNotes, editWorkoutGrade, editPreWorkout } from '@features/exercise/exerciseSlice'
+import { postExerciseEntries, editWorkoutNotes, editWorkoutGrade, editPreWorkout, clearState } from '@features/exercise/exerciseSlice'
 import Loading from '@features/loading/Loading'
 import Success from '@features/success/Success'
 import Fail from '@features/fail/Fail'
@@ -19,7 +18,7 @@ const ExerciseTemplate = () => {
 	const router = useRouter()
 
 	if (status === 'loading') return <Loading />
-	else if (status === 'failed') return <Layout><Fail /></Layout>
+	else if (status === 'failed') return <Layout><Fail clickHandler={() => clearState} /></Layout>
 	else if (status === 'success') return <Layout><Success /></Layout>
 
 	return (
@@ -27,7 +26,6 @@ const ExerciseTemplate = () => {
 			{workoutEntry &&
 				<main className='text-center mt-4'>
 					<div className='grid grid-cols-4 mb-6'>
-
 						<a
 							onClick={(e) => {
 								e.preventDefault()
@@ -42,8 +40,9 @@ const ExerciseTemplate = () => {
 						>
 							Exit
 						</a>
-
-						<h1 className='text-white col-span-2 mx-auto underline text-3xl capitalize font-bold'>{activeWorkout && activeWorkout.type}</h1>
+						<h1 className='text-white col-span-2 mx-auto underline text-3xl capitalize font-bold'>
+							{activeWorkout && activeWorkout.type}
+						</h1>
 					</div>
 					<hr className='block mx-auto w-11/12  mb-4' />
 					<ExerciseList />
