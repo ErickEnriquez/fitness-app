@@ -194,11 +194,9 @@ export const exerciseSlice = createSlice({
 			.addCase(postExerciseEntries.pending, (state) => { state.status = 'loading' })
 			.addCase(postExerciseEntries.fulfilled, (state) => {
 				state.status = 'success'
-				state.entries = []
 			})
-			.addCase(postExerciseEntries.rejected, (state, action) => { 
+			.addCase(postExerciseEntries.rejected, (state,) => { 
 				state.status = 'failed'
-				console.log(console.log(action.payload))
 			})
 	}
 })
