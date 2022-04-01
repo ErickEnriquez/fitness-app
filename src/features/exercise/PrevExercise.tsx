@@ -1,7 +1,7 @@
 import React from 'react'
 import { useAppSelector } from '@app/hooks'
 import { selectPreviousExerciseEntries, selectActiveEntry } from '@features/exercise/exerciseSlice'
-
+import Card from '@components/Card'
 
 const PrevExercise = () => {
 	//get the list of all of the exercises of the previous workout
@@ -17,19 +17,45 @@ const PrevExercise = () => {
 	return (
 		<div className='text-white text-center my-4'>
 			{activePrevExercise ?
-				<>
-					<h3 className='underline text-2xl'>Previous Info</h3>
-					<p>Previous Order : {activePrevExercise.order}</p>
-					<p>Previous Intensity : {activePrevExercise.intensity}</p>
-					<p>Previous Notes : {activePrevExercise.notes}</p>
-					<ul>Previous Weight Amounts:
+				<Card title='Previous Info'>
+					<div className='grid grid-cols-2 mt-4'>
+						<div>
+							<span className='outline outline-white rounded-xl px-4 font-bold text-xl block w-3/4 lg:w-1/2 mx-auto'>
+								Previous Order : {activePrevExercise.order}
+							</span>
+						</div>
+						<p>
+							<span className='outline outline-white rounded-xl px-4 font-bold text-xl block w-3/4 lg:w-1/2 mx-auto'>
+								Previous Intensity : {activePrevExercise.intensity}
+							</span>
+						</p>
+					</div>
+					<hr className='my-6 block w-11/12 mx-auto' />
+					<strong className='text-2xl'>Previous Weight Amounts:</strong>
+					<ul className={'grid grid-cols-3'}>
 						{activePrevExercise.weights.map((item, idx) => {
 							return (
-								<li key={idx}>Set {idx + 1} : {item}</li>
+								<li
+									className='my-4'
+									key={idx}
+								>
+									<span className='outline outline-white rounded-xl px-4 font-bold text-xl block w-3/4 lg:w-1/2 mx-auto'>
+										<p className='underline'>Set {idx + 1}</p> {item}
+									</span>
+								</li>
 							)
 						})}
 					</ul>
-				</>
+					<hr className='my-6 block w-11/12 mx-auto' />
+					{activePrevExercise.notes &&
+						<strong className='my-8'>
+							<span className='text-2xl'>Previous Notes:</span>
+							<p className='text-xl'>
+								{activePrevExercise.notes}
+							</p>
+						</strong>
+					}
+				</Card>
 				: (
 					<h3 className='text-2xl'>
 						No Previous Data
