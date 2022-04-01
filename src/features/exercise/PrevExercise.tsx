@@ -20,18 +20,18 @@ const PrevExercise = () => {
 				<Card title='Previous Info'>
 					<div className='grid grid-cols-2 mt-4'>
 						<div>
-							<span className='outline outline-white rounded-xl px-4 font-bold text-xl block w-3/4 lg:w-1/2 mx-auto'>
-								Previous Order : {activePrevExercise.order}
+							<span className='outline outline-white rounded-xl px-4 font-bold text-m block w-3/4 lg:w-1/2 mx-auto'>
+								Order <br /> {activePrevExercise.order}
 							</span>
 						</div>
 						<p>
-							<span className='outline outline-white rounded-xl px-4 font-bold text-xl block w-3/4 lg:w-1/2 mx-auto'>
-								Previous Intensity : {activePrevExercise.intensity}
+							<span className='outline outline-white rounded-xl px-4 font-bold text-m block w-3/4 lg:w-1/2 mx-auto'>
+								Intensity <br /> {activePrevExercise.intensity}
 							</span>
 						</p>
 					</div>
 					<hr className='my-6 block w-11/12 mx-auto' />
-					<strong className='text-2xl'>Previous Weight Amounts:</strong>
+					<strong className='text-xl'>Weights</strong>
 					<ul className={'grid grid-cols-3'}>
 						{activePrevExercise.weights.map((item, idx) => {
 							return (
@@ -39,21 +39,24 @@ const PrevExercise = () => {
 									className='my-4'
 									key={idx}
 								>
-									<span className='outline outline-white rounded-xl px-4 font-bold text-xl block w-3/4 lg:w-1/2 mx-auto'>
+									<span className='outline outline-white rounded-xl px-4 font-bold text-m block w-3/4 lg:w-1/2 mx-auto'>
 										<p className='underline'>Set {idx + 1}</p> {item}
 									</span>
 								</li>
 							)
 						})}
 					</ul>
-					<hr className='my-6 block w-11/12 mx-auto' />
 					{activePrevExercise.notes &&
-						<strong className='my-8'>
-							<span className='text-2xl'>Previous Notes:</span>
-							<p className='text-xl'>
-								{activePrevExercise.notes}
-							</p>
-						</strong>
+						<>
+							<hr className='my-6 block w-11/12 mx-auto' />
+							<strong className='my-8'>
+								<span className='text-xl'>Previous Notes</span>
+								<p className='text-m'>
+									{activePrevExercise.notes}
+								</p>
+							</strong>
+						</>
+
 					}
 				</Card>
 				: (
