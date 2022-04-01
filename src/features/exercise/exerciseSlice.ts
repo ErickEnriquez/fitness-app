@@ -147,8 +147,12 @@ export const exerciseSlice = createSlice({
 		editWorkoutGrade: (state, action: PayloadAction<number>) => { 
 			state.workoutEntry.grade = action.payload
 		},
-		editPreWorkout: (state, action: PayloadAction<boolean>) => { 
+		editPreWorkout: (state, action: PayloadAction<boolean>) => {
 			state.workoutEntry.preWorkout = action.payload
+		},
+		//return the state of the exercise slice back to idle
+		clearState: (state) => { 
+			state.status = 'idle'
 		}
 	},
 	extraReducers: (builder) => { 
@@ -194,11 +198,9 @@ export const exerciseSlice = createSlice({
 			.addCase(postExerciseEntries.pending, (state) => { state.status = 'loading' })
 			.addCase(postExerciseEntries.fulfilled, (state) => {
 				state.status = 'success'
-				state.entries = []
 			})
-			.addCase(postExerciseEntries.rejected, (state, action) => { 
+			.addCase(postExerciseEntries.rejected, (state,) => { 
 				state.status = 'failed'
-				console.log(console.log(action.payload))
 			})
 	}
 })
@@ -214,6 +216,7 @@ export const {
 	editWorkoutNotes,
 	editWorkoutGrade,
 	editPreWorkout,
+	clearState
 }
 	= exerciseSlice.actions
 
