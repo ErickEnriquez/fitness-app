@@ -31,29 +31,30 @@ const ExerciseItem = () => {
 			<main>
 				{exerciseEntry ?
 					<div>
-						<div className='grid grid-cols-4 my-6'>
+						<div className='grid grid-cols-4 my-4'>
 							<Link href={`/workout/${exerciseEntry.workoutId}`}>
 								<span className="flex items-center">
 									<a onClick={toggleCompleted}
 										className={`
 									text-center bg-orange-500 px-8 rounded-full w-3/4 mx-auto text-white shadow-lg shadow-black/70 
 									hover:outline-orange-500 hover:outline hover:bg-white hover:text-orange-500
-									flex items-center justify-center h-10
+									flex items-center justify-center h-10 font-bold
 									`}
 									>Back
 									</a>
 								</span>
 							</Link>
-							<h2 className='mb-4 mx-auto1 text-white text-center col-span-2'>
-								<span className='underline text-3xl'>
+							<h2 className='mx-auto1 text-white text-center col-span-2'>
+								<span className='text-3xl font-bold'>
 									{exerciseEntry.name}
 								</span>
 								<br />
 								Sets {exerciseEntry.sets}x{exerciseEntry.reps}
 							</h2>
 						</div>
+						<hr className='block mx-auto w-11/12 mb-2' />
 						<div className="bg-slate-700 rounded-3xl content-center w-11/12 mx-auto">
-							<h3 className='text-center text-white text-xl'>Weight (lbs)</h3>
+							<h3 className='text-center text-white text-xl font-bold'>Weight (lbs)</h3>
 							<div className='grid grid-cols-2 py-4  md:grid-cols-2 lg:grid-cols-5 '>
 								{exerciseEntry.weights.map((weight, i: number) => (
 									<input
@@ -72,12 +73,12 @@ const ExerciseItem = () => {
 							</div>
 						</div>
 						<div className="bg-slate-700 rounded-3xl py-4 my-4 w-11/12 mx-auto">
-							<h3 className='text-center text-white text-xl mb-4'>Intensity & Order</h3>
+							<h3 className='text-center text-white text-xl mb-4 font-bold'>Intensity & Order</h3>
 							<div className="grid grid-cols-2 content-center ">
 								<input
 									type="number"
 									placeholder='Order'
-									className='outline my-1 outline-blue-700 outline-4 rounded-3xl placeholder:text-slate-600 text-center py-3 w-11/12 block mx-auto  shadow-lg shadow-black/70 '
+									className='outline my-1 outline-blue-700 outline-4 rounded-2xl placeholder:text-slate-600 text-center py-3 w-11/12 block mx-auto  shadow-lg shadow-black/70 '
 									value={exerciseEntry.order}
 									onChange={(e) => dispatch(editOrder({
 										movementID: exerciseEntry.movementID,
@@ -87,7 +88,7 @@ const ExerciseItem = () => {
 								<input
 									type="number"
 									placeholder='Intensity 0-10'
-									className='outline my-1 outline-purple-600 outline-4 rounded-3xl placeholder:text-slate-600 text-center py-3 w-11/12 block mx-auto  shadow-lg shadow-black/70'
+									className='outline my-1 outline-purple-600 outline-4 rounded-2xl placeholder:text-slate-600 text-center py-3 w-11/12 block mx-auto  shadow-lg shadow-black/70'
 									value={exerciseEntry.intensity}
 									min={0}
 									max={10}
@@ -99,7 +100,7 @@ const ExerciseItem = () => {
 							</div>
 						</div>
 						<div className='bg-slate-700 rounded-3xl w-11/12 mx-auto align-center flex flex-col py-4'>
-							<h3 className='text-center text-white text-xl mb-4'>Notes?</h3>
+							<h3 className='text-center text-white text-xl mb-4 font-bold'>Notes?</h3>
 							<textarea
 								placeholder='Notes'
 								className='outline my-1 outline-yellow-400 outline-4 rounded-3xl text-center mx-auto placeholder:text-slate-600 py-6 w-11/12'
@@ -110,12 +111,7 @@ const ExerciseItem = () => {
 								}))}
 							/>
 						</div>
-						{/* <button className={exerciseEntry.completed ? 'bg-red-500 rounded-full mx-auto block mt-8 w-11/12 py-3 text-white' : 'bg-green-500 rounded-full mx-auto block mt-8 w-11/12 py-3 text-white'}
-							onClick={() => dispatch(toggleExerciseComplete(exerciseEntry.id))}
-						>
-							{exerciseEntry.completed ? 'Cancel' : 'Complete'}
-						</button> */}
-						<button className='bg-cyan-500 rounded-full mx-auto block my-8 w-11/12 py-3 text-white' onClick={() => setPreviousInfo(prev => !prev)}> Show Previous Workout</button>
+						<button className='bg-cyan-500 rounded-full mx-auto block my-8 w-11/12 py-3 text-white font-bold' onClick={() => setPreviousInfo(prev => !prev)}> Show Previous Workout</button>
 						{previousInfo && <PrevExercise />}
 					</div>
 					:
