@@ -18,7 +18,7 @@ const ExerciseList = () => {
 	const exercises = useAppSelector(selectEntries)
 	return (
 		<div className='bg-slate-700  w-11/12 mx-auto rounded-2xl'>
-			<h2 className='text-white text-xl'>Exercises</h2>
+			<h2 className='text-white text-xl font-bold'>Exercises</h2>
 			<ul className='grid grid-cols-2 md:grid-cols-3 mb-4'>
 				{exercises.map((item, idx) => {
 					return (

@@ -3,6 +3,7 @@ import { NextPage } from 'next'
 import Link from 'next/link'
 import Loading from '@features/loading/Loading'
 import Layout from '@features/layout/Layout'
+import Card from '@components/Card'
 
 import { useAppDispatch, useAppSelector } from '@app/hooks'
 import { getWorkoutAsync, selectWorkouts, getExerciseTemplates, selectStatus } from '@features/exercise/exerciseSlice'
@@ -22,26 +23,27 @@ const WorkoutPage: NextPage = () => {
 
 	return (
 		<Layout>
-			<main className='text-center'>
-				<h1 className="text-white text-3xl underline">Select a workout</h1>
-				<ul className='grid grid-cols-2 w-11/12 mx-auto'>
-					{workouts.map((item, idx) => {
-						return (
-							<Link href={`/workout/${item.id}`} key={idx}>
-								<li
-									className={`
-									bg-pink-500 rounded-3xl my-4 py-4 hover:bg-white hover:outline outline-pink-500 text-white
-									hover:text-pink-500 hover:cursor-pointer w-11/12 mx-auto`
-									}
-									onClick={() => dispatch(getExerciseTemplates(item.id))}
-								>
-									<strong className="capitalize underline">{item.type}</strong>
-									<p>Last Worked<br /> {item.date ? new Date(item.date).toLocaleDateString() : 'N/A'}</p>
-								</li>
-							</Link>
-						)
-					})}
-				</ul>
+			<main className='text-center my-4'>
+				<Card title='Select a Workout'>
+					<ul className='grid grid-cols-2 w-11/12 mx-auto'>
+						{workouts.map((item, idx) => {
+							return (
+								<Link href={`/workout/${item.id}`} key={idx}>
+									<li
+										className={`
+									rounded-3xl my-4 py-4  w-11/12 mx-auto text-white bg-purple-600 outline-purple-600 shadow-lg shadow-black/70 
+									hover:bg-white hover:outline hover:text-purple-600 hover:cursor-pointer`
+										}
+										onClick={() => dispatch(getExerciseTemplates(item.id))}
+									>
+										<strong className="capitalize underline">{item.type}</strong>
+										<p>Last Worked<br /> {item.date ? new Date(item.date).toLocaleDateString() : 'N/A'}</p>
+									</li>
+								</Link>
+							)
+						})}
+					</ul>
+				</Card>
 			</main>
 		</Layout>
 	)

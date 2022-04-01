@@ -28,25 +28,27 @@ const ExerciseTemplate = () => {
 				<main className='text-center mt-4'>
 					<div className='grid grid-cols-4 mb-6'>
 
-						<a onClick={(e) => {
-							e.preventDefault()
-							const r = window.confirm('Are you sure you want to cancel this workout?')
-							if (!r) return
+						<a
+							onClick={(e) => {
+								e.preventDefault()
+								const r = window.confirm('Are you sure you want to cancel this workout?')
+								if (!r) return
 
-							router.push('/workout')
-						}}
+								router.push('/workout')
+							}}
 							className={`text-white bg-red-500 rounded-full flex items-center justify-center
-						w-11/12 mx-auto outline-red-500 shadow-lg shadow-black/70
-						hover:bg-white hover:text-red-500 hover:outline`}
+							w-11/12 mx-auto outline-red-500 shadow-lg shadow-black/70
+							hover:bg-white hover:text-red-500 hover:outline`}
 						>
-							Back
+							Exit
 						</a>
 
-						<h1 className='text-white col-span-2 mx-auto underline text-3xl capitalize'>{activeWorkout && activeWorkout.type}</h1>
+						<h1 className='text-white col-span-2 mx-auto underline text-3xl capitalize font-bold'>{activeWorkout && activeWorkout.type}</h1>
 					</div>
+					<hr className='block mx-auto w-11/12  mb-4' />
 					<ExerciseList />
 					<div className="w-11/12 mx-auto bg-slate-700 rounded-3xl mb-6">
-						<h2 className='text-white text-xl'>Notes</h2>
+						<h2 className='text-white text-xl font-bold'>Notes</h2>
 						<textarea className="w-11/12 rounded my-4 h-24 outline outline-yellow-500 outline-4 shadow-lg shadow-black/70"
 							onChange={(e) => dispatch(editWorkoutNotes(e.target.value))}
 							value={workoutEntry.notes}
@@ -54,7 +56,7 @@ const ExerciseTemplate = () => {
 						></textarea>
 					</div>
 					<div className="w-11/12 mx-auto bg-slate-700 rounded-3xl py-4">
-						<h2 className='text-white text-xl'>Grade & Pre-workout?</h2>
+						<h2 className='text-white text-xl font-bold'>Grade & Pre-workout?</h2>
 						<div className='grid grid-cols-2 mt-4'>
 							<input
 								type="Number"
