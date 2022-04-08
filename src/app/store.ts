@@ -1,14 +1,29 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 
-import counterReducer from '../features/counter/counterSlice'
+import storage from 'redux-persist/lib/storage'
+import { combineReducers } from 'redux'
+import { persistReducer } from 'redux-persist'
+import thunk from 'redux-thunk'
+// import thunkMiddleware from 'redux-thunk'
+
 import exerciseReducer from '../features/exercise/exerciseSlice'
+
+const reducers = combineReducers({
+	exercise: exerciseReducer,
+})
+
+const persistConfig = {
+	key: 'root',
+	storage,
+}
+
+const persistedReducer = persistReducer(persistConfig, reducers)
 
 export function makeStore() {
 	return configureStore({
-		reducer: {
-			counter: counterReducer,
-			exercise: exerciseReducer,
-		},
+		reducer: persistedReducer,
+		devTools: process.env.NODE_ENV !== 'production',
+		middleware: (getDefaultMiddleware) =>getDefaultMiddleware().concat(thunk),
 	})
 }
 

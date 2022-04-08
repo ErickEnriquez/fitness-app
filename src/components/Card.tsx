@@ -7,7 +7,7 @@ interface props {
 
 const Card = ({ title, children }: props) => {
 	return (
-		<div className="bg-slate-700 rounded-3xl content-center w-11/12 mx-auto" >
+		<div className="bg-slate-700 rounded-3xl content-center w-11/12 mx-auto py-4" >
 			<h2 className='text-2xl font-bold text-white'>{title || 'PlaceholderTitle'}</h2>
 			{children}
 		</div>
