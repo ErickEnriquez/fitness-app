@@ -3,10 +3,10 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 import type { AppState } from '@app/store'
-import { ExerciseEntry, ExerciseTemplate, Workout, WorkoutEntry } from '@prisma/client' 
+import { ExerciseEntry, ExerciseTemplate, Workout, WorkoutEntry } from '@prisma/client'
 
 //this holds the miscellaneous data about the workout that isn't tied to a specific exercise instead the entire workout in general
-export interface activeWorkoutInfo{
+export interface activeWorkoutInfo {
 	notes?: string,
 	workoutTemplateId: number,
 	preWorkout: boolean,
@@ -21,7 +21,7 @@ interface WorkoutInfo extends Workout, Omit<WorkoutEntry, 'date|id'> {
 }
 
 //holds the info that the user inputs about a specific workout like the weights , the intensity, order etc
-interface UserEntry extends ExerciseTemplate { 
+interface UserEntry extends ExerciseTemplate {
 	weights: number[],
 	intensity?: number,
 	notes?: string,
@@ -30,16 +30,15 @@ interface UserEntry extends ExerciseTemplate {
 	name: string
 }
 
-export interface ExerciseState { 
+export interface ExerciseState {
 	entries: UserEntry[]
 	workouts: WorkoutInfo[]
 	activeWorkout: number | null
 	activeEntry: number
-	state: 'idle' | 'loading' | 'failed '| 'success'
+	state: 'idle' | 'loading' | 'failed ' | 'success'
 	//get the stats of the last workout of that given type ie push heavy, pull heavy, etc
 	previousExerciseEntries: ExerciseEntry[]
-	workoutEntry:activeWorkoutInfo
-	
+	workoutEntry: activeWorkoutInfo
 }
 
 const initialState = {
@@ -60,7 +59,7 @@ export const getWorkoutAsync = createAsyncThunk(
 		const workoutTemplates = await axios.get('/api/workout-template/')
 		const prevWorkouts = (await axios.post('/api/workout-entry', { workoutTemplates })).data as WorkoutEntry[]
 
-		const data = workoutTemplates.data.map((item) => { 
+		const data = workoutTemplates.data.map((item) => {
 			const prevWorkout = prevWorkouts.find(workout => workout.workoutTemplateId === item.id)
 			return {
 				...prevWorkout,
@@ -77,15 +76,15 @@ export const getWorkoutAsync = createAsyncThunk(
 //given a workoutID get the template of exercises for that given workout
 export const getExerciseTemplates = createAsyncThunk(
 	'exercise/getExerciseTemplates',
-	async (id:number, {getState}) => { 
+	async (id: number, { getState }) => {
 		const response = await axios.get('/api/exercise-templates', { params: { workoutId: id } })
-		const {exercise:{workouts}} = getState() as AppState
+		const { exercise: { workouts } } = getState() as AppState
 		const prevWorkoutID = workouts.find(workout => workout.id === id)?.prevWorkoutId
-		
+
 		const previousExercises = prevWorkoutID
 			? await (await axios.get('/api/exercise-entry', { params: { workoutId: prevWorkoutID } })).data as ExerciseEntry[]
 			: null
-		
+
 		return {
 			exercises: response.data,
 			workoutId: id,
@@ -96,12 +95,12 @@ export const getExerciseTemplates = createAsyncThunk(
 
 export const postExerciseEntries = createAsyncThunk(
 	'exercise/postExerciseEntries',
-	async (arg ,{getState, rejectWithValue}) => {
+	async (arg, { getState, rejectWithValue }) => {
 		const { exercise: { entries, workoutEntry } } = getState() as AppState
-		
+
 		if (entries.some(e => e.completed !== true)) {
 			console.log('not all entries are completed')
-			rejectWithValue({mes:'You must complete all entries before submitting', entries})
+			rejectWithValue({ mes: 'You must complete all entries before submitting', entries })
 		}
 		else {
 			const response = await axios.post('/api/exercise-entry', { entries, workoutEntry })
@@ -114,10 +113,10 @@ export const exerciseSlice = createSlice({
 	name: 'exercise',
 	initialState,
 	reducers: {
-		clearEntries: (state) => { 
+		clearEntries: (state) => {
 			state.entries = []
 		},
-		editWeight: (state, action: PayloadAction<{ movementID: number, value: number, setNumber: number }>) => { 
+		editWeight: (state, action: PayloadAction<{ movementID: number, value: number, setNumber: number }>) => {
 			if (isNaN(action.payload.value)) return
 			state.entries.find(entry => entry.movementID === action.payload.movementID).weights[action.payload.setNumber] = action.payload.value
 		},
@@ -125,37 +124,37 @@ export const exerciseSlice = createSlice({
 			if (isNaN(action.payload.value)) return
 			state.entries.find(entry => entry.movementID === action.payload.movementID).order = action.payload.value
 		},
-		editNotes: (state, action: PayloadAction<{ movementID: number, value: string }>) => { 
+		editNotes: (state, action: PayloadAction<{ movementID: number, value: string }>) => {
 			state.entries.find(entry => entry.movementID === action.payload.movementID).notes = action.payload.value
-		},	
-		editIntensity: (state, action: PayloadAction<{ movementID: number, value: number }>) => { 
+		},
+		editIntensity: (state, action: PayloadAction<{ movementID: number, value: number }>) => {
 			if (isNaN(action.payload.value)) return
 			state.entries.find(entry => entry.movementID === action.payload.movementID).intensity = action.payload.value
 		},
 		//set the active entry we are working on when given an ID
-		setActiveEntry(state, action: PayloadAction<number>) { 
+		setActiveEntry(state, action: PayloadAction<number>) {
 			if (isNaN(action.payload)) return
 			state.activeEntry = state.entries.find(entry => entry.id === action.payload).id
 		},
-		toggleExerciseComplete(state, action: PayloadAction<number>) { 
+		toggleExerciseComplete(state, action: PayloadAction<number>) {
 			if (isNaN(action.payload)) return
 			state.entries.find(entry => entry.id === action.payload).completed = !state.entries.find(entry => entry.id === action.payload).completed
 		},
 		editWorkoutNotes: (state, action: PayloadAction<string>) => {
 			state.workoutEntry.notes = action.payload
 		},
-		editWorkoutGrade: (state, action: PayloadAction<number>) => { 
+		editWorkoutGrade: (state, action: PayloadAction<number>) => {
 			state.workoutEntry.grade = action.payload
 		},
 		editPreWorkout: (state, action: PayloadAction<boolean>) => {
 			state.workoutEntry.preWorkout = action.payload
 		},
 		//return the state of the exercise slice back to idle
-		clearState: (state) => { 
+		clearState: (state) => {
 			state.status = 'idle'
 		}
 	},
-	extraReducers: (builder) => { 
+	extraReducers: (builder) => {
 		builder
 			//getting list of the workouts
 			.addCase(getWorkoutAsync.pending, (state) => {
@@ -199,7 +198,7 @@ export const exerciseSlice = createSlice({
 			.addCase(postExerciseEntries.fulfilled, (state) => {
 				state.status = 'success'
 			})
-			.addCase(postExerciseEntries.rejected, (state,) => { 
+			.addCase(postExerciseEntries.rejected, (state,) => {
 				state.status = 'failed'
 			})
 	}
