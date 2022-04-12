@@ -1,12 +1,23 @@
 import React from 'react'
 
-const Success = () => {
+interface props {
+	clickHandler?: () => void
+}
+
+const Success = ({ clickHandler }: props) => {
 	return (
-		<div className="bg-green-100 border-t-4 border-green-500 rounded-b text-green-900 px-4 py-3 shadow-md" role="alert">
+		<div role="alert">
+			<div className="bg-green-100 border-green-500 text-white font-bold rounded-t px-4 py-2 flex justify-between">
+				<span>Error</span>
+				<button
+					onClick={clickHandler}
+					className='bg-cyan-500 px-5 rounded-full shadow-lg shadow-black/50'>Exit
+				</button>
+			</div>
 			<div className="flex justify-left">
 				<div>
 					<p className="font-bold">Workout has been successfully uploaded</p>
-					<p className="text-sm">You can close this page safely</p>
+					<p className="text-sm">You can close this tab safely</p>
 				</div>
 			</div>
 		</div>
