@@ -10,8 +10,13 @@ const Calendar = () => {
 
 	return (
 		<Layout>
-			<section></section>
-			<CalendarHeader activeDate={activeDate} />
+			<section>
+				<CalendarHeader
+					activeDate={activeDate}
+					setActiveDate={setActiveDate}
+					setSelectedDate={setSelectedDate}
+				/>
+			</section>
 		</Layout>
 	)
 }
