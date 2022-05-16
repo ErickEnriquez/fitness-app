@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 
 import Layout from '@features/layout/Layout'
-import CalendarHeader from '@features/calendar/calendarHeader'
-import CalendarWeekDays from '@features/calendar/calendarWeekDays'
-import Dates from '@features/calendar/dates'
+import CalendarHeader from '@features/calendar/CalendarHeader'
+import CalendarWeekDays from '@features/calendar/CalendarWeekDays'
+import CalendarDates from '@features/calendar/CalendarDates'
 const Calendar = () => {
 	const [selectedDate, setSelectedDate] = useState(new Date())
 	const [activeDate, setActiveDate] = useState(new Date())
@@ -18,7 +18,7 @@ const Calendar = () => {
 				/>
 				<table className="mx-auto w-11/12 mt-8">
 					<CalendarWeekDays activeDate={activeDate} />
-					<Dates
+					<CalendarDates
 						activeDate={activeDate}
 						selectedDate={selectedDate}
 						setSelectedDate={setSelectedDate}
