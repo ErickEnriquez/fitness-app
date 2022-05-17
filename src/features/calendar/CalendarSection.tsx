@@ -4,13 +4,14 @@ import Layout from '@features/layout/Layout'
 import CalendarHeader from '@features/calendar/CalendarHeader'
 import CalendarWeekDays from '@features/calendar/CalendarWeekDays'
 import CalendarDates from '@features/calendar/CalendarDates'
+import Card from '@components/Card'
 const Calendar = () => {
 	const [selectedDate, setSelectedDate] = useState(new Date())
 	const [activeDate, setActiveDate] = useState(new Date())
 
 	return (
 		<Layout>
-			<section>
+			<Card title='Calendar'>
 				<CalendarHeader
 					activeDate={activeDate}
 					setActiveDate={setActiveDate}
@@ -24,7 +25,7 @@ const Calendar = () => {
 						setSelectedDate={setSelectedDate}
 					/>
 				</table>
-			</section>
+			</Card>
 		</Layout>
 	)
 }
