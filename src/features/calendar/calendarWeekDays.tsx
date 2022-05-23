@@ -1,15 +1,18 @@
 import { format, startOfWeek, addDays } from 'date-fns'
 
-const CalendarWeekDays = ({ activeDate }: { activeDate: Date }) => {
-	const weekStartDate = startOfWeek(activeDate)
-	const weekDays = []
-	for (let day = 0; day < 7; day++) {
-		weekDays.push(
-			<td className="text-white text-center" key={day}>
-				{format(addDays(weekStartDate, day), 'E')}
-			</td>
-		)
-	}
+import { useAppSelector } from '@app/hooks'
+import { selectActiveDate } from '@features/calendar/CalendarSlice'
+
+const CalendarWeekDays = () => {
+	const activeDate = useAppSelector(selectActiveDate)
+	const weekStartDate = startOfWeek(new Date(activeDate))
+
+	const weekDays = Array.from({ length: 7 }, (_, i) => i).map((day) => (
+		<td className="text-white text-center" key={day}>
+			{format(addDays(weekStartDate, day), 'E')}
+		</td>
+	))
+
 	return (
 		<thead >
 			<tr>

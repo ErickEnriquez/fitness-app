@@ -14,15 +14,15 @@ import { ExerciseEntry, ExerciseTemplate, Workout, WorkoutEntry } from '@prisma/
 export interface CalendarState {
 	status: 'idle' | 'loading' | 'failed' | 'success'
 	workouts: WorkoutEntry[]
-	activeDate: Date
-	selectedDate: Date
+	activeDate: string
+	selectedDate: string
 }
 
 const initialState: CalendarState = {
 	status: 'idle',
 	workouts: [] as WorkoutEntry[],
-	activeDate: new Date(),
-	selectedDate: new Date()
+	activeDate: new Date().toISOString(),
+	selectedDate: new Date().toISOString(),
 }
 
 export const getWorkoutsAsync = createAsyncThunk(
@@ -41,6 +41,12 @@ export const CalendarSlice = createSlice({
 	reducers: {
 		clearStatus: (state) => {
 			state.status = 'idle'
+		},
+		editSelectedDate: (state, action: PayloadAction<string>) => {
+			state.selectedDate = action.payload
+		},
+		editActiveDate: (state, action: PayloadAction<string>) => {
+			state.activeDate = action.payload
 		}
 	},
 	extraReducers: (builder) => {
@@ -60,7 +66,9 @@ export const CalendarSlice = createSlice({
 
 
 export const {
-	clearStatus
+	clearStatus,
+	editActiveDate,
+	editSelectedDate
 } = CalendarSlice.actions
 
 export const selectStatus = (state: AppState) => state.calendar.status
