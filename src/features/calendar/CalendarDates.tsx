@@ -14,7 +14,8 @@ const generateDatesForCurrentWeek = (date: Date, selectedDate: Date, activeDate:
 	const week = []
 	for (let day = 0; day < 7; day++) {
 		week.push(
-			<td className={`${isSameMonth(activeDate, currentDate) ? 'text-white bg-slate-500' : 'text-slate-500'}
+			<td key={`${currentDate}-${day}`}
+				className={`${isSameMonth(activeDate, currentDate) ? 'text-white bg-slate-500' : 'text-slate-500'}
 			text-center py-6 outline outline-white outline-1 text-l font-heavy rounded-sm`}
 			>
 				{format(currentDate, 'd')}
@@ -48,7 +49,7 @@ const Dates = ({ activeDate, selectedDate, setSelectedDate }: props) => {
 		currentDate = addDays(currentDate, 7)
 	}
 
-	return <>{allWeeks}</>
+	return <tbody>{allWeeks}</tbody>
 }
 
 export default Dates
