@@ -5,12 +5,18 @@ const CalendarWeekDays = ({ activeDate }: { activeDate: Date }) => {
 	const weekDays = []
 	for (let day = 0; day < 7; day++) {
 		weekDays.push(
-			<td className="text-white text-center">
+			<td className="text-white text-center" key={day}>
 				{format(addDays(weekStartDate, day), 'E')}
 			</td>
 		)
 	}
-	return <tr >{weekDays}</tr>
+	return (
+		<thead >
+			<tr>
+				{weekDays}
+			</tr>
+		</thead >
+	)
 }
 
 export default CalendarWeekDays
