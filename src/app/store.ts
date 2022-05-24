@@ -24,7 +24,7 @@ export function makeStore() {
 	return configureStore({
 		reducer: persistedReducer,
 		devTools: process.env.NODE_ENV !== 'production',
-		middleware: (getDefaultMiddleware) =>getDefaultMiddleware().concat(thunk),
+		middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }).concat(thunk),
 	})
 }
 
@@ -35,10 +35,10 @@ export type AppState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
 
 export type AppThunk<ReturnType = void> = ThunkAction<
-  ReturnType,
-  AppState,
-  unknown,
-  Action<string>
+	ReturnType,
+	AppState,
+	unknown,
+	Action<string>
 >
 
 export default store
