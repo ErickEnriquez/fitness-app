@@ -10,12 +10,10 @@ import { useAppDispatch, useAppSelector } from '@app/hooks'
 
 import { getWorkoutsAsync, selectActiveDate, selectWorkouts } from '@features/calendar/CalendarSlice'
 
+import { startOfMonth, endOfMonth } from 'date-fns'
+
 
 const Calendar = () => {
-
-	// useEffect(() => {
-	// 	getWorkoutsAsync()
-	// }, [])
 
 	return (
 		<Layout>

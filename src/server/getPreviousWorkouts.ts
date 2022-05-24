@@ -10,7 +10,6 @@ export interface PreviousWorkoutsEntry extends Omit<WorkoutEntry, 'date'> {
 	date: string
 }
 
- 
 /**
  * returns all of the workouts that have been created in a given date range
  * @param startDate the beginning date of the range we want to search
@@ -31,7 +30,7 @@ export async function getPreviousWorkouts(startDate: Date, endDate: Date): Promi
 			}
 		})
 		//serialize the date object to an ISO string to pass back to the front end
-		return data.map(item => ({...item, date: item.date.toISOString()}))
+		return data.map(item => ({ ...item, date: item.date.toISOString() }))
 
 	} catch (err) {
 		console.error(err)

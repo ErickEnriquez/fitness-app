@@ -20,7 +20,7 @@ const getCalendarWorkouts = async (req: NextApiRequest, res: NextApiResponse) =>
 	const { start, end } = req.body
 	const startDate = new Date(start)
 	const endDate = new Date(end)
-	const data = getPreviousWorkouts(startDate, endDate)
+	const data = await getPreviousWorkouts(startDate, endDate)
 
 	data ?
 		res.status(200).json(data) :

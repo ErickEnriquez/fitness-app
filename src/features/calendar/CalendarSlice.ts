@@ -29,7 +29,7 @@ export const getWorkoutsAsync = createAsyncThunk(
 	'calendar/getWorkouts',
 	//pass the start and the end dates to the reducer function
 	async ({ start, end }: { start: string, end: string }) => {
-		const response = await axios.post('/api/workouts/', { start, end })
+		const response = await axios.post('/api/workouts', { start, end })
 		console.log(response.data)
 		return response.data as WorkoutEntry[]
 	}
@@ -54,13 +54,14 @@ export const CalendarSlice = createSlice({
 			.addCase(getWorkoutsAsync.pending, (state) => {
 				state.status = 'loading'
 			})
-			.addCase(getWorkoutsAsync.rejected, (state) => {
-				state.status = 'failed'
-			})
 			.addCase(getWorkoutsAsync.fulfilled, (state, action) => {
 				state.status = 'success'
 				state.workouts = action.payload
 			})
+			.addCase(getWorkoutsAsync.rejected, (state) => {
+				state.status = 'failed'
+			})
+
 	}
 })
 

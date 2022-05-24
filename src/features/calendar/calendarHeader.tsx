@@ -3,14 +3,12 @@ import { format, subMonths, addMonths } from 'date-fns'
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'
 import { useAppDispatch, useAppSelector } from '@app/hooks'
 import { selectActiveDate, editSelectedDate, editActiveDate } from '@features/calendar/CalendarSlice'
-import { parseISO } from 'date-fns'
 
 const CalendarHeader = () => {
 
 	const dispatch = useAppDispatch()
 	const active = new Date(useAppSelector(selectActiveDate))
 
-	console.log(active)
 	return (
 		<div className="text-white w-11/12 mx-auto flex justify-evenly	mt-4 bg-slate-500 py-2 rounded-xl">
 			<h3
