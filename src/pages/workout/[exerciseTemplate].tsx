@@ -4,9 +4,9 @@ import Layout from '@features/layout/Layout'
 import ExerciseList from '@features/exercise/ExerciseList'
 import { useAppSelector, useAppDispatch } from '@app/hooks'
 import { postExerciseEntries, editWorkoutNotes, editWorkoutGrade, editPreWorkout, clearState } from '@features/exercise/exerciseSlice'
-import Loading from '@features/loading/Loading'
-import Success from '@features/success/Success'
-import Fail from '@features/fail/Fail'
+import Loading from '@components/Loading'
+import Success from '@components/Success'
+import Fail from '@components/Fail'
 const ExerciseTemplate = () => {
 	const status = useAppSelector(state => state.exercise.status)
 	const workoutID = useAppSelector(state => state.exercise.activeWorkout)
@@ -19,7 +19,7 @@ const ExerciseTemplate = () => {
 
 	if (status === 'loading') return <Loading />
 	else if (status === 'failed') return <Layout><Fail clickHandler={() => clearState} /></Layout>
-	else if (status === 'success') return <Layout><Success /></Layout>
+	else if (status === 'success') return <Layout><Success clickHandler={() => clearState} /></Layout>
 
 	return (
 		<Layout>

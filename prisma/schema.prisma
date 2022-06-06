@@ -35,7 +35,7 @@ model ExerciseEntry {
   id         Int              @id @default(autoincrement())
   notes      String?
   intensity  Int?
-  weights    Int[]
+  weights    Decimal[]
   exerciseID Int
   exercise   ExerciseTemplate @relation(fields: [exerciseID], references: [id])
   workoutID  Int
