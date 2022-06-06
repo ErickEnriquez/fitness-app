@@ -31,7 +31,7 @@ const Calendar = () => {
 
 	return (
 		<Layout>
-			<Card title='Calendar'>
+			<Card title='Calendar' style={{ textAlign: 'center' }}>
 				<CalendarHeader />
 				<table className="mx-auto w-11/12 mt-8">
 					<CalendarWeekDays />
