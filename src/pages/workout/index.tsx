@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { NextPage } from 'next'
 import Link from 'next/link'
-import Loading from '@features/loading/Loading'
+import Loading from '@components/Loading'
 import Layout from '@features/layout/Layout'
 import Card from '@components/Card'
 

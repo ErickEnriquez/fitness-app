@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 
 import Layout from '@features/layout/Layout'
 import CalendarSection from '@features/calendar/CalendarSection'
-import Loading from '@features/loading/Loading'
+import Loading from '@components/Loading'
 
 import { useAppSelector, useAppDispatch } from '@app/hooks'
 import { selectStatus, selectActiveDate, getWorkoutsAsync } from '@features/calendar/CalendarSlice'
