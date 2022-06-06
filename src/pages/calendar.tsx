@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react'
 
-import Layout from '@features/layout/Layout'
 import Loading from '@components/Loading'
-import CalendarHeader from '@features/calendar/CalendarHeader'
-import CalendarWeekDays from '@features/calendar/CalendarWeekDays'
-import CalendarDates from '@features/calendar/CalendarDates'
+import CalendarHeader from '@features/calendar/Header'
+import CalendarWeekDays from '@features/calendar/Weekdays'
+import CalendarDates from '@features/calendar/Month'
+import Layout from '@features/layout/Layout'
+
 import Card from '@components/Card'
 
 import { useAppSelector, useAppDispatch } from '@app/hooks'

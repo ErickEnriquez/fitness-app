@@ -4,7 +4,7 @@ import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'
 import { useAppDispatch, useAppSelector } from '@app/hooks'
 import { selectActiveDate, editSelectedDate, editActiveDate } from '@features/calendar/CalendarSlice'
 
-const CalendarHeader = () => {
+const Header = () => {
 
 	const dispatch = useAppDispatch()
 	const active = new Date(useAppSelector(selectActiveDate))
@@ -32,4 +32,4 @@ const CalendarHeader = () => {
 	)
 }
 
-export default CalendarHeader
+export default Header

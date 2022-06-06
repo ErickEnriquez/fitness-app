@@ -14,7 +14,7 @@ import { selectActiveDate, selectSelectedDate, editSelectedDate, selectWorkouts 
 import { ActionCreatorWithOptionalPayload } from '@reduxjs/toolkit/dist/createAction'
 
 
-const Dates = () => {
+const Month = () => {
 	const activeDate = new Date(useAppSelector(selectActiveDate))
 	const selectedDate = new Date(useAppSelector(selectSelectedDate))
 
@@ -62,4 +62,4 @@ const generateDatesForCurrentWeek = (date: Date, selectedDate: Date, activeDate:
 	return <tr key={currentDate.toISOString()}>{week}</tr>
 }
 
-export default Dates
+export default Month

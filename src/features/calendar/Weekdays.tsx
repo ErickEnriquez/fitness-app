@@ -3,7 +3,7 @@ import { format, startOfWeek, addDays } from 'date-fns'
 import { useAppSelector } from '@app/hooks'
 import { selectActiveDate } from '@features/calendar/CalendarSlice'
 
-const CalendarWeekDays = () => {
+const Weekdays = () => {
 	const activeDate = useAppSelector(selectActiveDate)
 	const weekStartDate = startOfWeek(new Date(activeDate))
 
@@ -22,4 +22,4 @@ const CalendarWeekDays = () => {
 	)
 }
 
-export default CalendarWeekDays
+export default Weekdays

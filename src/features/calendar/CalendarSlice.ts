@@ -3,11 +3,11 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 import type { AppState } from '@app/store'
-import { ExerciseEntry, ExerciseTemplate, Workout, WorkoutEntry } from '@prisma/client'
+import { WorkoutEntry } from '@prisma/client'
 
 /**
  * @property {string} status status of the slice returns if we are loading, success, or failed
- * @property {WorkoutEntry[]} entries the list of workouts that have been made
+ * @property {WorkoutEntry[]} workouts the list of workouts that have been made
  * @property {Date} activeDate the active date that we are currently on
  * @property {Date} selectedDate the date we have selected
  */
@@ -25,6 +25,9 @@ const initialState: CalendarState = {
 	selectedDate: new Date().toISOString(),
 }
 
+/**
+ * get the list of the workouts from the DB that were created within the start and end dates
+ */
 export const getWorkoutsAsync = createAsyncThunk(
 	'calendar/getWorkouts',
 	//pass the start and the end dates to the reducer function
@@ -60,7 +63,6 @@ export const CalendarSlice = createSlice({
 			.addCase(getWorkoutsAsync.rejected, (state) => {
 				state.status = 'failed'
 			})
-
 	}
 })
 
