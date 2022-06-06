@@ -27,7 +27,7 @@ const Header = () => {
 				onClick={() => dispatch(editActiveDate(addMonths(active, 1).toISOString()))}
 				className="hover:cursor-pointer font-heavy"
 			/>
-			<h2 className="currentMonth">{format(active, 'MMMM yyyy')}</h2>
+			<h2 className="currentMonth">{format(active, 'MMM yyyy')}</h2>
 		</div>
 	)
 }
