@@ -14,7 +14,7 @@ import { selectActiveDate, selectSelectedDate, editSelectedDate, selectWorkouts 
 import { ActionCreatorWithOptionalPayload } from '@reduxjs/toolkit/dist/createAction'
 
 
-function Dates() {
+const Dates = () => {
 	const activeDate = new Date(useAppSelector(selectActiveDate))
 	const selectedDate = new Date(useAppSelector(selectSelectedDate))
 

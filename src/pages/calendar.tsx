@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react'
 
 import Layout from '@features/layout/Layout'
-import CalendarSection from '@features/calendar/CalendarSection'
 import Loading from '@components/Loading'
+import CalendarHeader from '@features/calendar/CalendarHeader'
+import CalendarWeekDays from '@features/calendar/CalendarWeekDays'
+import CalendarDates from '@features/calendar/CalendarDates'
+import Card from '@components/Card'
 
 import { useAppSelector, useAppDispatch } from '@app/hooks'
 import { selectStatus, selectActiveDate, getWorkoutsAsync } from '@features/calendar/CalendarSlice'
@@ -27,7 +30,13 @@ const Calendar = () => {
 
 	return (
 		<Layout>
-			<CalendarSection />
+			<Card title='Calendar'>
+				<CalendarHeader />
+				<table className="mx-auto w-11/12 mt-8">
+					<CalendarWeekDays />
+					<CalendarDates />
+				</table>
+			</Card>
 		</Layout>
 	)
 }
