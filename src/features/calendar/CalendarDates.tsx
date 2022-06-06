@@ -10,13 +10,16 @@ import {
 } from 'date-fns'
 
 import { useAppSelector, useAppDispatch } from '@app/hooks'
-import { selectActiveDate, selectSelectedDate, editSelectedDate } from '@features/calendar/CalendarSlice'
+import { selectActiveDate, selectSelectedDate, editSelectedDate, selectWorkouts } from '@features/calendar/CalendarSlice'
 import { ActionCreatorWithOptionalPayload } from '@reduxjs/toolkit/dist/createAction'
 
 
 function Dates() {
 	const activeDate = new Date(useAppSelector(selectActiveDate))
 	const selectedDate = new Date(useAppSelector(selectSelectedDate))
+
+	const workouts = useAppSelector(selectWorkouts)
+	console.log(workouts)
 
 	const startOfTheSelectedMonth = startOfMonth(activeDate)
 	const endOfTheSelectedMonth = endOfMonth(activeDate)
@@ -47,6 +50,7 @@ const generateDatesForCurrentWeek = (date: Date, selectedDate: Date, activeDate:
 	for (let day = 0; day < 7; day++) {
 		week.push(
 			<td key={day}
+				// onClick={() => console.log(day)}
 				className={`${isSameMonth(activeDate, currentDate) ? 'text-white bg-slate-500' : 'text-slate-500'}
 			text-center py-6 outline outline-white outline-1 text-l font-heavy rounded-sm`}
 			>
