@@ -52,11 +52,10 @@ enum WorkoutType {
   legsLight
 }
 
-//workout model is the a collection of exercises an cardios, a workout type , an overall grade, notes ,and a date created
+//workout model is the a collection of exercises , a workout type , an overall grade, notes ,and a date created
 model Workout {
   id                Int                @id @default(autoincrement())
   type              WorkoutType
-  cardio            Cardio[]
   programID         Int
   program           Program            @relation(fields: [programID], references: [id])
   workoutEntry      WorkoutEntry[]
@@ -89,16 +88,15 @@ enum CardioType {
   sport
 }
 
-//cardio model is a collection of a cardio type, distance, time, notes, and calories burned
+//cardio model is a collection of a cardio type, distance, time, notes, and calories burned, and timeCreated
 model Cardio {
   id             Int        @id @default(autoincrement())
+  timeCreated    DateTime   @default(now())
   type           CardioType
   distace        Int
   time           Int
   caloriesBurned Int
   notes          String
-  workoutID      Int
-  workout        Workout    @relation(fields: [workoutID], references: [id])
 }
 
 //a program is a collection of workouts, a name and an ID
