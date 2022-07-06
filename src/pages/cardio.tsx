@@ -13,22 +13,29 @@ const Cardio = (): JSX.Element => {
 				<Card title="Enter Cardio Details">
 					<div className='grid grid-cols-2 my-2 py-2 w-11/12 mx-auto text-center'>
 						<select name="cardioType" id="type"
-							className="my-6 py-4 w-11/12 mx-auto rounded-3xl shadow-lg shadow-black/70 outline outline-cyan-500 text-center">
+							className='outline my-6 outline-cyan-500 outline-4 rounded-3xl placeholder:text-slate-600 text-center py-4 w-11/12 block mx-auto  shadow-lg shadow-black/70'
+						>
 							<option value="">Select an option</option>
 							{workoutOptions.map(option => (
 								<option key={option} value={option}>{option}</option>
 							))}
 						</select>
 						<input type="text" placeholder='calories burned'
-							className="my-6 py-4 w-11/12 mx-auto rounded-3xl shadow-lg shadow-black/70 outline outline-cyan-500 text-center" />
+							className='outline my-6 outline-cyan-500 outline-4 rounded-3xl placeholder:text-slate-600 text-center py-4 w-11/12 block mx-auto  shadow-lg shadow-black/70'
+						/>
 						<input type="text" placeholder="distance"
-							className="my-6 py-4 w-11/12 mx-auto rounded-3xl shadow-lg shadow-black/70 outline outline-cyan-500 text-center"
+							className='outline my-6 outline-cyan-500 outline-4 rounded-3xl placeholder:text-slate-600 text-center py-4 w-11/12 block mx-auto  shadow-lg shadow-black/70'
+
 						/>
 						<input type="text" placeholder="time"
-							className="my-6 py-4 w-11/12 mx-auto rounded-3xl shadow-lg shadow-black/70 outline outline-cyan-500 text-center"
+							className='outline my-6 outline-cyan-500 outline-4 rounded-3xl placeholder:text-slate-600 text-center py-4 w-11/12 block mx-auto  shadow-lg shadow-black/70'
+
 						/>
 					</div>
-					<textarea name="" id="" rows={10} className="w-11/12 rounded-xl outline outline-cyan-500 text-center" placeholder='Any Notes to add'></textarea>
+					<textarea name="" id="" rows={10} 
+						className='outline my-6 outline-cyan-500 outline-4 rounded-3xl placeholder:text-slate-600 text-center py-4 w-11/12 block mx-auto  shadow-lg shadow-black/70'
+						placeholder='Any Notes to add'>
+					</textarea>
 					<br />
 					<button type="submit"
 						className='text-white bg-green-500 rounded-full w-11/12 mx-auto hover:bg-white hover:text-green-500 hover:outline outline-green-500 my-4 h-12'
