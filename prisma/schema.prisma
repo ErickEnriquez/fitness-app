@@ -86,6 +86,7 @@ enum CardioType {
   climbing
   hike
   sport
+  other
 }
 
 //cardio model is a collection of a cardio type, distance, time, notes, and calories burned, and timeCreated
