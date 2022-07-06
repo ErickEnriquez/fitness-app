@@ -18,8 +18,8 @@ const ExerciseTemplate = () => {
 	const router = useRouter()
 
 	if (status === 'loading') return <Loading />
-	else if (status === 'failed') return <Layout><Fail clickHandler={() => clearState} /></Layout>
-	else if (status === 'success') return <Layout><Success clickHandler={() => clearState} /></Layout>
+	else if (status === 'failed') return <Layout><Fail clickHandler={() => dispatch(clearState())} /></Layout>
+	else if (status === 'success') return <Layout><Success clickHandler={() => dispatch(clearState())} /></Layout>
 
 	return (
 		<Layout>
