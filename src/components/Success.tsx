@@ -16,7 +16,7 @@ const Success = ({ clickHandler }: props) => {
 			</div>
 			<div className="flex justify-left bg-green-300 py-4">
 				<div className='mx-auto'>
-					<p className="font-bold">Workout has been successfully uploaded</p>
+					<p className="font-bold">Data has been successfully uploaded</p>
 					<p className="text-sm">You can close this tab safely</p>
 				</div>
 			</div>
