@@ -8,9 +8,12 @@ import thunk from 'redux-thunk'
 
 import exerciseReducer from '../features/exercise/exerciseSlice'
 import CalendarReducer from '@features/calendar/CalendarSlice'
+import CardioReducer from '@features/cardio/CardioSlice'
+
 const reducers = combineReducers({
 	exercise: exerciseReducer,
 	calendar: CalendarReducer,
+	cardio: CardioReducer
 })
 
 const persistConfig = {
