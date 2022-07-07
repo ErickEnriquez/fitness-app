@@ -94,7 +94,7 @@ model Cardio {
   id             Int        @id @default(autoincrement())
   timeCreated    DateTime   @default(now())
   type           CardioType
-  distace        Decimal
+  distance        Decimal
   time           Int
   caloriesBurned Int
   notes          String
