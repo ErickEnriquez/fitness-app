@@ -89,7 +89,7 @@ enum CardioType {
   other
 }
 
-//cardio model is a collection of a cardio type, distance, time, notes, and calories burned, and timeCreated
+//cardio model is a collection of a cardio type, distance, time, notes, and calories burned, and timeCreated, and intensity
 model Cardio {
   id             Int        @id @default(autoincrement())
   timeCreated    DateTime   @default(now())
@@ -98,6 +98,7 @@ model Cardio {
   time           Int
   caloriesBurned Int
   notes          String
+  intensity      Int
 }
 
 //a program is a collection of workouts, a name and an ID
