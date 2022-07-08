@@ -4,6 +4,8 @@ import Link from 'next/link'
 import { useAppDispatch, useAppSelector } from '@app/hooks'
 import PrevExercise from '@features/exercise/PrevExercise'
 import { editWeight, editNotes, editIntensity, editOrder, selectActiveEntry, toggleExerciseComplete } from '@features/exercise/exerciseSlice'
+import Notes from '@components/Notes'
+import NumberInput from '@components/NumberInput'
 
 const ExerciseItem = () => {
 	const dispatch = useAppDispatch()
@@ -57,17 +59,12 @@ const ExerciseItem = () => {
 							<h3 className='text-center text-white text-xl font-bold'>Weight (lbs)</h3>
 							<div className='grid grid-cols-2 py-4  md:grid-cols-2 lg:grid-cols-5 '>
 								{exerciseEntry.weights.map((weight, i: number) => (
-									<input
+									<NumberInput
 										key={i}
-										type="number"
-										value={weight}
-										onChange={(e) => dispatch(editWeight({
-											movementID: exerciseEntry.movementID,
-											value: Number(e.target.value),
-											setNumber: i
-										}))}
-										placeholder={`Set ${i + 1}`}
-										className='outline outline-orange-700 outline-4 rounded-3xl mx-2 py-4 my-4 shadow-lg shadow-black/70 lg:mb-0 placeholder:text-slate-600 text-center '
+										color={'outline-orange-700'}
+										name='weight'
+										num={weight}
+										changeHandler={(e) => dispatch(editWeight({ movementID: exerciseEntry.movementID, value: Number(e.target.value), setNumber: i }))}
 									/>
 								))}
 							</div>
@@ -75,40 +72,21 @@ const ExerciseItem = () => {
 						<div className="bg-slate-700 rounded-3xl py-4 my-4 w-11/12 mx-auto">
 							<h3 className='text-center text-white text-xl mb-4 font-bold'>Intensity & Order</h3>
 							<div className="grid grid-cols-2 content-center ">
-								<input
-									type="number"
-									placeholder='Order'
-									className='outline my-1 outline-blue-700 outline-4 rounded-2xl placeholder:text-slate-600 text-center py-3 w-11/12 block mx-auto  shadow-lg shadow-black/70 '
-									value={exerciseEntry.order}
-									onChange={(e) => dispatch(editOrder({
-										movementID: exerciseEntry.movementID,
-										value: Number(e.target.value)
-									}))}
+								<NumberInput
+									name='Order' num={exerciseEntry.order}
+									changeHandler={(e) => dispatch(editOrder({ movementID: exerciseEntry.movementID, value: Number(e.target.value) }))}
 								/>
-								<input
-									type="number"
-									placeholder='Intensity 0-10'
-									className='outline my-1 outline-purple-600 outline-4 rounded-2xl placeholder:text-slate-600 text-center py-3 w-11/12 block mx-auto  shadow-lg shadow-black/70'
-									value={exerciseEntry.intensity}
-									min={0}
-									max={10}
-									onChange={(e) => dispatch(editIntensity({
-										movementID: exerciseEntry.movementID,
-										value: Number(e.target.value)
-									}))}
+								<NumberInput
+									name='Intensity' num={exerciseEntry.intensity}
+									color={'outline-purple-600'}
+									changeHandler={(e) => dispatch(editIntensity({ movementID: exerciseEntry.movementID, value: Number(e.target.value) }))}
 								/>
 							</div>
 						</div>
 						<div className='bg-slate-700 rounded-3xl w-11/12 mx-auto align-center flex flex-col py-4'>
-							<h3 className='text-center text-white text-xl mb-4 font-bold'>Notes?</h3>
-							<textarea
-								placeholder='Notes'
-								className='outline my-1 outline-yellow-400 outline-4 rounded-3xl text-center mx-auto placeholder:text-slate-600 py-6 w-11/12'
-								value={exerciseEntry.notes}
-								onChange={(e) => dispatch(editNotes({
-									movementID: exerciseEntry.movementID,
-									value: e.target.value
-								}))}
+							<Notes
+								val={exerciseEntry.notes}
+								changeHandler={(e) => dispatch(editNotes({ movementID: exerciseEntry.movementID, value: e.target.value }))}
 							/>
 						</div>
 						<button className='bg-cyan-500 rounded-full mx-auto block my-8 w-11/12 py-3 text-white font-bold' onClick={() => setPreviousInfo(prev => !prev)}> Show Previous Workout</button>
