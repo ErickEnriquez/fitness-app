@@ -60,7 +60,6 @@ const ExerciseTemplate = () => {
 						<h2 className='text-white text-xl font-bold'>Grade & Pre-workout?</h2>
 						<div className='grid grid-cols-2 mt-4'>
 							<NumberInput
-								title='Grade'
 								name='Grade'
 								num={workoutEntry.grade}
 								changeHandler={e => dispatch(editWorkoutGrade(Number(e.target.value)))}
