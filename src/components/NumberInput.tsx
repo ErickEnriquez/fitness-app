@@ -5,12 +5,13 @@ interface NumberInputProps {
 	color?: string
 	num: number
 	name: string
+	title?: string
 }
 
-const NumberInput = ({ color, changeHandler, num, name }: NumberInputProps) => {
+const NumberInput = ({ color, changeHandler, num, name, title }: NumberInputProps) => {
 	return (
 		<span>
-			<label htmlFor={name} className='text-white text-lg font-bold'>{name}</label>
+			<label htmlFor={name} className='text-white text-lg font-bold'>{title ||''}</label>
 			<input type="number"
 				name={name}
 				placeholder={name}
