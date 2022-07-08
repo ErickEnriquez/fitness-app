@@ -68,7 +68,7 @@ const ExerciseTemplate = () => {
 								id="preWorkout"
 								placeholder='Pre-workout?'
 								className='outline my-1 outline-fuchsia-500 outline-4 rounded-3xl placeholder:text-slate-600 text-center py-3 w-11/12 block mx-auto  shadow-lg shadow-black/70'
-								onChange={(e) => dispatch(editPreWorkout(e.target.value === 'Yes'))}
+								onChange={(e) => dispatch(editPreWorkout(e.target.value === 'true'))}
 							>
 								<option value="true">Yes</option>
 								<option value="false">No</option>
