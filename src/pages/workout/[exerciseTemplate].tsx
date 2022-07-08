@@ -7,6 +7,10 @@ import { postExerciseEntries, editWorkoutNotes, editWorkoutGrade, editPreWorkout
 import Loading from '@components/Loading'
 import Success from '@components/Success'
 import Fail from '@components/Fail'
+import Notes from '@components/Notes'
+import NumberInput from '@components/NumberInput'
+import SubmitBtn from '@components/SubmitBtn'
+
 const ExerciseTemplate = () => {
 	const status = useAppSelector(state => state.exercise.status)
 	const workoutID = useAppSelector(state => state.exercise.activeWorkout)
@@ -47,22 +51,18 @@ const ExerciseTemplate = () => {
 					<hr className='block mx-auto w-11/12  mb-4' />
 					<ExerciseList />
 					<div className="w-11/12 mx-auto bg-slate-700 rounded-3xl mb-6">
-						<h2 className='text-white text-xl font-bold'>Notes</h2>
-						<textarea className="w-11/12 rounded my-4 h-24 outline outline-yellow-500 outline-4 shadow-lg shadow-black/70"
-							onChange={(e) => dispatch(editWorkoutNotes(e.target.value))}
-							value={workoutEntry.notes}
-							placeholder="Include any notes about the workout in general"
-						></textarea>
+						<Notes
+							val={workoutEntry.notes}
+							changeHandler={e => dispatch(editWorkoutNotes(e.target.value))}
+						/>
 					</div>
 					<div className="w-11/12 mx-auto bg-slate-700 rounded-3xl py-4">
 						<h2 className='text-white text-xl font-bold'>Grade & Pre-workout?</h2>
 						<div className='grid grid-cols-2 mt-4'>
-							<input
-								type="Number"
-								placeholder='Grade 0 - 10'
-								value={workoutEntry.grade}
-								onChange={(e) => dispatch(editWorkoutGrade(Number(e.target.value)))}
-								className='outline my-1 outline-cyan-300 outline-4 rounded-3xl placeholder:text-slate-600 text-center py-3 w-11/12 block mx-auto  shadow-lg shadow-black/70'
+							<NumberInput
+								name='Grade'
+								num={workoutEntry.grade}
+								changeHandler={e => dispatch(editWorkoutGrade(Number(e.target.value)))}
 							/>
 							<select
 								id="preWorkout"
@@ -75,10 +75,9 @@ const ExerciseTemplate = () => {
 							</select>
 						</div>
 					</div>
-					<button className='text-white bg-green-500 rounded-full w-11/12 mx-auto hover:bg-white hover:text-green-500 hover:outline outline-green-500 my-4 h-16'
-						onClick={() => dispatch(postExerciseEntries())}>
-						Submit
-					</button>
+					<SubmitBtn
+						clickHandler={() => dispatch(postExerciseEntries())}
+					/>
 				</main>
 			}
 		</Layout >
