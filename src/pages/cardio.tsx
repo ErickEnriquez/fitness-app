@@ -38,9 +38,9 @@ const Cardio = (): JSX.Element => {
 
 	return (
 		<Layout>
-			<main className="text-center pt-4">
+			<main className="text-center my-4 py-4">
 				<Card title="Enter Cardio Details"
-					style={{ 'textDecoration': 'underline' }}
+					style={{ textDecoration: 'underline' }}
 				>
 					<div className='flex flex-col my-2 py-2 w-11/12 mx-auto text-center'>
 						<span className="mt-4 my-6">
