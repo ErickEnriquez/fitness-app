@@ -60,11 +60,13 @@ const Cardio = (): JSX.Element => {
 						</span>
 						<div className='grid grid-cols-2'>
 							<NumberInput
+								title='Intensity'
 								name={'Intensity'}
 								num={intensity}
 								changeHandler={e => dispatch(editCardioIntensity(Number(e.target.value)))}
 							/>
 							<NumberInput
+								title='Calories'
 								name={'Calories'}
 								num={caloriesBurned}
 								changeHandler={e => dispatch(editCaloriesBurned(Number(e.target.value)))}
@@ -72,11 +74,13 @@ const Cardio = (): JSX.Element => {
 						</div>
 						<div className='grid grid-cols-2 my-4'>
 							<NumberInput
+								title='Distance'
 								name={'Distance'}
 								num={distance}
 								changeHandler={e => dispatch(editDistance(Number(e.target.value)))}
 							/>
 							<NumberInput
+								title='Time'
 								name={'Time'}
 								num={time}
 								changeHandler={e => dispatch(editTime(Number(e.target.value)))}
