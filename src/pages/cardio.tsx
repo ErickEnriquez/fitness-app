@@ -6,6 +6,8 @@ import Success from '@components/Success'
 import Fail from '@components/Fail'
 import Card from '@components/Card'
 import NumberInput from '@components/NumberInput'
+import Notes from '@components/Notes'
+import SubmitBtn from '@components/SubmitBtn'
 
 import { useAppSelector, useAppDispatch } from '@app/hooks'
 import {
@@ -81,21 +83,14 @@ const Cardio = (): JSX.Element => {
 							/>
 						</div>
 					</div>
-					<label htmlFor="cardio-notes" className='text-white text-lg font-bold'>Notes</label>
-					<textarea name="cardio-notes"
-						id="" rows={10}
-						value={notes}
-						onChange={e => dispatch(editCardioNotes(e.target.value))}
-						className='outline my-6 outline-yellow-400 outline-4 rounded-3xl placeholder:text-slate-600 text-center py-4 w-11/12 block mx-auto  shadow-lg shadow-black/70'
-						placeholder='Any Notes to add'>
-					</textarea>
+					<Notes
+						val={notes}
+						changeHandler={e => dispatch(editCardioNotes(e.target.value))}
+					/>
 					<br />
-					<button type="submit"
-						className='text-white bg-green-500 rounded-full w-11/12 mx-auto hover:bg-white hover:text-green-500 hover:outline outline-green-500 my-4 h-12'
-						onClick={() => dispatch(submitCardioInfo())}
-					>
-						Submit
-					</button>
+					<SubmitBtn
+						clickHandler={() => dispatch(submitCardioInfo())}
+					/>
 				</Card>
 			</main>
 		</Layout >
