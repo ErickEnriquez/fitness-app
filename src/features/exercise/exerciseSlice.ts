@@ -95,7 +95,7 @@ export const getExerciseTemplates = createAsyncThunk(
 
 export const postExerciseEntries = createAsyncThunk(
 	'exercise/postExerciseEntries',
-	async (arg, { getState, rejectWithValue }) => {
+	async (_, { getState, rejectWithValue }) => {
 		const { exercise: { entries, workoutEntry } } = getState() as AppState
 
 		if (entries.some(e => e.completed !== true)) {
