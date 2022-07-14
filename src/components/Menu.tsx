@@ -6,7 +6,6 @@ const SiteMenu = () => {
 		alert('SETTING Clicked')
 	}
 
-
 	const styles = {
 		bmBurgerButton: {
 			position: 'fixed',
@@ -14,10 +13,10 @@ const SiteMenu = () => {
 			height: '30px',
 			left: '36px',
 			top: '36px',
-			color: '#ffffff'
 		},
 		bmBurgerBars: {
-			background: '#373a47'
+			background: '#ffffff',
+			borderRadius: '5px'
 		},
 		bmBurgerBarsHover: {
 			background: '#a90000'
