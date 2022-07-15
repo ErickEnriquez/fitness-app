@@ -1,5 +1,5 @@
 import { slide as Menu } from 'react-burger-menu'
-
+import Link from 'next/link'
 const SiteMenu = () => {
 	const showSettings = (e) => {
 		e.preventDefault()
@@ -42,26 +42,36 @@ const SiteMenu = () => {
 		},
 		bmItemList: {
 			color: '#b8b7ad',
-			padding: '0.8em'
+			padding: '0.8em',
 		},
 		bmItem: {
-			display: 'block'
+			display: 'inline-block'
 		},
 		bmOverlay: {
-			background: 'rgba(0, 0, 0, 0.3)'
-		}
+			background: 'rgba(0, 0, 0, 0.9)'
+		},
 	}
 	// NOTE: You also need to provide styles, see https://github.com/negomi/react-burger-menu#styling
 	return (
-		<Menu styles={styles}>
-			<a id="home" className="menu-item text-white" href="/">Home</a>
-			<a id="about" className="menu-item text-white" href="/workout">Workouts</a>
-			<a id="contact" className="menu-item text-white" href="/calendar">Calendar</a>
-			<a id="cardio" className="menu-item text-white" href="/cardio">Cardio</a>
-			<a onClick={showSettings} className="menu-item--small text-white" href="">Settings</a>
-		</Menu>
+		<div className='relative p-2'>
+			<Menu customBurgerIcon={<HamburgerIcon />} style={styles} width={'auto'} className='left-0 top-12' >
+				<Links />
+			</Menu>
+		</div>
 	)
 }
+
+const HamburgerIcon = () => (<div className='p-1/2'><svg className="w-8 h-8 text-white" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M4 6h16M4 12h16M4 18h16"></path></svg></div>)
+
+
+export const Links = () => (<>
+	<Link href="/"><a className='font-bold p-4 flex flex-col ' >Home</a></Link>
+	<Link href="/workout"><a className='font-bold p-4 flex flex-col' >Workouts</a></Link>
+	<Link href="/calendar"><a className='font-bold p-4 flex flex-col'>Calendar</a></Link>
+	<Link href="/cardio"><a className='font-bold p-4 flex flex-col'>Cardio</a></Link>
+
+</>)
+
 
 export default SiteMenu
 

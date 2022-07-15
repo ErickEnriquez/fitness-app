@@ -1,7 +1,6 @@
 import React from 'react'
 import Head from 'next/head'
-import Menu from '@components/Menu'
-
+import Nav from '@components/Nav'
 interface LayoutProps {
 	title?: string
 	children?: React.ReactNode
@@ -18,8 +17,8 @@ const Layout = ({ children, title }: LayoutProps) => {
 				{/* Include the favicon when we have one */}
 				{/* <link rel="icon" href="" /> */}
 			</Head>
-			<section>
-				<Menu />
+			<Nav />
+			<section className='block'>
 				{children}
 			</section>
 		</>
