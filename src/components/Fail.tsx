@@ -6,7 +6,7 @@ interface props {
 
 const Fail = ({ clickHandler }: props) => {
 	return (
-		<div role="alert">
+		<div role="alert" className='w-11/12 mx-auto pt-8'>
 			<div className="bg-red-500 text-white font-bold rounded-t px-4 py-2 flex justify-between">
 				<span>Error</span>
 				<button

@@ -95,7 +95,7 @@ export const getExerciseTemplates = createAsyncThunk(
 
 export const postExerciseEntries = createAsyncThunk(
 	'exercise/postExerciseEntries',
-	async (arg, { getState, rejectWithValue }) => {
+	async (_, { getState, rejectWithValue }) => {
 		const { exercise: { entries, workoutEntry } } = getState() as AppState
 
 		if (entries.some(e => e.completed !== true)) {
@@ -156,35 +156,29 @@ export const exerciseSlice = createSlice({
 	},
 	extraReducers: (builder) => {
 		builder
-			//getting list of the workouts
-			.addCase(getWorkoutAsync.pending, (state) => {
-				state.status = 'loading'
-			})
+			//================ getting list of the workouts ===========================================
+			.addCase(getWorkoutAsync.pending, (state) => { state.status = 'loading' })
 			.addCase(getWorkoutAsync.fulfilled, (state, action) => {
 				state.status = 'idle'
 				state.workouts = action.payload
 			})
-			//getting the workout template for a workout
-			.addCase(getExerciseTemplates.pending, (state) => {
-				state.status = 'loading'
-			})
+			//================ getting the workout template for a workout ============================
+			.addCase(getExerciseTemplates.pending, (state) => { state.status = 'loading' })
 			.addCase(getExerciseTemplates.fulfilled, (state, action) => {
 				state.status = 'idle'
 				//mark the type of workout that we are doing
 				state.activeWorkout = action.payload.workoutId
 				//create the entries for the workout
-				state.entries = action.payload.exercises.map((entry: ExerciseTemplate) => {
-					return {
-						...entry,
-						weights: Array(entry.sets).fill(''),
-						intensity: '',
-						notes: '',
-						order: '',
-						completed: false,
-					}
-				})
+				state.entries = action.payload.exercises.map((entry: ExerciseTemplate) => ({
+					...entry,
+					weights: Array(entry.sets).fill(''),
+					intensity: '',
+					notes: '',
+					order: '',
+					completed: false,
+				}
+				))
 				state.previousExerciseEntries = action.payload.previousExercises
-
 				//initialize the workout entry with the data that we need
 				state.workoutEntry = {
 					workoutTemplateId: action.payload.workoutId,
@@ -193,14 +187,10 @@ export const exerciseSlice = createSlice({
 					notes: ''
 				}
 			})
-			//posting the exercise entries
+			//================= posting the exercise entries =====================================
 			.addCase(postExerciseEntries.pending, (state) => { state.status = 'loading' })
-			.addCase(postExerciseEntries.fulfilled, (state) => {
-				state.status = 'success'
-			})
-			.addCase(postExerciseEntries.rejected, (state,) => {
-				state.status = 'failed'
-			})
+			.addCase(postExerciseEntries.fulfilled, (state) => { state.status = 'success' })
+			.addCase(postExerciseEntries.rejected, (state,) => { state.status = 'failed' })
 	}
 })
 
