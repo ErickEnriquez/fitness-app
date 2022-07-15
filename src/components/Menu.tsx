@@ -1,5 +1,5 @@
 import { slide as Menu } from 'react-burger-menu'
-
+import Link from 'next/link'
 const SiteMenu = () => {
 	const showSettings = (e) => {
 		e.preventDefault()
@@ -12,7 +12,7 @@ const SiteMenu = () => {
 			width: '36px',
 			height: '30px',
 			left: '36px',
-			top: '36px',
+			top: '8px',
 		},
 		bmBurgerBars: {
 			background: '#ffffff',
@@ -53,15 +53,24 @@ const SiteMenu = () => {
 	}
 	// NOTE: You also need to provide styles, see https://github.com/negomi/react-burger-menu#styling
 	return (
-		<Menu styles={styles}>
-			<a id="home" className="menu-item text-white" href="/">Home</a>
-			<a id="about" className="menu-item text-white" href="/workout">Workouts</a>
-			<a id="contact" className="menu-item text-white" href="/calendar">Calendar</a>
-			<a id="cardio" className="menu-item text-white" href="/cardio">Cardio</a>
-			<a onClick={showSettings} className="menu-item--small text-white" href="">Settings</a>
-		</Menu>
+		<div className='relative p-2'>
+			<Menu customBurgerIcon={<HamburgerIcon />} width={'auto'} className='left-0 top-12' >
+				<Links />
+			</Menu>
+		</div>
 	)
 }
+
+const HamburgerIcon = () => (<div className='p-1/2'><svg className="w-8 h-8 text-gray-500" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M4 6h16M4 12h16M4 18h16"></path></svg></div>)
+
+export const Links = () => (<>
+	<Link href="/"><a className='font-bold p-4'>Home</a></Link>
+	<Link href="/workout"><a className='font-bold p-4'>Workouts</a></Link>
+	<Link href="/calendar"><a className='font-bold p-4'>Calendar</a></Link>
+	<Link href="/cardio"><a className='font-bold p-4'>Cardio</a></Link>
+
+</>)
+
 
 export default SiteMenu
 
