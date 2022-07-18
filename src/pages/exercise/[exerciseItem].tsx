@@ -61,7 +61,6 @@ const ExerciseItem = () => {
 								{exerciseEntry.weights.map((weight, i: number) => (
 									<NumberInput
 										key={i}
-										color={'outline-orange-700'}
 										name='weight'
 										num={weight}
 										changeHandler={(e) => dispatch(editWeight({ movementID: exerciseEntry.movementID, value: Number(e.target.value), setNumber: i }))}
@@ -78,7 +77,6 @@ const ExerciseItem = () => {
 								/>
 								<NumberInput
 									name='Intensity' num={exerciseEntry.intensity}
-									color={'outline-purple-600'}
 									changeHandler={(e) => dispatch(editIntensity({ movementID: exerciseEntry.movementID, value: Number(e.target.value) }))}
 								/>
 							</div>
