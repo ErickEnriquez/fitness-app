@@ -1,13 +1,14 @@
 import React from 'react'
-import Menu, { Links } from '@components/Menu'
+import Menu from '@components/Menu'
+import NavLinks from '@components/NavLinks'
 const Nav = () => {
 	return (
-		<div className='max-w-full h-12 flex justify-start items-center bg-cyan-700 mb-4 text-white rounded-md '>
+		<nav className='max-w-full h-14 flex justify-start items-center bg-cyan-700 mb-4 text-white rounded-md '>
 			<div className='flex md:hidden'><Menu /></div>
 			<div className='hidden md:flex'>
-				<Links />
+				<NavLinks />
 			</div>
-		</div>
+		</nav>
 	)
 }
 

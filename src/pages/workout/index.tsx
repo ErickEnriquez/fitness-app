@@ -31,17 +31,27 @@ const WorkoutPage: NextPage = () => {
 								<Link href={`/workout/${item.id}`} key={idx}>
 									<li
 										className={`
-									rounded-3xl my-4 py-4  w-11/12 mx-auto text-white bg-cyan-900 outline-cyan-900 shadow-lg shadow-black/70 
+									rounded-3xl my-4 py-8  w-11/12 mx-auto text-white bg-cyan-700 outline-cyan-700 shadow-lg shadow-black/70 
 									hover:bg-white hover:outline hover:text-cyan-900 hover:cursor-pointer`
 										}
 										onClick={() => dispatch(getExerciseTemplates(item.id))}
 									>
 										<strong className="capitalize underline">{item.type}</strong>
-										<p>Last Worked<br /> {item.date ? new Date(item.date).toLocaleDateString() : 'N/A'}</p>
 									</li>
 								</Link>
 							)
 						})}
+					</ul>
+				</Card>
+				<br />
+				<Card title={'Previous Workouts'}>
+					<ul>
+						{workouts.map((workout, idx) => (
+							<li key={idx}>
+								{workout.type}
+								{new Date(workout.date).toLocaleDateString()}
+							</li>
+						))}
 					</ul>
 				</Card>
 			</main>
