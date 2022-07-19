@@ -6,6 +6,7 @@ import PrevExercise from '@features/exercise/PrevExercise'
 import { editWeight, editNotes, editIntensity, editOrder, selectActiveEntry, toggleExerciseComplete } from '@features/exercise/exerciseSlice'
 import Notes from '@components/Notes'
 import NumberInput from '@components/NumberInput'
+import BackBtn from '@components/BackBtn'
 
 const ExerciseItem = () => {
 	const dispatch = useAppDispatch()
@@ -34,18 +35,7 @@ const ExerciseItem = () => {
 				{exerciseEntry ?
 					<div>
 						<div className='grid grid-cols-4 my-4'>
-							<Link href={`/workout/${exerciseEntry.workoutId}`}>
-								<span className="flex items-center">
-									<a onClick={toggleCompleted}
-										className={`
-									text-center bg-orange-500 px-8 rounded-full w-3/4 mx-auto text-white shadow-lg shadow-black/70 
-									hover:outline-orange-500 hover:outline hover:bg-white hover:text-orange-500
-									flex items-center justify-center h-10 font-bold
-									`}
-									>Back
-									</a>
-								</span>
-							</Link>
+							<BackBtn href={`/workout/${exerciseEntry.workoutId}`} clickHandler={toggleCompleted} />
 							<h2 className='mx-auto1 text-white text-center col-span-2'>
 								<span className='text-3xl font-bold'>
 									{exerciseEntry.name}
