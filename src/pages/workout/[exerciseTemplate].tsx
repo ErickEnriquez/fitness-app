@@ -48,11 +48,11 @@ const ExerciseTemplate = () => {
 						>
 							Exit
 						</a>
-						<h1 className='text-white col-span-2 mx-auto text-3xl capitalize font-bold bg-slate-700 px-6 py-1 rounded-xl'>
+						<h1 className='text-white col-span-2 mx-auto text-3xl capitalize font-bold bg-slate-700 px-20 py-1 rounded-2xl'>
 							{activeWorkout && activeWorkout.type}
 						</h1>
+						<br />
 					</div>
-					<hr className='block mx-auto w-11/12  mb-4' />
 					<ExerciseList />
 					<br />
 					<Card>
