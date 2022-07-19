@@ -3,11 +3,12 @@ import { useRouter } from 'next/router'
 import Layout from '@features/layout/Layout'
 import ExerciseList from '@features/exercise/ExerciseList'
 import { useAppSelector, useAppDispatch } from '@app/hooks'
-import { postExerciseEntries, editWorkoutNotes, editWorkoutGrade, editPreWorkout, clearState } from '@features/exercise/exerciseSlice'
+import { postExerciseEntries, editWorkoutNotes, editWorkoutGrade, editPreWorkout, clearState, clearStatus } from '@features/exercise/exerciseSlice'
 import Loading from '@components/Loading'
 import Success from '@components/Success'
 import Fail from '@components/Fail'
 import Notes from '@components/Notes'
+import Card from '@components/Card'
 import NumberInput from '@components/NumberInput'
 import SubmitBtn from '@components/SubmitBtn'
 
@@ -22,8 +23,11 @@ const ExerciseTemplate = () => {
 	const router = useRouter()
 
 	if (status === 'loading') return <Loading />
-	else if (status === 'failed') return <Layout><Fail clickHandler={() => dispatch(clearState())} /></Layout>
-	else if (status === 'success') return <Layout><Success clickHandler={() => dispatch(clearState())} /></Layout>
+	else if (status === 'failed') return <Layout><Fail clickHandler={() => dispatch(clearStatus())} /></Layout>
+	else if (status === 'success') return <Layout><Success clickHandler={() => {
+		dispatch(clearState())
+		router.push('/workout')
+	}} /></Layout>
 
 	return (
 		<Layout>
@@ -31,7 +35,7 @@ const ExerciseTemplate = () => {
 				<main className='text-center mt-4'>
 					<div className='grid grid-cols-4 mb-6'>
 						<a
-							onClick={(e) => {
+							onClick={e => {
 								e.preventDefault()
 								const r = window.confirm('Are you sure you want to cancel this workout?')
 								if (!r) return
@@ -44,20 +48,21 @@ const ExerciseTemplate = () => {
 						>
 							Exit
 						</a>
-						<h1 className='text-white col-span-2 mx-auto underline text-3xl capitalize font-bold'>
+						<h1 className='text-white col-span-2 mx-auto text-3xl capitalize font-bold bg-slate-700 px-8 py-1 rounded-2xl'>
 							{activeWorkout && activeWorkout.type}
 						</h1>
+						<br />
 					</div>
-					<hr className='block mx-auto w-11/12  mb-4' />
 					<ExerciseList />
-					<div className="w-11/12 mx-auto bg-slate-700 rounded-3xl mb-6">
+					<br />
+					<Card>
 						<Notes
 							val={workoutEntry.notes}
 							changeHandler={e => dispatch(editWorkoutNotes(e.target.value))}
 						/>
-					</div>
-					<div className="w-11/12 mx-auto bg-slate-700 rounded-3xl py-4">
-						<h2 className='text-white text-xl font-bold'>Grade & Pre-workout?</h2>
+					</Card>
+					<br />
+					<Card title={'Grade & Pre Workout'}>
 						<div className='grid grid-cols-2 mt-4'>
 							<NumberInput
 								name='Grade'
@@ -67,14 +72,14 @@ const ExerciseTemplate = () => {
 							<select
 								id="preWorkout"
 								placeholder='Pre-workout?'
-								className='outline my-1 outline-fuchsia-500 outline-4 rounded-3xl placeholder:text-slate-600 text-center py-3 w-11/12 block mx-auto  shadow-lg shadow-black/70'
-								onChange={(e) => dispatch(editPreWorkout(e.target.value === 'true'))}
+								className='outline my-4 outline-cyan-700 outline-4 rounded-3xl placeholder:text-slate-600 text-center py-3 w-11/12 block mx-auto shadow-lg shadow-black/70'
+								onChange={e => dispatch(editPreWorkout(e.target.value === 'true'))}
 							>
 								<option value="true">Yes</option>
 								<option value="false">No</option>
 							</select>
 						</div>
-					</div>
+					</Card>
 					<SubmitBtn
 						clickHandler={() => dispatch(postExerciseEntries())}
 					/>

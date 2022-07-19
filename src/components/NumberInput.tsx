@@ -17,7 +17,7 @@ const NumberInput = ({ color, changeHandler, num, name, title }: NumberInputProp
 				placeholder={name}
 				value={num}
 				onChange={changeHandler}
-				className={`outline mt-4 ${color || 'outline-cyan-500'} outline-4 rounded-3xl placeholder:text-slate-600 text-center py-4 w-11/12 block mx-auto  shadow-lg shadow-black/70`}
+				className={`outline my-4 ${color || 'outline-cyan-700'} outline-4 rounded-3xl placeholder:text-slate-600 text-center py-4 w-11/12 block mx-auto  shadow-lg shadow-black/70`}
 			/>
 		</span>
 	)

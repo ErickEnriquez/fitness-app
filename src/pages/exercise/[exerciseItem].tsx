@@ -6,6 +6,7 @@ import PrevExercise from '@features/exercise/PrevExercise'
 import { editWeight, editNotes, editIntensity, editOrder, selectActiveEntry, toggleExerciseComplete } from '@features/exercise/exerciseSlice'
 import Notes from '@components/Notes'
 import NumberInput from '@components/NumberInput'
+import BackBtn from '@components/BackBtn'
 
 const ExerciseItem = () => {
 	const dispatch = useAppDispatch()
@@ -34,19 +35,8 @@ const ExerciseItem = () => {
 				{exerciseEntry ?
 					<div>
 						<div className='grid grid-cols-4 my-4'>
-							<Link href={`/workout/${exerciseEntry.workoutId}`}>
-								<span className="flex items-center">
-									<a onClick={toggleCompleted}
-										className={`
-									text-center bg-orange-500 px-8 rounded-full w-3/4 mx-auto text-white shadow-lg shadow-black/70 
-									hover:outline-orange-500 hover:outline hover:bg-white hover:text-orange-500
-									flex items-center justify-center h-10 font-bold
-									`}
-									>Back
-									</a>
-								</span>
-							</Link>
-							<h2 className='mx-auto1 text-white text-center col-span-2'>
+							<BackBtn href={`/workout/${exerciseEntry.workoutId}`} clickHandler={toggleCompleted} />
+							<h2 className='mx-auto1 text-white text-center col-span-2 bg-slate-700 rounded-2xl'>
 								<span className='text-3xl font-bold'>
 									{exerciseEntry.name}
 								</span>
@@ -54,14 +44,13 @@ const ExerciseItem = () => {
 								Sets {exerciseEntry.sets}x{exerciseEntry.reps}
 							</h2>
 						</div>
-						<hr className='block mx-auto w-11/12 mb-2' />
+						<br />
 						<div className="bg-slate-700 rounded-3xl content-center w-11/12 mx-auto">
 							<h3 className='text-center text-white text-xl font-bold'>Weight (lbs)</h3>
 							<div className='grid grid-cols-2 py-4  md:grid-cols-2 lg:grid-cols-5 '>
 								{exerciseEntry.weights.map((weight, i: number) => (
 									<NumberInput
 										key={i}
-										color={'outline-orange-700'}
 										name='weight'
 										num={weight}
 										changeHandler={(e) => dispatch(editWeight({ movementID: exerciseEntry.movementID, value: Number(e.target.value), setNumber: i }))}
@@ -78,7 +67,6 @@ const ExerciseItem = () => {
 								/>
 								<NumberInput
 									name='Intensity' num={exerciseEntry.intensity}
-									color={'outline-purple-600'}
 									changeHandler={(e) => dispatch(editIntensity({ movementID: exerciseEntry.movementID, value: Number(e.target.value) }))}
 								/>
 							</div>
@@ -89,7 +77,7 @@ const ExerciseItem = () => {
 								changeHandler={(e) => dispatch(editNotes({ movementID: exerciseEntry.movementID, value: e.target.value }))}
 							/>
 						</div>
-						<button className='bg-cyan-500 rounded-full mx-auto block my-8 w-11/12 py-3 text-white font-bold' onClick={() => setPreviousInfo(prev => !prev)}> Show Previous Workout</button>
+						<button className='bg-white rounded-full mx-auto block my-8 w-11/12 py-3 text-cyan-700 font-bold' onClick={() => setPreviousInfo(prev => !prev)}> Show Previous Workout</button>
 						{previousInfo && <PrevExercise />}
 					</div>
 					:

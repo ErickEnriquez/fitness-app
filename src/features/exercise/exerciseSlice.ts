@@ -77,16 +77,19 @@ export const getWorkoutAsync = createAsyncThunk(
 export const getExerciseTemplates = createAsyncThunk(
 	'exercise/getExerciseTemplates',
 	async (id: number, { getState }) => {
-		const response = await axios.get('/api/exercise-templates', { params: { workoutId: id } })
+
 		const { exercise: { workouts } } = getState() as AppState
 		const prevWorkoutID = workouts.find(workout => workout.id === id)?.prevWorkoutId
+
+		const exercisesList = await axios.get('/api/exercise-templates', { params: { workoutId: id } })
+			.then(res => res.data)
 
 		const previousExercises = prevWorkoutID
 			? await (await axios.get('/api/exercise-entry', { params: { workoutId: prevWorkoutID } })).data as ExerciseEntry[]
 			: null
 
 		return {
-			exercises: response.data,
+			exercises: exercisesList,
 			workoutId: id,
 			previousExercises
 		}
@@ -128,7 +131,7 @@ export const exerciseSlice = createSlice({
 			state.entries.find(entry => entry.movementID === action.payload.movementID).notes = action.payload.value
 		},
 		editIntensity: (state, action: PayloadAction<{ movementID: number, value: number }>) => {
-			if (isNaN(action.payload.value)) return
+			if (isNaN(action.payload.value) || action.payload.value > 10 || action.payload.value < 1) return
 			state.entries.find(entry => entry.movementID === action.payload.movementID).intensity = action.payload.value
 		},
 		//set the active entry we are working on when given an ID
@@ -144,14 +147,24 @@ export const exerciseSlice = createSlice({
 			state.workoutEntry.notes = action.payload
 		},
 		editWorkoutGrade: (state, action: PayloadAction<number>) => {
+			if (isNaN(action.payload) || action.payload > 10 || action.payload < 1) return
 			state.workoutEntry.grade = action.payload
 		},
 		editPreWorkout: (state, action: PayloadAction<boolean>) => {
 			state.workoutEntry.preWorkout = action.payload
 		},
+		clearStatus: (state) => {
+			state.status = 'idle'
+		},
 		//return the state of the exercise slice back to idle
 		clearState: (state) => {
 			state.status = 'idle'
+			state.entries = [] as UserEntry[]
+			state.workouts = [] as WorkoutInfo[]
+			state.activeWorkout = null as number
+			state.activeEntry = null as number
+			state.previousExerciseEntries = [] as ExerciseEntry[]
+			state.workoutEntry = null as activeWorkoutInfo
 		}
 	},
 	extraReducers: (builder) => {
@@ -205,7 +218,8 @@ export const {
 	editWorkoutNotes,
 	editWorkoutGrade,
 	editPreWorkout,
-	clearState
+	clearState,
+	clearStatus
 }
 	= exerciseSlice.actions
 
