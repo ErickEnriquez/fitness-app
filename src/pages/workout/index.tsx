@@ -18,6 +18,10 @@ const WorkoutPage: NextPage = () => {
 		dispatch(getWorkoutAsync())
 	}, [])
 
+	const previousWorkouts = [...workouts]
+
+	previousWorkouts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+
 
 	if (status === 'loading') return <Loading />
 
@@ -46,9 +50,9 @@ const WorkoutPage: NextPage = () => {
 				<br />
 				<Card title={'Previous Workouts'}>
 					<ul>
-						{workouts.map((workout, idx) => (
-							<li key={idx} className='text-white capitalize'>
-								<strong>{workout.type} - {new Date(workout.date).toLocaleDateString()} </strong>
+						{previousWorkouts.map((workout, idx) => (
+							<li key={idx} className='text-white capitalize my-4'>
+								<strong className='underline'>{workout.type} - {new Date(workout.date).toLocaleDateString()} </strong>
 							</li>
 						))}
 					</ul>
