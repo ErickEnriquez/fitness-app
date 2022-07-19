@@ -36,7 +36,7 @@ const ExerciseItem = () => {
 					<div>
 						<div className='grid grid-cols-4 my-4'>
 							<BackBtn href={`/workout/${exerciseEntry.workoutId}`} clickHandler={toggleCompleted} />
-							<h2 className='mx-auto1 text-white text-center col-span-2'>
+							<h2 className='mx-auto1 text-white text-center col-span-2 bg-slate-700 rounded-2xl'>
 								<span className='text-3xl font-bold'>
 									{exerciseEntry.name}
 								</span>
@@ -44,7 +44,7 @@ const ExerciseItem = () => {
 								Sets {exerciseEntry.sets}x{exerciseEntry.reps}
 							</h2>
 						</div>
-						<hr className='block mx-auto w-11/12 mb-2' />
+						<br />
 						<div className="bg-slate-700 rounded-3xl content-center w-11/12 mx-auto">
 							<h3 className='text-center text-white text-xl font-bold'>Weight (lbs)</h3>
 							<div className='grid grid-cols-2 py-4  md:grid-cols-2 lg:grid-cols-5 '>
@@ -77,7 +77,7 @@ const ExerciseItem = () => {
 								changeHandler={(e) => dispatch(editNotes({ movementID: exerciseEntry.movementID, value: e.target.value }))}
 							/>
 						</div>
-						<button className='bg-cyan-500 rounded-full mx-auto block my-8 w-11/12 py-3 text-white font-bold' onClick={() => setPreviousInfo(prev => !prev)}> Show Previous Workout</button>
+						<button className='bg-white rounded-full mx-auto block my-8 w-11/12 py-3 text-cyan-700 font-bold' onClick={() => setPreviousInfo(prev => !prev)}> Show Previous Workout</button>
 						{previousInfo && <PrevExercise />}
 					</div>
 					:
