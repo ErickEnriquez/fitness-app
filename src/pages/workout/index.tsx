@@ -47,9 +47,8 @@ const WorkoutPage: NextPage = () => {
 				<Card title={'Previous Workouts'}>
 					<ul>
 						{workouts.map((workout, idx) => (
-							<li key={idx}>
-								{workout.type}
-								{new Date(workout.date).toLocaleDateString()}
+							<li key={idx} className='text-white capitalize'>
+								<strong>{workout.type} - {new Date(workout.date).toLocaleDateString()} </strong>
 							</li>
 						))}
 					</ul>
