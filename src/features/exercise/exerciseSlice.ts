@@ -77,16 +77,19 @@ export const getWorkoutAsync = createAsyncThunk(
 export const getExerciseTemplates = createAsyncThunk(
 	'exercise/getExerciseTemplates',
 	async (id: number, { getState }) => {
-		const response = await axios.get('/api/exercise-templates', { params: { workoutId: id } })
+
 		const { exercise: { workouts } } = getState() as AppState
 		const prevWorkoutID = workouts.find(workout => workout.id === id)?.prevWorkoutId
+
+		const exercisesList = await axios.get('/api/exercise-templates', { params: { workoutId: id } })
+			.then(res => res.data)
 
 		const previousExercises = prevWorkoutID
 			? await (await axios.get('/api/exercise-entry', { params: { workoutId: prevWorkoutID } })).data as ExerciseEntry[]
 			: null
 
 		return {
-			exercises: response.data,
+			exercises: exercisesList,
 			workoutId: id,
 			previousExercises
 		}
