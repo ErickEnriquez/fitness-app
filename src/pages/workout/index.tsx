@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { NextPage } from 'next'
 import Link from 'next/link'
 import Loading from '@components/Loading'
@@ -18,10 +18,13 @@ const WorkoutPage: NextPage = () => {
 		dispatch(getWorkoutAsync())
 	}, [])
 
-	const previousWorkouts = [...workouts]
 
-	previousWorkouts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-
+	//useMemo is used to avoid sorting this data every time the page is rendered
+	const previous = useMemo(() => {
+		const previousWorkouts = [...workouts]
+		previousWorkouts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+		return previousWorkouts
+	}, [workouts])
 
 	if (status === 'loading') return <Loading />
 
@@ -50,7 +53,7 @@ const WorkoutPage: NextPage = () => {
 				<br />
 				<Card title={'Previous Workouts'}>
 					<ul>
-						{previousWorkouts.map((workout, idx) => (
+						{previous.map((workout, idx) => (
 							<li key={idx} className='text-white capitalize my-4'>
 								<strong className='underline'>{workout.type} - {new Date(workout.date).toLocaleDateString()} </strong>
 							</li>
