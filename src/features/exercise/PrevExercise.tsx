@@ -17,7 +17,7 @@ const PrevExercise = () => {
 	return (
 		<div className='text-white text-center my-4'>
 			{activePrevExercise ?
-				<Card title='Previous Info'>
+				<Card title='Previous Workouts'>
 					<div className='grid grid-cols-2 mt-4'>
 						<div>
 							<span className='outline outline-white rounded-xl px-4 font-bold text-m block w-3/4 lg:w-1/2 mx-auto'>
@@ -31,21 +31,25 @@ const PrevExercise = () => {
 						</p>
 					</div>
 					<hr className='my-6 block w-11/12 mx-auto' />
-					<strong className='text-xl'>Weights</strong>
-					<ul className={'grid grid-cols-3'}>
-						{activePrevExercise.weights.map((item, idx) => {
-							return (
-								<li
-									className='my-4'
-									key={idx}
-								>
-									<span className='outline outline-white rounded-xl px-4 font-bold text-m block w-3/4 lg:w-1/2 mx-auto'>
-										<p className='underline'>Set {idx + 1}</p> {item}
-									</span>
-								</li>
-							)
-						})}
-					</ul>
+					<div className=' w-11/12 mx-auto mt-4'>
+						<strong className='text-xl'>Weights</strong>
+						<table className='w-full mt-4'>
+							<thead>
+								<tr>
+									{activePrevExercise.weights.map((_, i) => (<th className='bg-cyan-700' key={i}>{i + 1}</th>))}
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									{activePrevExercise.weights.map((weight, i) => (
+
+										<td key={i}>{weight} lbs</td>
+
+									))}
+								</tr>
+							</tbody>
+						</table>
+					</div>
 					{activePrevExercise.notes &&
 						<>
 							<hr className='my-6 block w-11/12 mx-auto' />
