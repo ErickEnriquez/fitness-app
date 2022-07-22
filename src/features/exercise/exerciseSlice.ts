@@ -37,8 +37,13 @@ export interface ExerciseState {
 	activeEntry: number
 	state: 'idle' | 'loading' | 'failed ' | 'success'
 	//get the stats of the last workout of that given type ie push heavy, pull heavy, etc
-	previousExerciseEntries: ExerciseEntry[]
+	previousExerciseEntries: PreviousWorkout[][]
 	workoutEntry: activeWorkoutInfo
+}
+
+export interface PreviousWorkout extends ExerciseEntry, Omit<WorkoutEntry, 'date|id'> {
+	prevDate: string
+	prevWorkoutId: number
 }
 
 const initialState = {
@@ -47,7 +52,7 @@ const initialState = {
 	status: 'idle',
 	activeWorkout: null as number,
 	activeEntry: null as number,
-	previousExerciseEntries: [] as ExerciseEntry[],
+	previousExerciseEntries: [] as PreviousWorkout[][],
 	workoutEntry: null as activeWorkoutInfo
 }
 
@@ -163,7 +168,7 @@ export const exerciseSlice = createSlice({
 			state.workouts = [] as WorkoutInfo[]
 			state.activeWorkout = null as number
 			state.activeEntry = null as number
-			state.previousExerciseEntries = [] as ExerciseEntry[]
+			state.previousExerciseEntries = [] as PreviousWorkout[][]
 			state.workoutEntry = null as activeWorkoutInfo
 		}
 	},
@@ -191,7 +196,7 @@ export const exerciseSlice = createSlice({
 					completed: false,
 				}
 				))
-				state.previousExerciseEntries = action.payload.previousExercises
+				state.previousExerciseEntries = []
 				//initialize the workout entry with the data that we need
 				state.workoutEntry = {
 					workoutTemplateId: action.payload.workoutId,

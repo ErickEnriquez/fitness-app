@@ -58,7 +58,7 @@ const PrevExercise = () => {
 					{activePrevExercise.notes &&
 						<>
 							<strong className='my-8'>
-								<strong className='text-xl underline'> Notes</strong>
+								<strong className='text-xl'> Notes</strong>
 								<p className='text-m w-11/12 mx-auto mt-2'>
 									{activePrevExercise.notes}
 								</p>
