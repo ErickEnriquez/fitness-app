@@ -50,11 +50,7 @@ const PrevExercise = () => {
 										</thead>
 										<tbody>
 											<tr>
-												{activePrevExercise.weights.map((weight, i) => (
-
-													<td key={i}>{weight} lbs</td>
-
-												))}
+												{activePrevExercise.weights.map((weight, i) => <td key={i}>{weight} lbs</td>)}
 											</tr>
 										</tbody>
 									</table>
@@ -72,6 +68,7 @@ const PrevExercise = () => {
 							</React.Fragment>
 						)
 					})}
+					{/* <button> Load More</button> */}
 				</Card>
 				: (
 					<h3 className='text-2xl'>
