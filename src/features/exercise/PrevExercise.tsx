@@ -11,66 +11,73 @@ const PrevExercise = () => {
 	const exerciseId = useAppSelector(selectActiveEntry)
 
 	//find the info about the last time that this exercise was completed
-	const activePrevExercise = previousWorkouts
-		? previousWorkouts[0].exercises.find(item => item.exerciseID === exerciseId)
-		: null
+
 
 	return (
 		<div className='text-white text-center my-4'>
-			{activePrevExercise ?
+			{previousWorkouts  ?
 				<Card title='Previous Workouts'>
-					<table className='w-11/12 mx-auto mt-4'>
-						<thead>
-							<tr className='outline-cyan-700 outline'>
-								<th>Order</th>
-								<th>Intensity</th>
-								<th>Date</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>{activePrevExercise.order}</td>
-								<td>{activePrevExercise.intensity}</td>
-								{/* placeholder date value right now, replace with the actual date that the workout was completed  */}
-								<td>{format(new Date(previousWorkouts[0].date), 'MMM  dd yyyy')}</td>
-							</tr>
-						</tbody>
-					</table>
-					<div className=' w-11/12 mx-auto mt-4'>
-						<strong className='text-xl'>Weight</strong>
-						<table className='w-full mt-4'>
-							<thead>
-								<tr className='bg-cyan-700 border-collapse rounded-2xl'>
-									{activePrevExercise.weights.map((_, i) => (<th key={i}>{i + 1}</th>))}
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									{activePrevExercise.weights.map((weight, i) => (
+					{previousWorkouts.map((workout, i) => {
+						const activePrevExercise = workout
+							? workout.exercises.find(item => item.exerciseID === exerciseId)
+							: null
+						return (
+							<>
+								<table className='w-11/12 mx-auto mt-4'>
+									<thead>
+										<tr className='outline-cyan-700 outline'>
+											<th>Order</th>
+											<th>Intensity</th>
+											<th>Date</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>{activePrevExercise.order}</td>
+											<td>{activePrevExercise.intensity}</td>
+											{/* placeholder date value right now, replace with the actual date that the workout was completed  */}
+											<td>{format(new Date(workout.date), 'MMM  dd yyyy')}</td>
+										</tr>
+									</tbody>
+								</table>
+								<div className=' w-11/12 mx-auto mt-4'>
+									<strong className='text-xl'>Weight</strong>
+									<table className='w-full mt-4'>
+										<thead>
+											<tr className='bg-cyan-700 border-collapse rounded-2xl'>
+												{activePrevExercise.weights.map((_, i) => (<th key={i}>{i + 1}</th>))}
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												{activePrevExercise.weights.map((weight, i) => (
 
-										<td key={i}>{weight} lbs</td>
+													<td key={i}>{weight} lbs</td>
 
-									))}
-								</tr>
-							</tbody>
-						</table>
-					</div>
-					{activePrevExercise.notes &&
-						<>
-							<strong className='my-8'>
-								<strong className='text-xl'> Notes</strong>
-								<p className='text-m w-11/12 mx-auto mt-2'>
-									{activePrevExercise.notes}
-								</p>
-							</strong>
-						</>
-					}
+												))}
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								{activePrevExercise.notes &&
+									<>
+										<strong className='my-8'>
+											<strong className='text-xl'> Notes</strong>
+											<p className='text-m w-11/12 mx-auto mt-2'>
+												{activePrevExercise.notes}
+											</p>
+										</strong>
+									</>
+								}
+							</>
+						)
+					})}
 				</Card>
 				: (
-					<h3 className='text-2xl'>
-						No Previous Data
-					</h3>
-				)
+			<h3 className='text-2xl'>
+				No Previous Data
+			</h3>
+			)
 			}
 		</div>
 	)
