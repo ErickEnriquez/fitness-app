@@ -15,14 +15,14 @@ const PrevExercise = () => {
 
 	return (
 		<div className='text-white text-center my-4'>
-			{previousWorkouts  ?
+			{previousWorkouts ?
 				<Card title='Previous Workouts'>
 					{previousWorkouts.map((workout, i) => {
 						const activePrevExercise = workout
 							? workout.exercises.find(item => item.exerciseID === exerciseId)
 							: null
 						return (
-							<>
+							<React.Fragment key={i}>
 								<table className='w-11/12 mx-auto mt-4'>
 									<thead>
 										<tr className='outline-cyan-700 outline'>
@@ -69,15 +69,15 @@ const PrevExercise = () => {
 										</strong>
 									</>
 								}
-							</>
+							</React.Fragment>
 						)
 					})}
 				</Card>
 				: (
-			<h3 className='text-2xl'>
-				No Previous Data
-			</h3>
-			)
+					<h3 className='text-2xl'>
+						No Previous Data
+					</h3>
+				)
 			}
 		</div>
 	)
