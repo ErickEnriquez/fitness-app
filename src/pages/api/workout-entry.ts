@@ -1,7 +1,7 @@
 /* eslint-disable indent */
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getLastWorkoutOfType } from '@server/getLastWorkoutOfType'
-import { getWorkoutEntry} from '@server/getWorkoutEntry'
+import { getWorkoutEntry } from '@server/getWorkoutEntry'
 import { Workout } from '@prisma/client'
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 
@@ -21,7 +21,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
  * @param res 
  */
 const getPreviousWorkout = async (req: NextApiRequest, res: NextApiResponse) => {
-	const workoutID = Number(req.query.workoutID)
+	const workoutID = Number(req.query.workoutId)
 	const workout = await getWorkoutEntry(workoutID)
 	return res.status(200).json(workout)
 }
