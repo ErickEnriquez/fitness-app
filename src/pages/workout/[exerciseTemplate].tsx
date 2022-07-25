@@ -39,7 +39,7 @@ const ExerciseTemplate = () => {
 								e.preventDefault()
 								const r = window.confirm('Are you sure you want to cancel this workout?')
 								if (!r) return
-
+								dispatch(clearState())
 								router.push('/workout')
 							}}
 							className={`text-white bg-red-500 rounded-full flex items-center justify-center
