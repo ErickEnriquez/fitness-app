@@ -15,7 +15,7 @@ const Layout = ({ children, title }: LayoutProps) => {
 				<title>{siteTitle}</title>
 				<meta name={siteTitle}></meta>
 				{/* Include the favicon when we have one */}
-				{/* <link rel="icon" href="" /> */}
+				<link rel="icon" type='image/x-icon' href="/images/favicon.ico" />
 			</Head>
 			<Nav />
 			<section className='block'>
