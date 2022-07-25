@@ -6,13 +6,13 @@ import Card from '@components/Card'
 
 const PrevExercise = () => {
 	//get the list of all of the exercises of the previous workout
-	const previousExercises = useAppSelector(selectPreviousExerciseEntries)
+	const previousWorkouts = useAppSelector(selectPreviousExerciseEntries)
 	//get the id of the active exercise entry that we are on
 	const exerciseId = useAppSelector(selectActiveEntry)
 
 	//find the info about the last time that this exercise was completed
-	const activePrevExercise = previousExercises
-		? previousExercises.find(item => item.exerciseID === exerciseId)
+	const activePrevExercise = previousWorkouts
+		? previousWorkouts[0].exercises.find(item => item.exerciseID === exerciseId)
 		: null
 
 	return (
@@ -32,7 +32,7 @@ const PrevExercise = () => {
 								<td>{activePrevExercise.order}</td>
 								<td>{activePrevExercise.intensity}</td>
 								{/* placeholder date value right now, replace with the actual date that the workout was completed  */}
-								<td>{format(new Date(), 'MMM  dd yyyy')}</td>
+								<td>{format(new Date(previousWorkouts[0].date), 'MMM  dd yyyy')}</td>
 							</tr>
 						</tbody>
 					</table>

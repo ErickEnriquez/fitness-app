@@ -87,15 +87,17 @@ export const getExerciseTemplates = createAsyncThunk(
 		const { exercise: { workouts } } = getState() as AppState
 		const prevWorkoutID = workouts.find(workout => workout.id === id)?.prevWorkoutId
 
-		const exercisesList = await axios.get('/api/exercise-templates', { params: { workoutId: id } })
-			.then(res => res.data)
+		const [exercisesList, prevMeta, prevExercises] = await Promise.all([
+			axios.get('/api/exercise-templates', { params: { workoutId: id } }),
+			axios.get('/api/workout-entry', { params: { workoutId: String(prevWorkoutID) } }),
+			axios.get('/api/exercise-entry', { params: { workoutId: prevWorkoutID } })
+		]).then(list => ([
+			list[0].data,
+			list[1].data as LastWorkoutEntry,
+			list[2].data as ExerciseEntry
+		]))
 
-		const previousWorkoutMetaData = prevWorkoutID ? (await axios.get('/api/workout-entry', { params: { workoutId: String(prevWorkoutID) } })).data as LastWorkoutEntry : null
-		const previousExercises = prevWorkoutID
-			? await (await axios.get('/api/exercise-entry', { params: { workoutId: prevWorkoutID } })).data as ExerciseEntry[]
-			: null
-
-		const previousWorkout: PreviousWorkout = prevWorkoutID && { ...previousWorkoutMetaData, date: previousWorkoutMetaData.date, exercises: previousExercises } 
+		const previousWorkout: PreviousWorkout = prevWorkoutID && { ...prevMeta, date: prevMeta.date, exercises: prevExercises }
 
 		return {
 			exercises: exercisesList,
@@ -200,7 +202,7 @@ export const exerciseSlice = createSlice({
 					completed: false,
 				}
 				))
-				state.previousWorkout = [...state.previousWorkout, action.payload.previousWorkout]
+				state.previousWorkout.push(action.payload.previousWorkout)
 				//initialize the workout entry with the data that we need
 				state.workoutEntry = {
 					workoutTemplateId: action.payload.workoutId,
