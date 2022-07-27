@@ -1,11 +1,13 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getPreviousWorkouts } from '@server/getPreviousWorkouts'
+import { getWorkoutEntry } from '@server/getWorkoutEntry'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 
 	switch (req.method) {
 		case 'POST': await getCalendarWorkouts(req, res)
 			break
+		
 		default:
 			res.status(405).json({ message: 'Method not allowed' })
 	}
