@@ -21,8 +21,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
  * @param res 
  */
 const getPreviousWorkout = async (req: NextApiRequest, res: NextApiResponse) => {
-	const workoutID = Number(req.query.workoutId)
-	const workout = await getWorkoutEntry(workoutID)
+
+	//if we get a param called workout type that is a number then we call the getWorkoutEntry function with 3 parameters else call the one with only 1 parameter
+	const workout = isNaN(Number(req.query.workoutType)) ?
+		await getWorkoutEntry(Number(req.query.Id)) :
+		await getWorkoutEntry(Number(req.query.workoutType), Number(req.query.skip), true)
+	
+	if(workout === null) return res.status(204)
+	
 	return res.status(200).json(workout)
 }
 
