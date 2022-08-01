@@ -26,9 +26,9 @@ const getPreviousWorkout = async (req: NextApiRequest, res: NextApiResponse) => 
 	const workout = isNaN(Number(req.query.workoutType)) ?
 		await getWorkoutEntry(Number(req.query.Id)) :
 		await getWorkoutEntry(Number(req.query.workoutType), Number(req.query.skip), true)
-	
-	if(workout === null) return res.status(204)
-	
+
+	if (workout === null) return res.status(404).end()
+
 	return res.status(200).json(workout)
 }
 
