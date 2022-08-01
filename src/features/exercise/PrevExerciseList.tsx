@@ -1,12 +1,20 @@
 import React, { useState } from 'react'
 import { useAppSelector, useAppDispatch } from '@app/hooks'
-import { selectPreviousExerciseEntries, selectActiveEntry, getMorePreviousWorkouts, selectPreviousWorkoutsState } from '@features/exercise/exerciseSlice'
+import {
+	selectPreviousExerciseEntries,
+	selectActiveEntry,
+	selectStatus,
+	getMorePreviousWorkouts,
+	removePreviousWorkout
+} from '@features/exercise/exerciseSlice'
+
 import { format } from 'date-fns'
 import Card from '@components/Card'
 import Loading from '@components/Loading'
+import Button from '@components/utils/Button'
 
-const PrevExercise = () => {
-	const state = useAppSelector(selectPreviousWorkoutsState)
+const PrevExerciseList = () => {
+	const status = useAppSelector(selectStatus)
 	//get the list of all of the exercises of the previous workout
 	const previousWorkouts = useAppSelector(selectPreviousExerciseEntries)
 	//get the id of the active exercise entry that we are on
@@ -70,7 +78,7 @@ const PrevExercise = () => {
 		})
 		: null
 
-	if (state === 'loading') {
+	if (status === 'loading') {
 		return <Loading />
 	}
 	return (
@@ -79,10 +87,26 @@ const PrevExercise = () => {
 				<Card title='Previous Workouts'>
 					{prevWorkoutsList}
 					<br />
-					<button className='bg-cyan-700 px-4 py-2 rounded-xl hover:bg-white hover:text-cyan-700 hover:outline hover:outline-cyan-700' onClick={() => {
-						dispatch(getMorePreviousWorkouts(skipAmount))
-						setSkipAmount(skipAmount + 1)
-					}}> Load More</button>
+					<div className='grid grid-cols-2 gap-x-4 w-11/12 mx-auto'>
+						<Button text={'More'}
+							clickHandler={() => {
+								dispatch(getMorePreviousWorkouts(skipAmount))
+								setSkipAmount(skipAmount + 1)
+							}}
+						/>
+						<Button
+							text={'Less'}
+							clickHandler={() => {
+								dispatch(removePreviousWorkout())
+								setSkipAmount((prev) => {
+									if (prev === 0)
+										return 0
+									return prev - 1
+								})
+							}
+							}
+						/>
+					</div>
 				</Card>
 				: (
 					<h3 className='text-2xl'>
@@ -94,4 +118,4 @@ const PrevExercise = () => {
 	)
 }
 
-export default PrevExercise
+export default PrevExerciseList
