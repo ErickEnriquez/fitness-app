@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import { useAppSelector, useAppDispatch } from '@app/hooks'
-import { selectPreviousExerciseEntries, selectActiveEntry, getMorePreviousWorkouts } from '@features/exercise/exerciseSlice'
+import { selectPreviousExerciseEntries, selectActiveEntry, getMorePreviousWorkouts, selectPreviousWorkoutsState } from '@features/exercise/exerciseSlice'
 import { format } from 'date-fns'
 import Card from '@components/Card'
+import Loading from '@components/Loading'
 
 const PrevExercise = () => {
+	const state = useAppSelector(selectPreviousWorkoutsState)
 	//get the list of all of the exercises of the previous workout
 	const previousWorkouts = useAppSelector(selectPreviousExerciseEntries)
 	//get the id of the active exercise entry that we are on
@@ -68,6 +70,9 @@ const PrevExercise = () => {
 		})
 		: null
 
+	if (state === 'loading') {
+		return <Loading />
+	}
 	return (
 		<div className='text-white text-center my-4'>
 			{previousWorkouts ?
