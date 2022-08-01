@@ -37,7 +37,6 @@ export interface ExerciseState {
 	activeWorkout: number | null
 	activeEntry: number
 	state: 'idle' | 'loading' | 'failed ' | 'success'
-	previousWorkoutsState: 'idle' | 'loading' | 'failed ' | 'success'
 	//get the stats of the last workout of that given type ie push heavy, pull heavy, etc
 	previousWorkout: PreviousWorkout[]
 	workoutEntry: activeWorkoutInfo,
@@ -52,7 +51,6 @@ const initialState = {
 	entries: [] as UserEntry[],
 	workouts: [] as WorkoutInfo[],
 	status: 'idle',
-	previousWorkoutsState: 'idle',
 	activeWorkout: null as number,
 	activeEntry: null as number,
 	previousWorkout: [] as PreviousWorkout[],
@@ -179,6 +177,9 @@ export const exerciseSlice = createSlice({
 		editPreWorkout: (state, action: PayloadAction<boolean>) => {
 			state.workoutEntry.preWorkout = action.payload
 		},
+		removePreviousWorkout: (state) => {
+			state.previousWorkout.pop()
+		},
 		clearStatus: (state) => {
 			state.status = 'idle'
 		},
@@ -233,13 +234,12 @@ export const exerciseSlice = createSlice({
 			.addCase(postExerciseEntries.fulfilled, (state) => { state.status = 'success' })
 			.addCase(postExerciseEntries.rejected, (state,) => { state.status = 'failed' })
 			//================= getting more previous workouts =====================================
-			.addCase(getMorePreviousWorkouts.pending, (state) => { state.previousWorkoutsState = 'loading' })
+			.addCase(getMorePreviousWorkouts.pending, (state) => { state.status = 'loading' })
 			.addCase(getMorePreviousWorkouts.rejected, (state, action) => {
-				state.previousWorkoutsState = 'failed'
-				console.log(action.payload)
+				state.status = 'failed'
 			})
 			.addCase(getMorePreviousWorkouts.fulfilled, (state, action) => {
-				state.previousWorkoutsState = 'idle'
+				state.status = 'idle'
 				state.previousWorkout.push(action.payload)
 			})
 	}
@@ -257,7 +257,8 @@ export const {
 	editWorkoutGrade,
 	editPreWorkout,
 	clearState,
-	clearStatus
+	clearStatus,
+	removePreviousWorkout
 }
 	= exerciseSlice.actions
 
@@ -266,5 +267,4 @@ export const selectEntries = (state: AppState) => state.exercise.entries
 export const selectStatus = (state: AppState) => state.exercise.status
 export const selectActiveEntry = (state: AppState) => state.exercise.activeEntry
 export const selectPreviousExerciseEntries = (state: AppState) => state.exercise.previousWorkout
-export const selectPreviousWorkoutsState = (state:AppState) => state.exercise.previousWorkoutsState
 export default exerciseSlice.reducer
