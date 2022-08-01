@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Layout from '@features/layout/Layout'
 import Link from 'next/link'
 import { useAppDispatch, useAppSelector } from '@app/hooks'
-import PrevExercise from '@features/exercise/PrevExercise'
+import PrevExercise from '@features/exercise/PrevExerciseList'
 import { editWeight, editNotes, editIntensity, editOrder, selectActiveEntry, toggleExerciseComplete } from '@features/exercise/exerciseSlice'
 import Notes from '@components/Notes'
 import NumberInput from '@components/NumberInput'
@@ -77,7 +77,7 @@ const ExerciseItem = () => {
 								changeHandler={(e) => dispatch(editNotes({ movementID: exerciseEntry.movementID, value: e.target.value }))}
 							/>
 						</div>
-						<button className='bg-white rounded-full mx-auto block my-8 w-11/12 py-3 text-cyan-700 font-bold' onClick={() => setPreviousInfo(prev => !prev)}> Show Previous Workout</button>
+						<button className='bg-white outline-cyan-700 outline rounded-full mx-auto block my-8 w-11/12 py-3 text-cyan-700 font-bold' onClick={() => setPreviousInfo(prev => !prev)}> Show Previous Workouts</button>
 						{previousInfo && <PrevExercise />}
 					</div>
 					:
