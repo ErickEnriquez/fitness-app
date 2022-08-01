@@ -24,7 +24,7 @@ const PrevExercise = () => {
 				<React.Fragment key={i}>
 					<table className='w-11/12 mx-auto mt-4'>
 						<thead>
-							<tr className='outline-cyan-700 outline'>
+							<tr className='outline-cyan-700 outline bg-white text-cyan-700'>
 								<th>Order</th>
 								<th>Intensity</th>
 								<th>Date</th>
@@ -34,13 +34,11 @@ const PrevExercise = () => {
 							<tr>
 								<td>{activePrevExercise.order}</td>
 								<td>{activePrevExercise.intensity}</td>
-								{/* placeholder date value right now, replace with the actual date that the workout was completed  */}
 								<td>{format(new Date(workout.date), 'MMM  dd yyyy')}</td>
 							</tr>
 						</tbody>
 					</table>
 					<div className=' w-11/12 mx-auto mt-4'>
-						<strong className='text-xl'>Weight</strong>
 						<table className='w-full mt-4'>
 							<thead>
 								<tr className='bg-cyan-700 border-collapse rounded-2xl'>
@@ -56,8 +54,9 @@ const PrevExercise = () => {
 					</div>
 					{activePrevExercise.notes &&
 						<>
+							<br />
 							<strong className='my-8'>
-								<strong className='text-xl'> Notes</strong>
+								<h5 className='text-xl text-white outline outline-cyan-700 rounded-xl w-11/12 mx-auto'> Notes</h5>
 								<p className='text-m w-11/12 mx-auto mt-2'>
 									{activePrevExercise.notes}
 								</p>
@@ -68,14 +67,14 @@ const PrevExercise = () => {
 			)
 		})
 		: null
-	
 
 	return (
 		<div className='text-white text-center my-4'>
 			{previousWorkouts ?
 				<Card title='Previous Workouts'>
 					{prevWorkoutsList}
-					<button onClick={() => {
+					<br />
+					<button className='bg-cyan-700 px-4 py-2 rounded-xl hover:bg-white hover:text-cyan-700 hover:outline hover:outline-cyan-700' onClick={() => {
 						dispatch(getMorePreviousWorkouts(skipAmount))
 						setSkipAmount(skipAmount + 1)
 					}}> Load More</button>
