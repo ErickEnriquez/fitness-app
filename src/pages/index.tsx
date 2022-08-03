@@ -4,6 +4,7 @@ import { signIn, useSession } from 'next-auth/react'
 import Layout from '@components/Layout'
 import Link from 'next/link'
 import Loading from '@components/Loading'
+import SignIn from '@components/SignIn'
 
 
 const IndexPage: NextPage = () => {
@@ -12,7 +13,7 @@ const IndexPage: NextPage = () => {
 		return <Loading />
 	}
 	else if (status === 'unauthenticated') {
-		return (<button className='bg-cyan-700' onClick={() => signIn()}>Sign In</button>)
+		return <SignIn />
 	}
 	else {
 		return (
