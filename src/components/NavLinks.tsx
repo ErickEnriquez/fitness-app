@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { signOut } from 'next-auth/react'
 const NavLinks = () => {
 	return (
 		<>
@@ -7,6 +8,7 @@ const NavLinks = () => {
 			<NavLink url={'/workout'} name={'Workouts'} />
 			<NavLink url={'/calendar'} name={'Calendar'} />
 			<NavLink url={'/cardio'} name={'Cardio'} />
+			<button className={'font-bold p-4 flex flex-col rounded-xl hover:underline'} onClick={() => signOut()}>Sign out</button>
 		</>
 	)
 }
@@ -15,10 +17,10 @@ const NavLink = ({ url, name }: { url: string, name: string }) => {
 	const router = useRouter()
 	return (
 		<Link href={url}>
-		<a className={`font-bold p-4 flex flex-col rounded-xl hover:underline ${url === router.pathname ? 'bg-white text-cyan-700' : ''}`} >
-			{name}
-		</a>
-	</Link>
+			<a className={`font-bold p-4 flex flex-col rounded-xl hover:underline ${url === router.pathname ? 'bg-white text-cyan-700' : ''}`} >
+				{name}
+			</a>
+		</Link>
 	)
 }
 
