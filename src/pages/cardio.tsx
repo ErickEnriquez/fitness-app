@@ -24,7 +24,7 @@ import {
 	selectStatus
 } from '@features/cardio/CardioSlice'
 
-import { signIn, useSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 
 import { CardioType } from '@prisma/client'
 
