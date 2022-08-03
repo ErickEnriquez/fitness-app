@@ -17,6 +17,7 @@ export default NextAuth({
 			return session
 		},
 	},
+	secret: process.env.SECRET,
 	events: {
 		// createUser: async ({ user }) => {
 		// 	// Create stripe API client using the secret key env variable
