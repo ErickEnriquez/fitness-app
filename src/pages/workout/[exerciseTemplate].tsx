@@ -1,6 +1,6 @@
 import React from 'react'
 import { useRouter } from 'next/router'
-import Layout from '@features/layout/Layout'
+import Layout from '@components/Layout'
 import ExerciseList from '@features/exercise/ExerciseList'
 import { useAppSelector, useAppDispatch } from '@app/hooks'
 import { postExerciseEntries, editWorkoutNotes, editWorkoutGrade, editPreWorkout, clearState, clearStatus } from '@features/exercise/exerciseSlice'
@@ -11,9 +11,14 @@ import Notes from '@components/Notes'
 import Card from '@components/Card'
 import NumberInput from '@components/NumberInput'
 import SubmitBtn from '@components/SubmitBtn'
+import SignIn from '@components/SignIn'
+
+import { useSession } from 'next-auth/react'
 
 const ExerciseTemplate = () => {
-	const status = useAppSelector(state => state.exercise.status)
+
+	const { data, status } = useSession()
+	const pageStatus = useAppSelector(state => state.exercise.status)
 	const workoutID = useAppSelector(state => state.exercise.activeWorkout)
 
 	const activeWorkout = useAppSelector(state => state.exercise.workouts.find(w => w.id === workoutID))
@@ -22,9 +27,10 @@ const ExerciseTemplate = () => {
 
 	const router = useRouter()
 
-	if (status === 'loading') return <Loading />
-	else if (status === 'failed') return <Layout><Fail clickHandler={() => dispatch(clearStatus())} /></Layout>
-	else if (status === 'success') return <Layout><Success clickHandler={() => {
+	if (pageStatus === 'loading' || status === 'loading') return <Loading />
+	else if (status === 'unauthenticated') return <SignIn />
+	else if (pageStatus === 'failed') return <Layout><Fail clickHandler={() => dispatch(clearStatus())} /></Layout>
+	else if (pageStatus === 'success') return <Layout><Success clickHandler={() => {
 		dispatch(clearState())
 		router.push('/workout')
 	}} /></Layout>

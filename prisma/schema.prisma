@@ -71,7 +71,6 @@ model WorkoutEntry {
   workoutTemplateId Int
   workoutTemplate   Workout         @relation(fields: [workoutTemplateId], references: [id])
   exercises         ExerciseEntry[] //array of n number of exercises
-
 }
 
 //enum of the different types of cardios that I will be likely to be doing for the forseeable future
@@ -94,7 +93,7 @@ model Cardio {
   id             Int        @id @default(autoincrement())
   timeCreated    DateTime   @default(now())
   type           CardioType
-  distance        Decimal
+  distance       Decimal
   time           Int
   caloriesBurned Int
   notes          String
@@ -106,4 +105,53 @@ model Program {
   id       Int       @id @default(autoincrement())
   name     String
   workouts Workout[]
+}
+
+//=================== Adding users to prisma =========================
+
+model Account {
+  id                       String  @id @default(cuid())
+  userId                   String
+  type                     String
+  provider                 String
+  providerAccountId        String
+  refresh_token            String? @db.Text
+  access_token             String? @db.Text
+  expires_at               Int?
+  token_type               String?
+  scope                    String?
+  id_token                 String? @db.Text
+  session_state            String?
+  refresh_token_expires_in Int?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  isActive      Boolean   @default(false)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
 }

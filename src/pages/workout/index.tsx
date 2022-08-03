@@ -2,8 +2,11 @@ import React, { useEffect, useMemo } from 'react'
 import { NextPage } from 'next'
 import Link from 'next/link'
 import Loading from '@components/Loading'
-import Layout from '@features/layout/Layout'
+import Layout from '@components/Layout'
 import Card from '@components/Card'
+import SignIn from '@components/SignIn'
+
+import { useSession } from 'next-auth/react'
 
 import { useAppDispatch, useAppSelector } from '@app/hooks'
 import { getWorkoutAsync, selectWorkouts, getExerciseTemplates, selectStatus } from '@features/exercise/exerciseSlice'
@@ -11,7 +14,9 @@ import { getWorkoutAsync, selectWorkouts, getExerciseTemplates, selectStatus } f
 const WorkoutPage: NextPage = () => {
 	const dispatch = useAppDispatch()
 	const workouts = useAppSelector(selectWorkouts)
-	const status = useAppSelector(selectStatus)
+	const pageStatus = useAppSelector(selectStatus)
+
+	const { data, status } = useSession()
 
 	//grab the workout templates from the server on page load
 	useEffect(() => {
@@ -26,8 +31,8 @@ const WorkoutPage: NextPage = () => {
 		return previousWorkouts
 	}, [workouts])
 
-	if (status === 'loading') return <Loading />
-
+	if (pageStatus === 'loading' || status === 'loading') return <Loading />
+	else if (status === 'unauthenticated') return <SignIn />
 	return (
 		<Layout>
 			<main className='text-center my-4'>

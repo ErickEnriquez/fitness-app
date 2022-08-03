@@ -1,7 +1,7 @@
 import { slide as Menu } from 'react-burger-menu'
 import NavLinks from '@components/NavLinks'
 
-const SiteMenu = () => {
+const MobileMenu = () => {
 
 	const styles = {
 		bmBurgerButton: {
@@ -78,5 +78,5 @@ const HamburgerIcon = () => (
 
 
 
-export default SiteMenu
+export default MobileMenu
 
