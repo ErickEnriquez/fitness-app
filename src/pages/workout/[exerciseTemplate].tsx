@@ -1,6 +1,6 @@
 import React from 'react'
 import { useRouter } from 'next/router'
-import Layout from '@features/layout/Layout'
+import Layout from '@components/Layout'
 import ExerciseList from '@features/exercise/ExerciseList'
 import { useAppSelector, useAppDispatch } from '@app/hooks'
 import { postExerciseEntries, editWorkoutNotes, editWorkoutGrade, editPreWorkout, clearState, clearStatus } from '@features/exercise/exerciseSlice'

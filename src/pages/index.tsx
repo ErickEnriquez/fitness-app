@@ -1,7 +1,7 @@
 import { NextPage } from 'next'
 import { signIn, useSession } from 'next-auth/react'
 
-import Layout from '@features/layout/Layout'
+import Layout from '@components/Layout'
 import Link from 'next/link'
 import Loading from '@components/Loading'
 

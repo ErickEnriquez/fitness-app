@@ -4,7 +4,7 @@ import Loading from '@components/Loading'
 import CalendarHeader from '@features/calendar/Header'
 import CalendarWeekDays from '@features/calendar/Weekdays'
 import CalendarDates from '@features/calendar/Month'
-import Layout from '@features/layout/Layout'
+import Layout from '@components/Layout'
 
 import Card from '@components/Card'
 

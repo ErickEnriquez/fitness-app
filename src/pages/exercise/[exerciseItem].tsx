@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Layout from '@features/layout/Layout'
+import Layout from '@components/Layout'
 import Link from 'next/link'
 import { useAppDispatch, useAppSelector } from '@app/hooks'
 import PrevExercise from '@features/exercise/PrevExerciseList'

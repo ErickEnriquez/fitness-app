@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from 'react'
 import { NextPage } from 'next'
 import Link from 'next/link'
 import Loading from '@components/Loading'
-import Layout from '@features/layout/Layout'
+import Layout from '@components/Layout'
 import Card from '@components/Card'
 
 import { useAppDispatch, useAppSelector } from '@app/hooks'
