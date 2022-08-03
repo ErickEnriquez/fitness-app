@@ -1,14 +1,25 @@
 import React, { useState } from 'react'
+
 import Layout from '@components/Layout'
+import Notes from '@components/Notes'
+import NumberInput from '@components/NumberInput'
+import BackBtn from '@components/BackBtn'
+import Loading from '@components/Loading'
+import SignIn from '@components/SignIn'
+
 import Link from 'next/link'
 import { useAppDispatch, useAppSelector } from '@app/hooks'
 import PrevExercise from '@features/exercise/PrevExerciseList'
 import { editWeight, editNotes, editIntensity, editOrder, selectActiveEntry, toggleExerciseComplete } from '@features/exercise/exerciseSlice'
-import Notes from '@components/Notes'
-import NumberInput from '@components/NumberInput'
-import BackBtn from '@components/BackBtn'
+
+import { useSession } from 'next-auth/react'
+
+
 
 const ExerciseItem = () => {
+
+	const { data, status } = useSession()
+
 	const dispatch = useAppDispatch()
 	const activeExerciseId = useAppSelector(selectActiveEntry)
 
@@ -29,6 +40,8 @@ const ExerciseItem = () => {
 		}
 	}
 
+	if (status === 'loading') return <Layout><Loading /></Layout>
+	else if (status === 'unauthenticated') return <SignIn />
 	return (
 		<Layout>
 			<main>
