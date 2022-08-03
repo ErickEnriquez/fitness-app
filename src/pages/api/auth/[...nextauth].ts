@@ -1,38 +1,46 @@
 import NextAuth from 'next-auth'
+import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import GoogleProvider from 'next-auth/providers/google'
-import { NextApiRequest, NextApiResponse } from 'next'
+import prisma from 'prisma/prisma'
 
-
-const options = {
+export default NextAuth({
 	providers: [
 		GoogleProvider({
-			clientId: 'GOOGLE_CLIENT_ID',
-			clientSecret: 'GOOGLE_CLIENT_SECRET',
-			authorization: {
-				params: {
-					prompt: 'consent',
-					access_type: 'offline',
-					response_type: 'code'
-				}
-			}
-		})
+			clientId: process.env.GOOGLE_CLIENT_ID,
+			clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+		}),
 	],
-	// pages: {
-	// 	signIn: '/auth/signin',
-	// 	signOut: '/auth/signout',
-	// 	error: '/auth/error', // Error code passed in query string as ?error=
-	// 	verifyRequest: '/auth/verify-request', // (used for check email message)
-	// 	newUser: '/auth/new-user' // New users will be directed here on first sign in (leave the property out if not of interest)
-	// },
+	adapter: PrismaAdapter(prisma),
 	callbacks: {
-		async signIn({ account, profile }) {
-			if (account.provider === 'google') {
-				return profile.email_verified && profile.email.endsWith('@google.com')
-			}
-			return false // Do different verification for other providers that don't have `email_verified`
+		async session({ session, user }) {
+			session.user.id = user.id
+			return session
 		},
+	},
+	events: {
+		// createUser: async ({ user }) => {
+		// 	// Create stripe API client using the secret key env variable
+		// 	const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
+		// 		apiVersion: "2020-08-27",
+		// 	});
+
+		// 	// Create a stripe customer for the user with their email address
+		// 	await stripe.customers
+		// 		.create({
+		// 			email: user.email!,
+		// 		})
+		// 		.then(async (customer) => {
+		// 			// Use the Prisma Client to update the user in the database with their new Stripe customer ID
+		// 			return prisma.user.update({
+		// 				where: { id: user.id },
+		// 				data: {
+		// 					stripeCustomerId: customer.id,
+		// 				},
+		// 			});
+		// 		});
+		// },
+		signIn: async ({ user }) => {
+			console.log(user)
+		}
 	}
-
-}
-
-export default (req: NextApiRequest, res: NextApiResponse): Promise<void> | void => NextAuth(req, res, options)
+})
