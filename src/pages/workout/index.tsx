@@ -20,8 +20,10 @@ const WorkoutPage: NextPage = () => {
 
 	//grab the workout templates from the server on page load
 	useEffect(() => {
-		dispatch(getWorkoutAsync())
-	}, [])
+		if (status === 'authenticated') {
+			dispatch(getWorkoutAsync(data?.user?.id))
+		}
+	}, [status])
 
 
 	//useMemo is used to avoid sorting this data every time the page is rendered
