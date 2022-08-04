@@ -1,12 +1,34 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import { unstable_getServerSession } from 'next-auth/next'
+import { authOptions } from '@auth/[...nextauth]'
+
 import { getWorkoutTemplate } from '@server/getWorkoutTemplate'
+
+
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-	if (req.method !== 'GET') {
-		res.status(405).json({ message: 'Method not allowed' })
+	const session = await unstable_getServerSession(req, res, authOptions)
+
+	if (!session) {
+		res.status(401).json({ message: 'unauthorized' })
+		return
 	}
-	const workoutTemplate = await getWorkoutTemplate()
-	
-	workoutTemplate
-		? res.status(200).json(workoutTemplate)
-		: res.status(404).json({ message: 'Error finding exercises' })
+	switch (req.method) {
+		case 'GET': await returnWorkoutTemplates(req, res)
+			break
+		default:
+			res.status(405).json({ message: 'Method not allowed' })
+	}
+
+}
+
+const returnWorkoutTemplates = async (req: NextApiRequest, res: NextApiResponse) => {
+	try {
+		const programId = Number(req.query.programId)
+		const workoutTemplates = await getWorkoutTemplate(programId)
+		res.status(200).json(workoutTemplates)
+	}
+	catch (err) {
+		res.status(500).json({ message: 'Error Finding Exercises' })
+	}
+
 }
