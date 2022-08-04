@@ -1,14 +1,22 @@
 /* eslint-disable indent */
+import { unstable_getServerSession } from 'next-auth/next'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getLastWorkoutOfType } from '@server/getLastWorkoutOfType'
+import { authOptions } from '@auth/[...nextauth]'
 import { getWorkoutEntry } from '@server/getWorkoutEntry'
-import { Workout } from '@prisma/client'
+
 export default async (req: NextApiRequest, res: NextApiResponse) => {
+
+	const session = await unstable_getServerSession(req, res, authOptions)
+
+	if (!session) {
+		res.status(401).json({ message: 'unauthorized' })
+		return
+	}
 
 	switch (req.method) {
 		case 'GET': await getWorkout(req, res)
 			break
-	
+
 		default:
 			res.status(405).json({ message: 'Method not allowed' })
 	}
@@ -26,7 +34,10 @@ const getWorkout = async (req: NextApiRequest, res: NextApiResponse) => {
 		await getWorkoutEntry(Number(req.query.Id)) :
 		await getWorkoutEntry(Number(req.query.workoutType), Number(req.query.skip), true)
 
-	if (workout === null) return res.status(404).end()
+	if (workout === null) {
+		res.status(404).end()
+		return
+	}
 
-	return res.status(200).json(workout)
+	res.status(200).json(workout)
 }
