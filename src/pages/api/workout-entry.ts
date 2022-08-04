@@ -39,13 +39,12 @@ const getPreviousWorkout = async (req: NextApiRequest, res: NextApiResponse) => 
  * @returns 
  */
 const lastWorkoutOfType = async (req: NextApiRequest, res: NextApiResponse) => {
-	const workoutTemplates = req.body.workoutTemplates.data as Workout[]
+	const workoutTemplates = req.body.workoutTemplates as Workout[]
 
-	const lastWorkouts = await (
-		await Promise.all(workoutTemplates
-			.map((item) => getLastWorkoutOfType(item.id))))
-		.filter(item => item !== null)
 
+	const lastWorkouts = (
+		await Promise.all(workoutTemplates.map(workout => getLastWorkoutOfType(workout.id)))
+	)
 
 	return res.status(200).json(lastWorkouts)
 }
