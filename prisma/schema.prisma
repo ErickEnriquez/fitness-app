@@ -98,6 +98,8 @@ model Cardio {
   caloriesBurned Int
   notes          String
   intensity      Int
+  userId  String?
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 //a program is a collection of workouts, a name and an ID
@@ -152,6 +154,7 @@ model User {
   isActive      Boolean   @default(false)
   //a list of all of the programs that the user is under
   programs      Program[]
+  cardios       Cardio[]
 }
 
 model VerificationToken {
