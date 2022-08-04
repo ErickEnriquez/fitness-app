@@ -79,7 +79,7 @@ export const getWorkoutAsync = createAsyncThunk(
 					//label the workoutEntry id key as prevWorkoutId to avoid conflict with the workoutTemplate id key
 					prevWorkoutId: prevWorkout ? prevWorkout.id : null,
 				}
-			})
+			}) as WorkoutInfo[]
 
 			return data
 		}
