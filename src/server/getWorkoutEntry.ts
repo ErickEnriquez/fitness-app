@@ -19,7 +19,7 @@ export async function getWorkoutEntry(ID: number, skip?: number, workoutType = f
 	}
 	catch (err) {
 		console.error(err)
-		return null
+		throw Error ('unable to get workout')
 	}
 }
 
