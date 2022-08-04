@@ -219,7 +219,7 @@ export const exerciseSlice = createSlice({
 					completed: false,
 				}
 				))
-				if (action.payload.previousWorkout) state.previousWorkout.push(action.payload.previousWorkout)
+				state.previousWorkout = [action.payload.previousWorkout]
 				//initialize the workout entry with the data that we need
 				state.workoutEntry = {
 					workoutTemplateId: action.payload.workoutId,
