@@ -6,10 +6,9 @@ import { Workout } from '@prisma/client'
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 
 	switch (req.method) {
-		case 'GET': await getPreviousWorkout(req, res)
+		case 'GET': await getWorkout(req, res)
 			break
-		case 'POST': await lastWorkoutOfType(req, res)
-			break
+	
 		default:
 			res.status(405).json({ message: 'Method not allowed' })
 	}
@@ -20,7 +19,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
  * @param req 
  * @param res 
  */
-const getPreviousWorkout = async (req: NextApiRequest, res: NextApiResponse) => {
+const getWorkout = async (req: NextApiRequest, res: NextApiResponse) => {
 
 	//if we get a param called workout type that is a number then we call the getWorkoutEntry function with 3 parameters else call the one with only 1 parameter
 	const workout = isNaN(Number(req.query.workoutType)) ?
@@ -30,21 +29,4 @@ const getPreviousWorkout = async (req: NextApiRequest, res: NextApiResponse) => 
 	if (workout === null) return res.status(404).end()
 
 	return res.status(200).json(workout)
-}
-
-/**
- * return the last workout of the given type ie. pusheavy, pullheavy, etc.
- * @param req 
- * @param res 
- * @returns 
- */
-const lastWorkoutOfType = async (req: NextApiRequest, res: NextApiResponse) => {
-	const workoutTemplates = req.body.workoutTemplates as Workout[]
-
-
-	const lastWorkouts = (
-		await Promise.all(workoutTemplates.map(workout => getLastWorkoutOfType(workout.id)))
-	)
-
-	return res.status(200).json(lastWorkouts)
 }
