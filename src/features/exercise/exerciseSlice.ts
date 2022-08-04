@@ -64,12 +64,14 @@ export const getWorkoutAsync = createAsyncThunk(
 	async (userId: string, { rejectWithValue }) => {
 		try {
 
-			const program = await (await axios.get('/api/program', { params: { userId } })).data as Program
+			const program = await axios.get('/api/program', { params: { userId } })
+				.then(d => d.data) as Program
 
-			const workoutTemplates = await (await axios.get('/api/workout-template', { params: { programId: program.id } })).data as Workout[]
+			const workoutTemplates = await axios.get('/api/workout-template', { params: { programId: program.id } })
+				.then(r => r.data) as Workout[]
 
-			const prevWorkouts = await axios.post('/api/workout-entry', { workoutTemplates })
-				.then(r => r.data) as WorkoutEntry[]
+			const prevWorkouts = await Promise.all(workoutTemplates.map(workout => axios.get('/api/workout-entry', { params: { workoutType: workout.id, skip: 0 } })))
+				.then(list => list.map(item => item.data)) as WorkoutEntry[]
 
 			const data = workoutTemplates.map((item) => {
 				const prevWorkout = prevWorkouts.find(workout => workout.workoutTemplateId === item.id)
@@ -246,7 +248,7 @@ export const exerciseSlice = createSlice({
 			.addCase(postExerciseEntries.rejected, (state,) => { state.status = 'failed' })
 			//================= getting more previous workouts =====================================
 			.addCase(getMorePreviousWorkouts.pending, (state) => { state.status = 'loading' })
-			.addCase(getMorePreviousWorkouts.rejected, (state, action) => {
+			.addCase(getMorePreviousWorkouts.rejected, (state) => {
 				state.status = 'failed'
 			})
 			.addCase(getMorePreviousWorkouts.fulfilled, (state, action) => {
