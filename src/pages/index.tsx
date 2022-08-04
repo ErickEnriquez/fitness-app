@@ -1,5 +1,5 @@
 import { NextPage } from 'next'
-import { signIn, useSession } from 'next-auth/react'
+import {  useSession } from 'next-auth/react'
 
 import Layout from '@components/Layout'
 import Link from 'next/link'
