@@ -3,7 +3,19 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { CardioState } from '@features/cardio/CardioSlice'
 import { postCardio } from '@server/postCardio'
 
+import { unstable_getServerSession } from 'next-auth/next'
+import { authOptions } from '@auth/[...nextauth]'
+
 export default async (req: NextApiRequest, res: NextApiResponse) => {
+
+	const session = await unstable_getServerSession(req, res, authOptions)
+
+	if (!session) {
+		res.status(401).json({ message: 'unauthorized' })
+		return
+	}
+
+
 	switch (req.method) {
 		case 'POST':
 			await submitCardio(req, res); break
