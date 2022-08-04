@@ -61,7 +61,8 @@ const initialState = {
 //ie pull heavy, legs light etc and combine with the last workout of that type that was done
 export const getWorkoutAsync = createAsyncThunk(
 	'exercise/getWorkout',
-	async () => {
+	async (userId: string) => {
+		const program = await axios.get('/api/program', { params: { userId } })
 		const workoutTemplates = await axios.get('/api/workout-template/')
 		const prevWorkouts = (await axios.post('/api/workout-entry', { workoutTemplates })).data as WorkoutEntry[]
 
