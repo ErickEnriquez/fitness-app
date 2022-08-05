@@ -190,9 +190,6 @@ export const exerciseSlice = createSlice({
 		editPreWorkout: (state, action: PayloadAction<boolean>) => {
 			state.workoutEntry.preWorkout = action.payload
 		},
-		removePreviousWorkout: (state) => {
-			state.previousWorkout.pop()
-		},
 		clearStatus: (state) => {
 			state.status = 'idle'
 		},
@@ -250,6 +247,7 @@ export const exerciseSlice = createSlice({
 			.addCase(getMorePreviousWorkouts.pending, (state) => { state.status = 'loading' })
 			.addCase(getMorePreviousWorkouts.rejected, (state) => {
 				state.status = 'failed'
+				console.log(action.payload)
 			})
 			.addCase(getMorePreviousWorkouts.fulfilled, (state, action) => {
 				state.status = 'idle'
@@ -270,8 +268,7 @@ export const {
 	editWorkoutGrade,
 	editPreWorkout,
 	clearState,
-	clearStatus,
-	removePreviousWorkout
+	clearStatus
 }
 	= exerciseSlice.actions
 
