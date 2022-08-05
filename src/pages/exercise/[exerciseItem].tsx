@@ -9,7 +9,7 @@ import SignIn from '@components/SignIn'
 
 import Link from 'next/link'
 import { useAppDispatch, useAppSelector } from '@app/hooks'
-import PrevExercise from '@features/exercise/PrevExercise'
+import PrevWorkoutList from '@features/exercise/PrevWorkoutList'
 import { editWeight, editNotes, editIntensity, editOrder, selectActiveEntry, toggleExerciseComplete } from '@features/exercise/exerciseSlice'
 
 import { useSession } from 'next-auth/react'
@@ -91,7 +91,7 @@ const ExerciseItem = () => {
 							/>
 						</div>
 						<button className='bg-white rounded-full mx-auto block my-8 w-11/12 py-3 text-cyan-700 font-bold' onClick={() => setPreviousInfo(prev => !prev)}> Show Previous Workout</button>
-						{previousInfo && <PrevExercise />}
+						{previousInfo && <PrevWorkoutList />}
 					</div>
 					:
 					(<div>
