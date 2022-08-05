@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 import type { AppState } from '@app/store'
-import { ExerciseEntry, ExerciseTemplate, Workout, WorkoutEntry } from '@prisma/client'
+import { ExerciseEntry, ExerciseTemplate, Program, Workout, WorkoutEntry } from '@prisma/client'
 import { LastWorkoutEntry } from '@server/getLastWorkoutOfType'
 
 //this holds the miscellaneous data about the workout that isn't tied to a specific exercise instead the entire workout in general
@@ -61,21 +61,34 @@ const initialState = {
 //ie pull heavy, legs light etc and combine with the last workout of that type that was done
 export const getWorkoutAsync = createAsyncThunk(
 	'exercise/getWorkout',
-	async () => {
-		const workoutTemplates = await axios.get('/api/workout-template/')
-		const prevWorkouts = (await axios.post('/api/workout-entry', { workoutTemplates })).data as WorkoutEntry[]
+	async (userId: string, { rejectWithValue }) => {
+		try {
 
-		const data = workoutTemplates.data.map((item) => {
-			const prevWorkout = prevWorkouts.find(workout => workout.workoutTemplateId === item.id)
-			return {
-				...prevWorkout,
-				...item,
-				//label the workoutEntry id key as prevWorkoutId to avoid conflict with the workoutTemplate id key
-				prevWorkoutId: prevWorkout ? prevWorkout.id : null,
-			}
-		})
+			const program = await axios.get('/api/program', { params: { userId } })
+				.then(d => d.data) as Program
 
-		return data
+			const workoutTemplates = await axios.get('/api/workout-template', { params: { programId: program.id } })
+				.then(r => r.data) as Workout[]
+
+			const prevWorkouts = await Promise.all(workoutTemplates.map(workout => axios.get('/api/workout-entry', { params: { workoutType: workout.id, skip: 0 } })))
+				.then(list => list.map(item => item.data)) as WorkoutEntry[]
+
+			const data = workoutTemplates.map((item) => {
+				const prevWorkout = prevWorkouts.find(workout => workout.workoutTemplateId === item.id)
+				return {
+					...prevWorkout,
+					...item,
+					//label the workoutEntry id key as prevWorkoutId to avoid conflict with the workoutTemplate id key
+					prevWorkoutId: prevWorkout ? prevWorkout.id : null,
+				}
+			}) as WorkoutInfo[]
+
+			return data
+		}
+		catch (err) {
+			console.error(err)
+			rejectWithValue(err)
+		}
 	}
 )
 
@@ -232,7 +245,7 @@ export const exerciseSlice = createSlice({
 			.addCase(postExerciseEntries.rejected, (state,) => { state.status = 'failed' })
 			//================= getting more previous workouts =====================================
 			.addCase(getMorePreviousWorkouts.pending, (state) => { state.status = 'loading' })
-			.addCase(getMorePreviousWorkouts.rejected, (state, action) => {
+			.addCase(getMorePreviousWorkouts.rejected, (state) => {
 				state.status = 'failed'
 				console.log(action.payload)
 			})

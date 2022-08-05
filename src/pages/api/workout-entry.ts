@@ -1,15 +1,22 @@
 /* eslint-disable indent */
+import { unstable_getServerSession } from 'next-auth/next'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getLastWorkoutOfType } from '@server/getLastWorkoutOfType'
+import { authOptions } from '@auth/[...nextauth]'
 import { getWorkoutEntry } from '@server/getWorkoutEntry'
-import { Workout } from '@prisma/client'
+
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 
+	const session = await unstable_getServerSession(req, res, authOptions)
+
+	if (!session) {
+		res.status(401).json({ message: 'unauthorized' })
+		return
+	}
+
 	switch (req.method) {
-		case 'GET': await getPreviousWorkout(req, res)
+		case 'GET': await getWorkout(req, res)
 			break
-		case 'POST': await lastWorkoutOfType(req, res)
-			break
+
 		default:
 			res.status(405).json({ message: 'Method not allowed' })
 	}
@@ -20,32 +27,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
  * @param req 
  * @param res 
  */
-const getPreviousWorkout = async (req: NextApiRequest, res: NextApiResponse) => {
+const getWorkout = async (req: NextApiRequest, res: NextApiResponse) => {
 
 	//if we get a param called workout type that is a number then we call the getWorkoutEntry function with 3 parameters else call the one with only 1 parameter
 	const workout = isNaN(Number(req.query.workoutType)) ?
 		await getWorkoutEntry(Number(req.query.Id)) :
 		await getWorkoutEntry(Number(req.query.workoutType), Number(req.query.skip), true)
-	
-	if(workout === null) return res.status(204)
-	
-	return res.status(200).json(workout)
-}
 
-/**
- * return the last workout of the given type ie. pusheavy, pullheavy, etc.
- * @param req 
- * @param res 
- * @returns 
- */
-const lastWorkoutOfType = async (req: NextApiRequest, res: NextApiResponse) => {
-	const workoutTemplates = req.body.workoutTemplates.data as Workout[]
+	if (workout === null) {
+		res.status(404).end()
+		return
+	}
 
-	const lastWorkouts = await (
-		await Promise.all(workoutTemplates
-			.map((item) => getLastWorkoutOfType(item.id))))
-		.filter(item => item !== null)
-
-
-	return res.status(200).json(lastWorkouts)
+	res.status(200).json(workout)
 }

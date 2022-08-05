@@ -19,6 +19,9 @@
       ],
       "@hooks/*": [
         "src/hooks/*"
+      ],
+      "@auth/*": [
+        "src/pages/api/auth/*"
       ]
     },
     "target": "es5",
