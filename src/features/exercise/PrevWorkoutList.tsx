@@ -65,7 +65,7 @@ const PrevWorkoutsList = () => {
 									if (skipAmount >= 0) {
 										return
 									}
-									setSkipAmount(skipAmount + 1)
+									setSkipAmount(prevAmount => prevAmount - 1)
 								}}
 								text='Less'
 							/>
