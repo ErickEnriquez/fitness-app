@@ -50,7 +50,7 @@ const WorkoutPage: NextPage = () => {
 										}
 										onClick={() => dispatch(getExerciseTemplates(item.id))}
 									>
-										<strong className="capitalize underline">{item.type}</strong>
+										<strong className="capitalize underline">{item.name}</strong>
 									</li>
 								</Link>
 							)
@@ -62,7 +62,7 @@ const WorkoutPage: NextPage = () => {
 					<ul>
 						{previous.map((workout, idx) => (
 							<li key={idx} className='text-white capitalize my-4'>
-								<strong className='underline'>{workout.type} - {new Date(workout.date).toLocaleDateString()} </strong>
+								<strong className='underline'>{workout.name} - {new Date(workout.date).toLocaleDateString()} </strong>
 							</li>
 						))}
 					</ul>
