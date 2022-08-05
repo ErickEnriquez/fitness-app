@@ -49,7 +49,8 @@ export const CalendarSlice = createSlice({
 		},
 		editActiveDate: (state, action: PayloadAction<string>) => {
 			state.activeDate = action.payload
-		}
+		},
+		resetState: () => initialState
 	},
 	extraReducers: (builder) => {
 		builder
@@ -70,7 +71,8 @@ export const CalendarSlice = createSlice({
 export const {
 	clearStatus,
 	editActiveDate,
-	editSelectedDate
+	editSelectedDate,
+	resetState
 } = CalendarSlice.actions
 
 export const selectStatus = (state: AppState) => state.calendar.status
