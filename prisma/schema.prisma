@@ -57,7 +57,7 @@ enum WorkoutType {
 model Workout {
   id                Int                @id @default(autoincrement())
   type              WorkoutType
-  name              String?
+  name              String
   programID         Int
   program           Program            @relation(fields: [programID], references: [id])
   workoutEntry      WorkoutEntry[]
