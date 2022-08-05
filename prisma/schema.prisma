@@ -50,6 +50,7 @@ enum WorkoutType {
   pushLight
   pullLight
   legsLight
+  other
 }
 
 //workout model is the a collection of exercises , a workout type , an overall grade, notes ,and a date created
