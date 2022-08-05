@@ -245,10 +245,7 @@ export const exerciseSlice = createSlice({
 			.addCase(postExerciseEntries.rejected, (state,) => { state.status = 'failed' })
 			//================= getting more previous workouts =====================================
 			.addCase(getMorePreviousWorkouts.pending, (state) => { state.status = 'loading' })
-			.addCase(getMorePreviousWorkouts.rejected, (state) => {
-				state.status = 'failed'
-				console.log(action.payload)
-			})
+			.addCase(getMorePreviousWorkouts.rejected, (state) => { state.status = 'failed' })
 			.addCase(getMorePreviousWorkouts.fulfilled, (state, action) => {
 				state.status = 'idle'
 				state.previousWorkout.push(action.payload)

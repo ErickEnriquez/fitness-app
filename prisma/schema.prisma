@@ -98,8 +98,8 @@ model Cardio {
   caloriesBurned Int
   notes          String
   intensity      Int
-  userId  String?
-  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 //a program is a collection of workouts, a name and an ID

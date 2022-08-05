@@ -18,7 +18,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
 	switch (req.method) {
 		case 'POST':
-			await submitCardio(req, res); break
+			await submitCardio(req, res, session?.user?.id); break
 		default:
 			res.status(405).json({ message: 'Method not allowed' }); break
 	}
@@ -30,8 +30,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
  * @param res 
  * @returns {boolean} result if the operation was successful or not
  */
-const submitCardio = async (req: NextApiRequest, res: NextApiResponse) => {
-	const completed = await postCardio(req.body as CardioState)
+const submitCardio = async (req: NextApiRequest, res: NextApiResponse, userId = '') => {
+	const completed = await postCardio(req.body as CardioState, userId)
 	if (!completed) res.status(500).json({ message: 'unable to create note' })
 	res.status(200).json({ message: 'success' })
 }
