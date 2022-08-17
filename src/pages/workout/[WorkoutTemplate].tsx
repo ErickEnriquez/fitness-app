@@ -3,7 +3,14 @@ import { useRouter } from 'next/router'
 import Layout from '@components/Layout'
 import ExerciseList from '@features/exercise/ExerciseList'
 import { useAppSelector, useAppDispatch } from '@app/hooks'
-import { postExerciseEntries, editWorkoutNotes, editWorkoutGrade, editPreWorkout, clearState, clearStatus } from '@features/exercise/exerciseSlice'
+import {
+	postExerciseEntries,
+	editWorkoutNotes,
+	editWorkoutGrade,
+	editPreWorkout,
+	clearState,
+	clearStatus
+} from '@features/exercise/exerciseSlice'
 import Loading from '@components/Loading'
 import Success from '@components/Success'
 import Fail from '@components/Fail'

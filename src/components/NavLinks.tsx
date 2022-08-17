@@ -17,12 +17,14 @@ const NavLinks = () => {
 			<NavLink url={'/workout'} name={'Workouts'} />
 			<NavLink url={'/calendar'} name={'Calendar'} />
 			<NavLink url={'/cardio'} name={'Cardio'} />
-			<button className={'font-bold p-4 flex flex-col rounded-xl hover:underline'} onClick={() => {
-				dispatch(resetCardio())
-				dispatch(resetCalendar())
-				dispatch(resetExercise())
-				signOut()
-			}}>Sign out</button>
+			<button className={'font-bold p-4 flex flex-col rounded-xl hover:underline mt-auto'} onClick={
+				() => {
+					dispatch(resetCardio())
+					dispatch(resetCalendar())
+					dispatch(resetExercise())
+					signOut()
+				}}>Sign out
+			</button>
 		</>
 	)
 }

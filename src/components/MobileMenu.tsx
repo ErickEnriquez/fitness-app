@@ -8,8 +8,8 @@ const MobileMenu = () => {
 			position: 'fixed',
 			width: '36px',
 			height: '30px',
-			left: '36px',
-			top: '36px',
+			left: '15px',
+			top: '10px',
 		},
 		bmBurgerBars: {
 			background: '#ffffff',
@@ -27,7 +27,7 @@ const MobileMenu = () => {
 		},
 		bmMenuWrap: {
 			position: 'fixed',
-			height: '100%'
+			height: '95vh'
 		},
 		bmMenu: {
 			background: '#373a47',
@@ -40,18 +40,22 @@ const MobileMenu = () => {
 		bmItemList: {
 			color: '#b8b7ad',
 			padding: '0.8em',
+			display: 'flex',
+			flexDirection: 'Column'
 		},
 		bmItem: {
 			display: 'inline-block'
 		},
 		bmOverlay: {
-			background: 'rgba(0, 0, 0, 0.9)'
-		},
+			background: 'rgba(0,0,0,.8)',
+			top: '0',
+			left: '0'
+		}
 	}
 	// NOTE: You also need to provide styles, see https://github.com/negomi/react-burger-menu#styling
 	return (
 		<div className='relative p-2'>
-			<Menu customBurgerIcon={<HamburgerIcon />} style={styles} width={'auto'} className='left-0 top-12' >
+			<Menu customBurgerIcon={<HamburgerIcon />} styles={styles} width={'auto'} className='left-0 top-12' >
 				<NavLinks />
 			</Menu>
 		</div>
