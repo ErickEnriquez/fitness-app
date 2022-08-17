@@ -18,7 +18,7 @@ import { useSession } from 'next-auth/react'
 
 const ExerciseItem = () => {
 
-	const { data, status } = useSession()
+	const { status } = useSession()
 
 	const dispatch = useAppDispatch()
 	const activeExerciseId = useAppSelector(selectActiveEntry)
