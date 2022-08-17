@@ -17,11 +17,19 @@ export const authOptions: NextAuthOptions = {
 			session.user.id = user.id
 			return session
 		},
+		async signIn({ user, account, profile }) {
+			//check if userId is already in the system, if not reject sign-in attempt
+			const u = await prisma.user.findFirst({ where: { id: user.id } })
+			if (!u) {
+				return false
+			}
+			return true
+		}
 	},
 	secret: process.env.SECRET,
 	events: {
 		signIn: async ({ user }) => {
-			console.log(user)
+			//do something with the user info
 		}
 		// createUser: async ({ user }) => {
 		// 	// Create stripe API client using the secret key env variable
