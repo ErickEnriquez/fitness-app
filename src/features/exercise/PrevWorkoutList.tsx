@@ -62,10 +62,10 @@ const PrevWorkoutsList = () => {
 							<Button
 								clickHandler={() => {
 									dispatch(removePreviousWorkout())
-									if (skipAmount >= 0) {
+									if (skipAmount <= 0) {
 										return
 									}
-									setSkipAmount(skipAmount + 1)
+									setSkipAmount(skipAmount - 1)
 								}}
 								text='Less'
 							/>

@@ -206,6 +206,7 @@ export const exerciseSlice = createSlice({
 		removePreviousWorkout: (state) => {
 			state.previousWorkout.pop()
 		},
+		resetState: () => initialState
 	},
 	extraReducers: (builder) => {
 		builder
@@ -269,7 +270,8 @@ export const {
 	editPreWorkout,
 	clearState,
 	clearStatus,
-	removePreviousWorkout
+	removePreviousWorkout,
+	resetState
 }
 	= exerciseSlice.actions
 

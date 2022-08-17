@@ -28,9 +28,15 @@ const IndexPage: NextPage = () => {
 							</a>
 						</Link>
 						<Link href='/calendar'>
-							<a className={`rounded-full bg-cyan-500 text-white px-8 py-2 w-11/12 mx-auto
+							<a className={`rounded-full bg-cyan-500 text-white px-8 py-2 mb-6 w-11/12 mx-auto
 					 hover:outline hover:outline-cyan-500 hover:text-cyan-500 hover:bg-white`}>
 								Calendar
+							</a>
+						</Link>
+						<Link href='/cardio'>
+							<a className={`rounded-full bg-cyan-500 text-white px-8 py-2 mb-6 w-11/12 mx-auto
+					 hover:outline hover:outline-cyan-500 hover:text-cyan-500 hover:bg-white`}>
+								Cardio
 							</a>
 						</Link>
 					</div>

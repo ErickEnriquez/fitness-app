@@ -80,7 +80,8 @@ export const CardioSlice = createSlice({
 			state.notes = ''
 			state.time = 0
 			state.status = 'idle'
-		}
+		},
+		resetState: () => initialState
 	},
 	extraReducers(builder) {
 		builder
@@ -98,7 +99,8 @@ export const {
 	editDistance,
 	editTime,
 	editCardioNotes,
-	clearCardioState
+	clearCardioState,
+	resetState
 } = CardioSlice.actions
 
 export const selectCardioState = (state: AppState) => state.cardio
