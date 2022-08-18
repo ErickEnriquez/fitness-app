@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 import type { AppState } from '@app/store'
-import { WorkoutEntry } from '@prisma/client'
+import { Program, WorkoutEntry, Workout } from '@prisma/client'
 
 /**
  * @property {string} status status of the slice returns if we are loading, success, or failed
@@ -31,9 +31,20 @@ const initialState: CalendarState = {
 export const getWorkoutsAsync = createAsyncThunk(
 	'calendar/getWorkouts',
 	//pass the start and the end dates to the reducer function
-	async ({ start, end }: { start: string, end: string }) => {
-		const response = await axios.get('/api/calendar/workout-entry', { params: { start, end } })
-		return response.data as WorkoutEntry[]
+	async ({ start, end }: { start: string, end: string }, { rejectWithValue }) => {
+		try {
+			const program = await axios.get('/api/program').then(r => r.data) as Program
+
+			const workoutTemplates = await axios.get('/api/workout-template', { params: { programId: program.id } })
+				.then(r => r.data) as Workout[]
+
+			const previousWorkouts = await Promise.all(workoutTemplates.map(item => (axios.get('/api/calendar/workout-entry', { params: { start, end, templateId: item.id } })))).then(r => r.map(i => i.data).flat()) as WorkoutEntry[]
+			previousWorkouts.sort((a, b) => +new Date(a.date) - +new Date(b.date))
+			return previousWorkouts
+		} catch (err) {
+			console.error(err)
+			rejectWithValue('Unable to get previous workouts')
+		}
 	}
 )
 
