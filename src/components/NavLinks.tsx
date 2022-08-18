@@ -31,7 +31,7 @@ const NavLink = ({ url, name }: { url: string, name: string }) => {
 	const router = useRouter()
 	return (
 		<Link href={url}>
-			<a className={`font-bold my-4 mx-0 sm:mx-6 flex flex-col rounded-xl hover:underline ${url === router.pathname ? 'bg-white text-cyan-700' : ''}`} >
+			<a className={`font-bold my-4 mx-0 sm:mx-6 flex flex-col rounded-xl hover:underline ${url === router.pathname ? 'bg-white text-cyan-700 py-1' : ''}`} >
 				{name}
 			</a>
 		</Link>
