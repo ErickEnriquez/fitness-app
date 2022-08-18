@@ -28,8 +28,9 @@ const getCalendarWorkouts = async (req: NextApiRequest, res: NextApiResponse) =>
 	try {
 		const startDate = new Date(req.query.start as string)
 		const endDate = new Date(req.query.end as string)
+		const templateId = Number(req.query.templateId)
 
-		const data = await getPreviousWorkouts(startDate, endDate)
+		const data = await getPreviousWorkouts(startDate, endDate, templateId)
 
 		res.status(200).json(data)
 	} catch (err) {
