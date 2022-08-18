@@ -32,7 +32,7 @@ export const getWorkoutsAsync = createAsyncThunk(
 	'calendar/getWorkouts',
 	//pass the start and the end dates to the reducer function
 	async ({ start, end }: { start: string, end: string }) => {
-		const response = await axios.get('/api/workouts', { params: { start, end } })
+		const response = await axios.get('/api/calendar/workout-entry', { params: { start, end } })
 		return response.data as WorkoutEntry[]
 	}
 )
