@@ -34,6 +34,6 @@ export async function getPreviousWorkouts(startDate: Date, endDate: Date): Promi
 
 	} catch (err) {
 		console.error(err)
-		return null
+		throw Error('Unable to get previous workouts for calendar')
 	}
 }
