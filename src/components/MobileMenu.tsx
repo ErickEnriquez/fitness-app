@@ -5,11 +5,11 @@ const MobileMenu = () => {
 
 	const styles = {
 		bmBurgerButton: {
-			position: 'fixed',
+			position: 'relative',
 			width: '36px',
 			height: '30px',
-			left: '15px',
-			top: '10px',
+			left: '10px',
+			top: '0',
 		},
 		bmBurgerBars: {
 			background: '#ffffff',
