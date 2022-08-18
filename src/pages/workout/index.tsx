@@ -21,7 +21,7 @@ const WorkoutPage: NextPage = () => {
 	//grab the workout templates from the server on page load
 	useEffect(() => {
 		if (status === 'authenticated' && data) {
-			dispatch(getWorkoutAsync(data?.user?.id))
+			dispatch(getWorkoutAsync())
 		}
 	}, [status])
 

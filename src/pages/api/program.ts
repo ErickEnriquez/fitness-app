@@ -2,6 +2,7 @@ import { unstable_getServerSession } from 'next-auth/next'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { authOptions } from '@auth/[...nextauth]'
 import { getProgram } from '@server/getProgram'
+import { Session } from 'next-auth'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 	const session = await unstable_getServerSession(req, res, authOptions)
@@ -12,7 +13,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 	}
 
 	switch (req.method) {
-		case 'GET': await getProgramData(req, res); break
+		case 'GET': await getProgramData(req, res, session); break
 		default:
 			res.status(405).json({ message: 'Method not allowed' })
 	}
@@ -24,10 +25,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
  * @param res 
  * @returns 
  */
-const getProgramData = async (req: NextApiRequest, res: NextApiResponse) => {
+const getProgramData = async (req: NextApiRequest, res: NextApiResponse, session: Session) => {
 	try {
-		const userId = String(req.query.userId)
-		const program = await getProgram(userId)
+		const program = await getProgram(session.user.id)
 		res.status(200).json(program)
 	} catch (err) {
 		res.status(500).end()
