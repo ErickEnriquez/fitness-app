@@ -15,13 +15,11 @@ import { selectStatus, selectActiveDate, getWorkoutsAsync } from '@features/cale
 
 import { startOfMonth, endOfMonth } from 'date-fns'
 
-
-
 const Calendar = () => {
 	const pageStatus = useAppSelector(selectStatus)
 	const active = useAppSelector(selectActiveDate)
 	const dispatch = useAppDispatch()
-	const { data, status } = useSession()
+	const { status } = useSession()
 
 	useEffect(() => {
 		dispatch(
@@ -33,7 +31,7 @@ const Calendar = () => {
 	//grab the workout templates from the server on page load
 
 	if (pageStatus === 'loading' || status === 'loading') return <Layout><Loading /></Layout>
-	else if(status === 'unauthenticated') return <SignIn />
+	else if (status === 'unauthenticated') return <SignIn />
 
 	return (
 		<Layout>

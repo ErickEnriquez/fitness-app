@@ -62,7 +62,7 @@ const ExerciseTemplate = () => {
 							Exit
 						</a>
 						<h1 className='text-white col-span-2 mx-auto text-3xl capitalize font-bold bg-slate-700 px-8 py-1 rounded-2xl'>
-							{activeWorkout && activeWorkout.type}
+							{activeWorkout && activeWorkout.name}
 						</h1>
 						<br />
 					</div>

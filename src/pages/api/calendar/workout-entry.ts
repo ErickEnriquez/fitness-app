@@ -25,16 +25,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
  * @param res next api response
  */
 const getCalendarWorkouts = async (req: NextApiRequest, res: NextApiResponse) => {
-	const startDate = new Date(req.query.start as string)
-	const endDate = new Date(req.query.end as string)
+	try {
+		const startDate = new Date(req.query.start as string)
+		const endDate = new Date(req.query.end as string)
+		const templateId = Number(req.query.templateId)
 
-	const data = await getPreviousWorkouts(startDate, endDate)
+		const data = await getPreviousWorkouts(startDate, endDate, templateId)
 
-	if (!data) {
-		res.status(500).end()
-		return
+		res.status(200).json(data)
+	} catch (err) {
+		res.status(500).json({ message: err })
 	}
-
-	res.status(200).json(data)
-
 }
