@@ -35,12 +35,15 @@ const WorkoutPage: NextPage = () => {
 
 	if (pageStatus === 'loading' || status === 'loading') return <Loading />
 	else if (status === 'unauthenticated') return <SignIn />
+	else if (pageStatus === 'error') {
+		return <div>Error</div>
+	}
 	return (
 		<Layout>
 			<main className='text-center my-4'>
 				<Card title={'Your Workouts'}>
 					<ul className='grid grid-cols-2 w-11/12 mx-auto'>
-						{workouts.map((item, idx) => {
+						{workouts && workouts.map((item, idx) => {
 							return (
 								<Link href={`/workout/${item.id}`} key={idx}>
 									<li
@@ -60,7 +63,7 @@ const WorkoutPage: NextPage = () => {
 				<br />
 				<Card title={'Previous Workouts'}>
 					<ul>
-						{previous.map((workout, idx) => (
+						{workouts && previous.map((workout, idx) => (
 							<li key={idx} className='text-white capitalize my-4'>
 								<strong className='underline'>{workout.name} - {new Date(workout.date).toLocaleDateString()} </strong>
 							</li>
