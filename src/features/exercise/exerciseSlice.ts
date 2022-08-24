@@ -95,8 +95,8 @@ export const getWorkoutAsync = createAsyncThunk(
 			return data
 		}
 		catch (err) {
-			console.error(err)
-			rejectWithValue(err)
+			console.warn(err)
+			return rejectWithValue(err)
 		}
 	}
 )
