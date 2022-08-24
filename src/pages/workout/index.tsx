@@ -28,6 +28,7 @@ const WorkoutPage: NextPage = () => {
 
 	//useMemo is used to avoid sorting this data every time the page is rendered
 	const previous = useMemo(() => {
+		if (!workouts) return
 		const previousWorkouts = [...workouts]
 		previousWorkouts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 		return previousWorkouts

@@ -65,13 +65,22 @@ export const getWorkoutAsync = createAsyncThunk(
 		try {
 
 			const program = await axios.get('/api/program')
-				.then(d => d.data) as Program
+				.then(d => d.data)
+				.catch(err => {
+					throw Error(err)
+				}) as Program
 
 			const workoutTemplates = await axios.get('/api/workout-template', { params: { programId: program.id } })
-				.then(r => r.data) as Workout[]
+				.then(r => r.data)
+				.catch(err => {
+					throw Error(err)
+				}) as Workout[]
 
 			const prevWorkouts = await Promise.all(workoutTemplates.map(workout => axios.get('/api/workout-entry', { params: { workoutType: workout.id, skip: 0 } })))
-				.then(list => list.map(item => item.data)) as WorkoutEntry[]
+				.then(list => list.map(item => item.data))
+				.catch(err => {
+					throw Error(err)
+				}) as WorkoutEntry[]
 
 			const data = workoutTemplates.map((item) => {
 				const prevWorkout = prevWorkouts.find(workout => workout.workoutTemplateId === item.id)
