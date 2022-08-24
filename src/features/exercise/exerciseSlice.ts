@@ -137,7 +137,7 @@ export const getMorePreviousWorkouts = createAsyncThunk(
 	async (skipNum: number, { getState, rejectWithValue }) => {
 		const { exercise: { activeWorkout } } = getState() as AppState
 		const workout = await axios.get('/api/workout-entry', { params: { workoutType: activeWorkout, skip: skipNum } })
-		if (!workout.data) rejectWithValue('no readings found')
+		if (!workout.data) return rejectWithValue('no readings found')
 		return workout.data
 	}
 )
@@ -149,7 +149,7 @@ export const postExerciseEntries = createAsyncThunk(
 
 		if (entries.some(e => e.completed !== true)) {
 			console.log('not all entries are completed')
-			rejectWithValue({ mes: 'You must complete all entries before submitting', entries })
+			return rejectWithValue({ mes: 'You must complete all entries before submitting', entries })
 		}
 		else {
 			const response = await axios.post('/api/exercise-entry', { entries, workoutEntry })
