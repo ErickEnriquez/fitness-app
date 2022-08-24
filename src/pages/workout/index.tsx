@@ -2,6 +2,7 @@ import React, { useEffect, useMemo } from 'react'
 import { NextPage } from 'next'
 import Link from 'next/link'
 import Loading from '@components/Loading'
+import Fail from '@components/Fail'
 import Layout from '@components/Layout'
 import Card from '@components/Card'
 import SignIn from '@components/SignIn'
@@ -10,11 +11,13 @@ import { useSession } from 'next-auth/react'
 
 import { useAppDispatch, useAppSelector } from '@app/hooks'
 import { getWorkoutAsync, selectWorkouts, getExerciseTemplates, selectStatus } from '@features/exercise/exerciseSlice'
+import { useRouter } from 'next/router'
 
 const WorkoutPage: NextPage = () => {
 	const dispatch = useAppDispatch()
 	const workouts = useAppSelector(selectWorkouts)
 	const pageStatus = useAppSelector(selectStatus)
+	const router = useRouter()
 
 	const { data, status } = useSession()
 
@@ -28,6 +31,7 @@ const WorkoutPage: NextPage = () => {
 
 	//useMemo is used to avoid sorting this data every time the page is rendered
 	const previous = useMemo(() => {
+		if (!workouts) return
 		const previousWorkouts = [...workouts]
 		previousWorkouts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 		return previousWorkouts
@@ -35,9 +39,7 @@ const WorkoutPage: NextPage = () => {
 
 	if (pageStatus === 'loading' || status === 'loading') return <Loading />
 	else if (status === 'unauthenticated') return <SignIn />
-	else if (pageStatus === 'error') {
-		return <div>Error</div>
-	}
+	else if (pageStatus === 'error')  return <Fail clickHandler={() => router.push('/')} /> 
 	return (
 		<Layout>
 			<main className='text-center my-4'>

@@ -65,13 +65,22 @@ export const getWorkoutAsync = createAsyncThunk(
 		try {
 
 			const program = await axios.get('/api/program')
-				.then(d => d.data) as Program
+				.then(d => d.data)
+				.catch(err => {
+					throw Error(err)
+				}) as Program
 
 			const workoutTemplates = await axios.get('/api/workout-template', { params: { programId: program.id } })
-				.then(r => r.data) as Workout[]
+				.then(r => r.data)
+				.catch(err => {
+					throw Error(err)
+				}) as Workout[]
 
 			const prevWorkouts = await Promise.all(workoutTemplates.map(workout => axios.get('/api/workout-entry', { params: { workoutType: workout.id, skip: 0 } })))
-				.then(list => list.map(item => item.data)) as WorkoutEntry[]
+				.then(list => list.map(item => item.data))
+				.catch(err => {
+					throw Error(err)
+				}) as WorkoutEntry[]
 
 			const data = workoutTemplates.map((item) => {
 				const prevWorkout = prevWorkouts.find(workout => workout.workoutTemplateId === item.id)
@@ -86,8 +95,8 @@ export const getWorkoutAsync = createAsyncThunk(
 			return data
 		}
 		catch (err) {
-			console.error(err)
-			rejectWithValue(err)
+			console.warn(err)
+			return rejectWithValue(err)
 		}
 	}
 )
@@ -128,7 +137,7 @@ export const getMorePreviousWorkouts = createAsyncThunk(
 	async (skipNum: number, { getState, rejectWithValue }) => {
 		const { exercise: { activeWorkout } } = getState() as AppState
 		const workout = await axios.get('/api/workout-entry', { params: { workoutType: activeWorkout, skip: skipNum } })
-		if (!workout.data) rejectWithValue('no readings found')
+		if (!workout.data) return rejectWithValue('no readings found')
 		return workout.data
 	}
 )
@@ -140,7 +149,7 @@ export const postExerciseEntries = createAsyncThunk(
 
 		if (entries.some(e => e.completed !== true)) {
 			console.log('not all entries are completed')
-			rejectWithValue({ mes: 'You must complete all entries before submitting', entries })
+			return rejectWithValue({ mes: 'You must complete all entries before submitting', entries })
 		}
 		else {
 			const response = await axios.post('/api/exercise-entry', { entries, workoutEntry })
