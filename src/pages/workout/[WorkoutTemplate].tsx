@@ -24,7 +24,7 @@ import { useSession } from 'next-auth/react'
 
 const ExerciseTemplate = () => {
 
-	const { data, status } = useSession()
+	const { status } = useSession()
 	const pageStatus = useAppSelector(state => state.exercise.status)
 	const workoutID = useAppSelector(state => state.exercise.activeWorkout)
 

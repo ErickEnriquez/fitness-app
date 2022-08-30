@@ -12,7 +12,8 @@ import {
 
 import { useAppSelector } from '@app/hooks'
 import { selectActiveDate, selectWorkouts, selectCardioList } from '@features/calendar/CalendarSlice'
-import { Cardio, WorkoutEntry } from '@prisma/client'
+import { PreviousCardio } from '@server/getPreviousCardio'
+import { PreviousWorkoutsEntry } from '@server/getPreviousWorkouts'
 
 
 const Month = () => {
@@ -41,7 +42,7 @@ const Month = () => {
 }
 
 
-const generateDatesForCurrentWeek = (date: Date, activeDate: Date, previousWorkouts: WorkoutEntry[], previousCardio: Cardio[]) => {
+const generateDatesForCurrentWeek = (date: Date, activeDate: Date, previousWorkouts: PreviousWorkoutsEntry[], previousCardio: PreviousCardio[]) => {
 	let currentDate = date
 	const week = []
 

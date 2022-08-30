@@ -3,7 +3,9 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 import type { AppState } from '@app/store'
-import { Program, WorkoutEntry, Workout, Cardio } from '@prisma/client'
+import { Program, Workout } from '@prisma/client'
+import { PreviousCardio } from '@server/getPreviousCardio'
+import { PreviousWorkoutsEntry } from '@server/getPreviousWorkouts'
 
 /**
  * @property {string} status status of the slice returns if we are loading, success, or failed
@@ -13,16 +15,16 @@ import { Program, WorkoutEntry, Workout, Cardio } from '@prisma/client'
  */
 export interface CalendarState {
 	status: 'idle' | 'loading' | 'failed' | 'success'
-	workouts: WorkoutEntry[]
-	cardios: Cardio[]
+	workouts: PreviousWorkoutsEntry[]
+	cardios: PreviousCardio[]
 	activeDate: string
 	selectedDate: string
 }
 
 const initialState: CalendarState = {
 	status: 'idle',
-	workouts: [] as WorkoutEntry[],
-	cardios: [],
+	workouts: [] as PreviousWorkoutsEntry[],
+	cardios: [] as PreviousCardio[],
 	activeDate: new Date().toISOString(),
 	selectedDate: new Date().toISOString(),
 }
@@ -49,10 +51,10 @@ export const getWorkoutsAsync = createAsyncThunk(
 			const previousWorkouts = await Promise.all(
 				workoutTemplates.map(item =>
 					(axios.get('/api/calendar/workout-entry', { params: { start, end, templateId: item.id } }))))
-				.then(r => r.map(i => i.data).flat()) as WorkoutEntry[]
+				.then(r => r.map(i => i.data).flat()) as PreviousWorkoutsEntry[]
 
 			previousWorkouts.sort((a, b) => +new Date(a.date) - +new Date(b.date))
-			return { previousWorkouts, cardio: cardio as Cardio[] }
+			return { previousWorkouts, cardio: cardio as PreviousCardio[] }
 		} catch (err) {
 			console.error(err)
 			return rejectWithValue('Unable to get previous workouts')

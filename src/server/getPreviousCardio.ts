@@ -7,9 +7,14 @@ import { Cardio } from '@prisma/client'
  * @param endDate 
  * @param userID 
  */
-export async function getPreviousCardio(startDate: string, endDate: string, userId: string): Promise<Cardio[]> {
+
+export interface PreviousCardio extends Omit<Cardio, 'timeCreated'> {
+	timeCreated: string
+}
+
+export async function getPreviousCardio(startDate: string, endDate: string, userId: string): Promise<PreviousCardio[]> {
 	try {
-		const cardio = await prisma.cardio.findMany({
+		const cardioList = await prisma.cardio.findMany({
 			where: {
 				AND: [
 					{ userId },
@@ -22,7 +27,7 @@ export async function getPreviousCardio(startDate: string, endDate: string, user
 				]
 			}
 		})
-		return cardio
+		return cardioList.map(cardio => ({ ...cardio, timeCreated: cardio.timeCreated.toISOString() }))
 	} catch (err) {
 		console.error(err)
 		throw Error(err)
