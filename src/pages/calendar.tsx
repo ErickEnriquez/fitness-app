@@ -14,6 +14,7 @@ import { useAppSelector, useAppDispatch } from '@app/hooks'
 import { selectStatus, selectActiveDate, getWorkoutsAsync } from '@features/calendar/CalendarSlice'
 
 import { startOfMonth, endOfMonth } from 'date-fns'
+import Fail from '@components/Fail'
 
 const Calendar = () => {
 	const pageStatus = useAppSelector(selectStatus)
@@ -32,6 +33,7 @@ const Calendar = () => {
 
 	if (pageStatus === 'loading' || status === 'loading') return <Layout><Loading /></Layout>
 	else if (status === 'unauthenticated') return <SignIn />
+	else if (pageStatus === 'failed') return <Layout><Fail /></Layout>
 
 	return (
 		<Layout>

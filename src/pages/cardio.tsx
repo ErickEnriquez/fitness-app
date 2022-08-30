@@ -32,7 +32,7 @@ const workoutOptions = [CardioType.bike, CardioType.run, CardioType.climbing, Ca
 
 const Cardio = (): JSX.Element => {
 
-	const { data, status } = useSession()
+	const { status } = useSession()
 
 	const { intensity, caloriesBurned, distance, time, notes } = useAppSelector(selectCardioState)
 	const pageStatus = useAppSelector(selectStatus)

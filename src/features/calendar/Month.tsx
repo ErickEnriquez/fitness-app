@@ -6,22 +6,22 @@ import {
 	endOfMonth,
 	endOfWeek,
 	isSameMonth,
-	isSameDay
+	isSameDay,
+	parseISO
 } from 'date-fns'
 
-import { useAppSelector, useAppDispatch } from '@app/hooks'
-import { selectActiveDate, selectSelectedDate, editSelectedDate, selectWorkouts } from '@features/calendar/CalendarSlice'
-import { ActionCreatorWithOptionalPayload } from '@reduxjs/toolkit/dist/createAction'
+import { useAppSelector } from '@app/hooks'
+import { selectActiveDate, selectWorkouts, selectCardioList } from '@features/calendar/CalendarSlice'
+import { PreviousCardio } from '@server/getPreviousCardio'
+import { PreviousWorkoutsEntry } from '@server/getPreviousWorkouts'
 
 
 const Month = () => {
 	const activeDate = new Date(useAppSelector(selectActiveDate))
-	const selectedDate = new Date(useAppSelector(selectSelectedDate))
 
-	const workouts = useAppSelector(selectWorkouts)
+	const previousWorkouts = useAppSelector(selectWorkouts)
+	const previousCardio = useAppSelector(selectCardioList)
 
-	const dates = workouts.map(i => i.date)
-	console.log(dates)
 	const startOfTheSelectedMonth = startOfMonth(activeDate)
 	const endOfTheSelectedMonth = endOfMonth(activeDate)
 	const startDate = startOfWeek(startOfTheSelectedMonth)
@@ -33,7 +33,7 @@ const Month = () => {
 
 	while (currentDate <= endDate) {
 		allWeeks.push(
-			generateDatesForCurrentWeek(currentDate, selectedDate, activeDate, editSelectedDate)
+			generateDatesForCurrentWeek(currentDate, activeDate, previousWorkouts, previousCardio)
 		)
 		currentDate = addDays(currentDate, 7)
 	}
@@ -42,19 +42,24 @@ const Month = () => {
 }
 
 
-const generateDatesForCurrentWeek = (date: Date, selectedDate: Date, activeDate: Date, editSelectedDate: ActionCreatorWithOptionalPayload<string, string>) => {
-	const dispatch = useAppDispatch()
-
+const generateDatesForCurrentWeek = (date: Date, activeDate: Date, previousWorkouts: PreviousWorkoutsEntry[], previousCardio: PreviousCardio[]) => {
 	let currentDate = date
 	const week = []
 
 	for (let day = 0; day < 7; day++) {
+
+		const workoutThisDay = previousWorkouts.find(workout => isSameDay(parseISO(workout.date), currentDate))
+		const cardioThisDay = previousCardio.find(cardio => isSameDay(parseISO(cardio.timeCreated), currentDate))
 		week.push(
 			<td key={day}
-				className={`${isSameMonth(activeDate, currentDate) ? 'text-white bg-slate-500' : 'text-slate-500'}
+				className={`${isSameMonth(activeDate, currentDate) ? 'text-white bg-slate-500' : 'text-slate-500'} 
 			text-center py-6 outline outline-white outline-1 text-l font-heavy rounded-sm`}
 			>
-				{format(currentDate, 'd')}
+				<span className='flex flex-col'>
+					{workoutThisDay ? <span className='bg-green-600 h-4'></span> : null}
+					{cardioThisDay ? <span className='bg-purple-600 h-4'></span> : null}
+					{format(currentDate, 'dd')}
+				</span>
 			</td>
 		)
 		currentDate = addDays(currentDate, 1)

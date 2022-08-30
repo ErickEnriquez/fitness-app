@@ -17,7 +17,7 @@ export const authOptions: NextAuthOptions = {
 			session.user.id = user.id
 			return session
 		},
-		async signIn({ user, account, profile }) {
+		async signIn({ user }) {
 			//check if userId is already in the system, if not reject sign-in attempt
 			const u = await prisma.user.findFirst({ where: { id: user.id } })
 			if (!u) {
@@ -29,6 +29,7 @@ export const authOptions: NextAuthOptions = {
 	secret: process.env.SECRET,
 	events: {
 		signIn: async ({ user }) => {
+			console.log(user.name)
 			//do something with the user info
 		}
 		// createUser: async ({ user }) => {
