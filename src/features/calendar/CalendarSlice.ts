@@ -43,7 +43,7 @@ export const getWorkoutsAsync = createAsyncThunk(
 			return previousWorkouts
 		} catch (err) {
 			console.error(err)
-			rejectWithValue('Unable to get previous workouts')
+			return rejectWithValue('Unable to get previous workouts')
 		}
 	}
 )
