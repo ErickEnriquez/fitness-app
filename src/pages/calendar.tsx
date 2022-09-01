@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react'
 
+import { selectStatus, selectActiveDate, getWorkoutsAsync } from '@features/calendar/CalendarSlice'
+
 import Loading from '@components/Loading'
 import CalendarHeader from '@features/calendar/Header'
 import CalendarWeekDays from '@features/calendar/Weekdays'
@@ -7,14 +9,13 @@ import CalendarDates from '@features/calendar/CalendarDates'
 import Layout from '@components/Layout'
 import Card from '@components/Card'
 import SignIn from '@components/SignIn'
+import Fail from '@components/Fail'
 
 import { useSession } from 'next-auth/react'
 
 import { useAppSelector, useAppDispatch } from '@app/hooks'
-import { selectStatus, selectActiveDate, getWorkoutsAsync } from '@features/calendar/CalendarSlice'
 
 import { startOfMonth, endOfMonth } from 'date-fns'
-import Fail from '@components/Fail'
 
 const Calendar = () => {
 	const pageStatus = useAppSelector(selectStatus)
