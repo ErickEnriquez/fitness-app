@@ -56,7 +56,7 @@ const Cardio = (): JSX.Element => {
 							<select
 								name="cardio-type" id="type"
 								onChange={e => dispatch(editCardioType(e.target.value))}
-								className='outline mt-4 outline-cyan-700 outline-4 rounded-3xl placeholder:text-slate-600 text-center py-4 w-11/12 block mx-auto  shadow-lg shadow-black/70'
+								className='outline mt-4 outline-primary-blue outline-4 rounded-3xl placeholder:text-slate-600 text-center py-4 w-11/12 block mx-auto  shadow-lg shadow-black/70'
 							>
 								<option value="">Select an option</option>
 								{workoutOptions.map(option => (

@@ -11,7 +11,7 @@ const Success = ({ clickHandler }: props) => {
 				<h2 className="mx-auto text-xl">Success</h2>
 				<button
 					onClick={clickHandler}
-					className='bg-cyan-500 px-5 rounded-full shadow-lg shadow-black/50'>Exit
+					className='bg-primary-blue px-5 rounded-full shadow-lg shadow-black/50'>Exit
 				</button>
 			</div>
 			<div className="flex justify-left bg-green-300 py-4">

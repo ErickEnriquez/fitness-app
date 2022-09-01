@@ -27,8 +27,8 @@ const ExerciseList = () => {
 									`w-11/12 text-white my-6 py-4 rounded-3xl mx-auto shadow-lg shadow-black/70 
 									hover:cursor-pointer hover:bg-white hover:outline  
 								${item.completed
-										? 'bg-cyan-700 hover:text-cyan-700 hover:outline-cyan-700 text-white'
-										: 'bg-white hover:text-cyan-700 hover:outline-cyan-700 text-cyan-700'
+										? 'bg-primary-blue hover:text-primary-blue hover:outline-primary-blue text-white'
+										: 'bg-white hover:text-primary-blue hover:outline-primary-blue text-primary-blue'
 									}  `
 								}
 								onClick={() => { dispatch(setActiveEntry(item.id)) }}

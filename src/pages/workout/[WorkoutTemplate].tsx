@@ -64,7 +64,7 @@ const ExerciseTemplate = () => {
 							>
 								Exit
 							</a>
-							<h1 className='text-white col-span-2 mx-auto text-3xl capitalize font-bold bg-slate-700 px-8 py-1 rounded-2xl'>
+							<h1 className='text-white col-span-2 mx-auto text-3xl capitalize font-bold bg-dark-gray px-8 py-1 rounded-2xl'>
 								{activeWorkout && activeWorkout.name}
 							</h1>
 							<br />
@@ -88,7 +88,7 @@ const ExerciseTemplate = () => {
 								<select
 									id="preWorkout"
 									placeholder='Pre-workout?'
-									className='outline my-4 outline-cyan-700 outline-4 rounded-3xl placeholder:text-slate-600 text-center py-3 w-11/12 block mx-auto shadow-lg shadow-black/70'
+									className='outline my-4 outline-primary-blue outline-4 rounded-3xl placeholder:text-slate-600 text-center py-3 w-11/12 block mx-auto shadow-lg shadow-black/70'
 									onChange={e => dispatch(editPreWorkout(e.target.value === 'true'))}
 								>
 									<option value="true">Yes</option>

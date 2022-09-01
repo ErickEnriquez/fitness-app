@@ -16,7 +16,7 @@ import { PreviousCardio } from '@server/getPreviousCardio'
 import { PreviousWorkoutsEntry } from '@server/getPreviousWorkouts'
 
 
-const Month = () => {
+const CalendarDates = () => {
 	const activeDate = new Date(useAppSelector(selectActiveDate))
 
 	const previousWorkouts = useAppSelector(selectWorkouts)
@@ -33,7 +33,7 @@ const Month = () => {
 
 	while (currentDate <= endDate) {
 		allWeeks.push(
-			generateDatesForCurrentWeek(currentDate, activeDate, previousWorkouts, previousCardio)
+			Week(currentDate, activeDate, previousWorkouts, previousCardio)
 		)
 		currentDate = addDays(currentDate, 7)
 	}
@@ -42,7 +42,7 @@ const Month = () => {
 }
 
 
-const generateDatesForCurrentWeek = (date: Date, activeDate: Date, previousWorkouts: PreviousWorkoutsEntry[], previousCardio: PreviousCardio[]) => {
+const Week = (date: Date, activeDate: Date, previousWorkouts: PreviousWorkoutsEntry[], previousCardio: PreviousCardio[]) => {
 	let currentDate = date
 	const week = []
 
@@ -53,13 +53,17 @@ const generateDatesForCurrentWeek = (date: Date, activeDate: Date, previousWorko
 		week.push(
 			<td key={day}
 				className={`${isSameMonth(activeDate, currentDate) ? 'text-white bg-slate-500' : 'text-slate-500'} 
-			text-center py-6 outline outline-white outline-1 text-l font-heavy rounded-sm`}
+			text-center pb-6 outline outline-white outline-1 text-l font-heavy rounded-sm`}
 			>
-				<span className='flex flex-col'>
-					{workoutThisDay ? <span className='bg-green-600 h-4'></span> : null}
-					{cardioThisDay ? <span className='bg-purple-600 h-4'></span> : null}
-					{format(currentDate, 'dd')}
-				</span>
+				<div className='grid grid-rows-2'>
+					<span className='flex flex-col'>
+						<span className={`${workoutThisDay ? 'bg-green-600' : 'opacity-100'} h-4`}></span>
+						<span className={`${cardioThisDay ? 'bg-purple-600' : 'opacity-100'} h-4`}></span>
+					</span>
+					<span className={`${isSameDay(currentDate, new Date()) ? 'text-red-700' : ''}`}>
+						{format(currentDate, 'dd')}
+					</span>
+				</div>
 			</td>
 		)
 		currentDate = addDays(currentDate, 1)
@@ -67,4 +71,4 @@ const generateDatesForCurrentWeek = (date: Date, activeDate: Date, previousWorko
 	return <tr key={currentDate.toISOString()}>{week}</tr>
 }
 
-export default Month
+export default CalendarDates

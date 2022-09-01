@@ -6,7 +6,7 @@ import { useSession } from 'next-auth/react'
 const Nav = () => {
 	const { data, status } = useSession()
 	return (
-		<nav className='max-w-full h-14 flex justify-start items-center bg-cyan-700 mb-4 text-white rounded-md '>
+		<nav className='max-w-full h-14 flex justify-start items-center bg-primary-blue mb-4 text-white rounded-md '>
 			<div className='flex md:hidden'><MobileMenu /></div>
 			<div className='hidden md:flex'>
 				<NavLinks />

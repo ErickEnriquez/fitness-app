@@ -11,13 +11,13 @@ interface NumberInputProps {
 const NumberInput = ({ color, changeHandler, num, name, title }: NumberInputProps) => {
 	return (
 		<span>
-			<label htmlFor={name} className='text-white text-lg font-bold'>{title ||''}</label>
+			<label htmlFor={name} className='text-white text-lg font-bold'>{title || ''}</label>
 			<input type="number"
 				name={name}
 				placeholder={name}
 				value={num}
 				onChange={changeHandler}
-				className={`outline my-4 ${color || 'outline-cyan-700'} outline-4 rounded-3xl placeholder:text-slate-600 text-center py-4 w-11/12 block mx-auto  shadow-lg shadow-black/70`}
+				className={`outline my-4 ${color || 'outline-primary-blue'} outline-4 rounded-3xl placeholder:text-slate-600 text-center py-4 w-11/12 block mx-auto  shadow-lg shadow-black/70`}
 			/>
 		</span>
 	)

@@ -49,7 +49,7 @@ const ExerciseItem = () => {
 					<div>
 						<div className='grid grid-cols-4 my-4'>
 							<BackBtn href={`/workout/${exerciseEntry.workoutId}`} clickHandler={toggleCompleted} />
-							<h2 className='mx-auto1 text-white text-center col-span-2 bg-slate-700 rounded-2xl'>
+							<h2 className='mx-auto1 text-white text-center col-span-2 bg-dark-gray rounded-2xl'>
 								<span className='text-3xl font-bold'>
 									{exerciseEntry.name}
 								</span>
@@ -58,7 +58,7 @@ const ExerciseItem = () => {
 							</h2>
 						</div>
 						<br />
-						<div className="bg-slate-700 rounded-3xl content-center w-11/12 mx-auto">
+						<div className="bg-dark-gray rounded-3xl content-center w-11/12 mx-auto">
 							<h3 className='text-center text-white text-xl font-bold'>Weight (lbs)</h3>
 							<div className='grid grid-cols-2 py-4  md:grid-cols-2 lg:grid-cols-5 '>
 								{exerciseEntry.weights.map((weight, i: number) => (
@@ -71,7 +71,7 @@ const ExerciseItem = () => {
 								))}
 							</div>
 						</div>
-						<div className="bg-slate-700 rounded-3xl py-4 my-4 w-11/12 mx-auto">
+						<div className="bg-dark-gray rounded-3xl py-4 my-4 w-11/12 mx-auto">
 							<h3 className='text-center text-white text-xl mb-4 font-bold'>Intensity & Order</h3>
 							<div className="grid grid-cols-2 content-center ">
 								<NumberInput
@@ -84,20 +84,20 @@ const ExerciseItem = () => {
 								/>
 							</div>
 						</div>
-						<div className='bg-slate-700 rounded-3xl w-11/12 mx-auto align-center flex flex-col py-4'>
+						<div className='bg-dark-gray rounded-3xl w-11/12 mx-auto align-center flex flex-col py-4'>
 							<Notes
 								val={exerciseEntry.notes}
 								changeHandler={(e) => dispatch(editNotes({ movementID: exerciseEntry.movementID, value: e.target.value }))}
 							/>
 						</div>
-						<button className='bg-white rounded-full mx-auto block my-8 w-11/12 py-3 text-cyan-700 font-bold' onClick={() => setPreviousInfo(prev => !prev)}> Show Previous Workout</button>
+						<button className='bg-white rounded-full mx-auto block my-8 w-11/12 py-3 text-primary-blue font-bold' onClick={() => setPreviousInfo(prev => !prev)}> Show Previous Workout</button>
 						{previousInfo && <PrevWorkoutList />}
 					</div>
 					:
 					(<div>
 						<h1 className='text-white text-3xl text-center'>No exerciseEntry selected</h1>
 						<Link href='/workout'>
-							<button className='bg-white text-cyan-500 rounded-full' >Back to Workouts</button>
+							<button className='bg-white text-primary-blue rounded-full' >Back to Workouts</button>
 						</Link>
 					</div>
 					)
