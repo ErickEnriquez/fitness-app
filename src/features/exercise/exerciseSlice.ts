@@ -193,16 +193,6 @@ export const exerciseSlice = createSlice({
 		clearStatus: (state) => {
 			state.status = 'idle'
 		},
-		//return the state of the exercise slice back to initial state
-		clearState: (state) => {
-			state.status = 'idle'
-			state.entries = [] as UserEntry[]
-			state.workouts = [] as WorkoutInfo[]
-			state.activeWorkout = null as number
-			state.activeEntry = null as number
-			state.previousWorkout = [] as PreviousWorkout[]
-			state.workoutEntry = null as activeWorkoutInfo
-		},
 		removePreviousWorkout: (state) => {
 			state.previousWorkout.pop()
 		},
@@ -268,7 +258,6 @@ export const {
 	editWorkoutNotes,
 	editWorkoutGrade,
 	editPreWorkout,
-	clearState,
 	clearStatus,
 	removePreviousWorkout,
 	resetState
