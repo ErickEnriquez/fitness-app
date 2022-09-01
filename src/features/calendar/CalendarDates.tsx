@@ -51,7 +51,6 @@ const Week = (date: Date, activeDate: Date, previousWorkouts: PreviousWorkoutsEn
 	for (let day = 0; day < 7; day++) {
 
 		const workoutThisDay = previousWorkouts.find(workout => isSameDay(parseISO(workout.date), currentDate))
-		if (workoutThisDay) console.log(workoutThisDay)
 		const cardioThisDay = previousCardio.find(cardio => isSameDay(parseISO(cardio.timeCreated), currentDate))
 		week.push(
 			<td key={day}
@@ -63,7 +62,7 @@ const Week = (date: Date, activeDate: Date, previousWorkouts: PreviousWorkoutsEn
 						<span className={`${workoutThisDay ? 'bg-green-600' : 'opacity-100'} h-4`}></span>
 						<span className={`${cardioThisDay ? 'bg-purple-600' : 'opacity-100'} h-4`}></span>
 					</span>
-					<Link href={`${workoutThisDay ? `/previous-workouts/${workoutThisDay?.id}` : ''}`}>
+					<Link href={`${workoutThisDay ? `/history/${workoutThisDay?.id}` : ''}`}>
 						<span className={`${isSameDay(currentDate, new Date()) ? 'text-red-700' : ''}`}>
 							{format(currentDate, 'dd')}
 						</span>
