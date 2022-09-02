@@ -1,26 +1,35 @@
 import { ExerciseEntry } from '@prisma/client'
 import React from 'react'
+import { FaPencilAlt } from 'react-icons/fa'
 
 const PreviousExercise = ({ exercise }: { exercise: ExerciseEntry }) => {
 	return (
-		<div className='w-11/12 mx-auto bg-light-gray py-1 my-2 rounded-xl'>
+		<div className='w-11/12 mx-auto bg-light-gray py-1 mt-2 mb-6 rounded-xl'>
 			<div className='bg-primary-blue grid grid-cols-3 w-5/6 mx-auto rounded-xl my-2'>
 				<p className='text-white'>{exercise.order}.</p>
 				<strong className='text-white'>{exercise.exerciseID}</strong>
-				<strong className='text-white'>[WIP] pencil icon</strong>
+				<span className='w-11/12 mx-auto'>
+					<FaPencilAlt
+						color='#FFF'
+						style={{ 'display': 'unset', 'verticalAlign': 'unset' }}
+						onClick={() => { alert('Edit') }}
+					/>
+				</span>
 			</div>
 			<div className='grid-cols-5 grid text-white w-11/12 mx-auto'>
 				<strong>Set</strong>
 				<strong className='col-span-2'>Weight</strong>
 				<strong className='col-span-2'>Reps</strong>
+			</div>
+			<ul className='grid-cols-5 grid text-white w-11/12 mx-auto'>
 				{exercise.weights.map((weight, idx) => (
 					<React.Fragment key={idx}>
-						<strong className='text-primary-blue bg-white w-1/4 mx-auto rounded-xl pb-2'>{idx + 1}</strong>
-						<strong className='col-span-2'>{weight}</strong>
-						<strong className='col-span-2'>{5}</strong>
+						<li className='text-primary-blue bg-white w-1/4 mx-auto rounded-xl pb-2'>{idx + 1}</li>
+						<li className='col-span-2'>{weight}</li>
+						<li className='col-span-2'>{5}</li>
 					</React.Fragment>
 				))}
-			</div>
+			</ul>
 			<div className='grid grid-cols-2 bg-white rounded-xl w-5/6 mx-auto my-4'>
 				<strong className='text-primary-blue'>Intensity</strong>
 				<strong className='text-primary-blue'>Order</strong>
