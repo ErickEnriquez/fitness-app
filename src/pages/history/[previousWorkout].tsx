@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 
-import { selectStatus, selectWorkout, getWorkoutDataAsync } from '@features/history/PreviousWorkoutSlice'
+import { selectStatus, selectWorkout, getWorkoutDataAsync, selectExercises } from '@features/history/PreviousWorkoutSlice'
 
 import { format } from 'date-fns'
 
@@ -10,12 +10,15 @@ import Card from '@components/Card'
 import SignIn from '@components/SignIn'
 import Fail from '@components/Fail'
 import BackBtn from '@components/BackBtn'
+import PreviousExercise from '@components/PreviousExercise'
+
 
 import router from 'next/router'
 
 import { useSession } from 'next-auth/react'
 
 import { useAppSelector, useAppDispatch } from '@app/hooks'
+import { Decimal } from '@prisma/client/runtime'
 
 
 const PreviousWorkout = () => {
@@ -23,6 +26,18 @@ const PreviousWorkout = () => {
 	const dispatch = useAppDispatch()
 	const { status } = useSession()
 	const workout = useAppSelector(selectWorkout)
+
+	const exerciseList = useAppSelector(selectExercises)
+
+	const exercises = exerciseList && exerciseList.map(item => (
+		<React.Fragment key={item.id}>
+			<PreviousExercise exercise={{
+				...item,
+				//convert to Decimal array to avoid typescript complaining about "mismatched types"
+				weights: [...item.weights] as Decimal[]
+			}} />
+		</React.Fragment>
+	))
 
 	useEffect(() => {
 		const params = router.query
@@ -42,16 +57,26 @@ const PreviousWorkout = () => {
 
 			<Card title={`Workout Id :${workout.id}`}>
 				<h2 className='text-white'>{`Completed: ${format(new Date(workout.date), 'EEE, LLL dd YYY hh:mm aa')}`}</h2>
-				<div className='text-center my-6'>
-					{workout.notes &&
+				{workout.notes &&
+
+					<div className='text-center my-6'>
 						<>
 							<h3 className='text-white'>Notes</h3>
-							<div >
+							<div className='bg-light-gray w-11/12 mx-auto text-white rounded-lg'>
 								{workout.notes}
 							</div>
 						</>
-					}
+					</div>
+				}
+				<div className='grid grid-cols-2 bg-primary-blue text-white w-3/4 mx-auto rounded-xl'>
+					<strong>Intensity</strong>
+					<strong>Pre-Workout</strong>
 				</div>
+				<div className='grid grid-cols-2 text-white text-center w-3/4 mx-auto'>
+					<strong>{workout.grade}</strong>
+					<strong>{workout.preWorkout ? 'Yes' : 'No'}</strong>
+				</div>
+				{exercises}
 			</Card>
 		</Layout>
 	)
