@@ -3,7 +3,6 @@ import { format, subMonths, addMonths, startOfMonth, endOfMonth } from 'date-fns
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'
 import { useAppDispatch, useAppSelector } from '@app/hooks'
 import { selectActiveDate, editSelectedDate, editActiveDate, getWorkoutsAsync } from '@features/calendar/CalendarSlice'
-import { getWorkoutAsync } from '@features/exercise/exerciseSlice'
 
 const Header = () => {
 	const dispatch = useAppDispatch()
