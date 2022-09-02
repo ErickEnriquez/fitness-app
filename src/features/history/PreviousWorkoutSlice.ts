@@ -58,7 +58,7 @@ export const PreviousWorkoutSlice = createSlice({
 			.addCase(getWorkoutDataAsync.rejected, state => { state.status = 'failed' })
 			.addCase(getWorkoutDataAsync.fulfilled, (state, action) => {
 				state.status = 'idle'
-				state.exercises = action.payload.exercises
+				state.exercises = action.payload.exercises.sort((a, b) => a.order - b.order)
 				state.workout = action.payload.workout
 			})
 	},
