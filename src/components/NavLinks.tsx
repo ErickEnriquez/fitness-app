@@ -6,6 +6,7 @@ import { useAppDispatch } from '@app/hooks'
 import { resetState as resetExercise } from '@features/exercise/exerciseSlice'
 import { resetState as resetCalendar } from '@features/calendar/CalendarSlice'
 import { resetState as resetCardio } from '@features/cardio/CardioSlice'
+import { resetState as resetPrevWorkout } from '@features/history/PreviousWorkoutSlice'
 
 const NavLinks = () => {
 	const dispatch = useAppDispatch()
@@ -20,6 +21,7 @@ const NavLinks = () => {
 					dispatch(resetCardio())
 					dispatch(resetCalendar())
 					dispatch(resetExercise())
+					dispatch(resetPrevWorkout())
 					signOut()
 				}}>Sign out
 			</button>
