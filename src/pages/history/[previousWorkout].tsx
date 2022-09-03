@@ -12,6 +12,7 @@ import Fail from '@components/Fail'
 import BackBtn from '@components/BackBtn'
 import PreviousExercise from '@components/PreviousExercise'
 
+import { FaTrash } from 'react-icons/fa'
 
 import router from 'next/router'
 
@@ -52,7 +53,18 @@ const PreviousWorkout = () => {
 		<Layout title='Workout' >
 			<div className='grid grid-cols-5 my-4'>
 				<BackBtn href={'/calendar'} />
-				<span className='text-white'> [WIP] include trash button here</span>
+				<span
+					className='bg-red-500 px-8 rounded-full w-3/4 mx-auto shadow-lg shadow-black/70  text-white
+								hover:outline-red-500 hover:outline hover:bg-white hover:text-red-500
+								flex items-center justify-center h-10 font-bold col-start-5'
+					onClick={() => {
+						const r = window.confirm('Are you sure you want to delete workout, this cannot be undone')
+						if (!r) return
+						// dispatch(deleteWorkout())
+					}}
+				>
+					<FaTrash style={{ 'display': 'unset', 'verticalAlign': 'unset' }} />
+				</span>
 			</div>
 
 			<Card title={`Workout Id :${workout.id}`}>
@@ -78,7 +90,7 @@ const PreviousWorkout = () => {
 				</div>
 				{exercises}
 			</Card>
-		</Layout>
+		</Layout >
 	)
 }
 
