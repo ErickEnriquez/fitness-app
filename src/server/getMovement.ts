@@ -1,7 +1,7 @@
 import prisma from 'prisma/prisma'
 import { Movement } from '@prisma/client'
 
-export async function getMovement(ID: number): Promise<Movement> { 
+export async function getMovement(ID: number): Promise<Movement> {
 	try {
 		const data = await prisma.movement.findFirst({
 			where: {
@@ -10,8 +10,8 @@ export async function getMovement(ID: number): Promise<Movement> {
 		})
 		return data
 	}
-	catch (err) { 
+	catch (err) {
 		console.log(err)
-		return null
+		throw Error(err)
 	}
 }
