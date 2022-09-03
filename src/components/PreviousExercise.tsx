@@ -1,13 +1,13 @@
-import { ExerciseEntry } from '@prisma/client'
+import { PreviousExercise } from '@features/history/PreviousWorkoutSlice'
 import React from 'react'
 import { FaPencilAlt } from 'react-icons/fa'
 
-const PreviousExercise = ({ exercise }: { exercise: ExerciseEntry }) => {
+const PreviousExercise = ({ exercise }: { exercise: PreviousExercise }) => {
 	return (
 		<div className='w-11/12 mx-auto bg-light-gray py-1 mt-2 mb-6 rounded-xl'>
 			<div className='bg-primary-blue grid grid-cols-3 w-5/6 mx-auto rounded-xl my-2'>
 				<p className='text-white'>{exercise.order}.</p>
-				<strong className='text-white'>{exercise.exerciseID}</strong>
+				<strong className='text-white'>{exercise.name}</strong>
 				<span className='w-11/12 mx-auto'>
 					<FaPencilAlt
 						color='#FFF'
@@ -26,7 +26,7 @@ const PreviousExercise = ({ exercise }: { exercise: ExerciseEntry }) => {
 					<React.Fragment key={idx}>
 						<li className='text-primary-blue bg-white w-1/4 mx-auto rounded-xl pb-2'>{idx + 1}</li>
 						<li className='col-span-2'>{weight}</li>
-						<li className='col-span-2'>{5}</li>
+						<li className='col-span-2'>{exercise.reps}</li>
 					</React.Fragment>
 				))}
 			</ul>
