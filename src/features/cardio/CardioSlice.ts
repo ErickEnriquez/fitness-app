@@ -27,12 +27,10 @@ const initialState: CardioState = {
 export const submitCardioInfo = createAsyncThunk(
 	'cardio/submitCardio',
 	async (_, { getState, rejectWithValue }) => {
-		const { cardio } = getState() as AppState
-		const result = await axios.post('/api/cardio', { ...cardio })
-		if (result.status !== 200) {
-			rejectWithValue(result.data)
-		}
-		return
+		try {
+			const { cardio } = getState() as AppState
+			await axios.post('/api/cardio', { ...cardio })
+		} catch (err) { return rejectWithValue(err) }
 	}
 )
 
