@@ -1,20 +1,31 @@
-import { PreviousExercise } from '@features/history/PreviousWorkoutSlice'
 import React from 'react'
 import { FaPencilAlt } from 'react-icons/fa'
+import { useAppSelector, useAppDispatch } from '@app/hooks'
+import { toggleEditable, PreviousExercise } from '@features/history/PreviousWorkoutSlice'
 
-const PreviousExercise = ({ exercise }: { exercise: PreviousExercise }) => {
+
+const PreviousExercise = ({ exercise, idx }: { exercise: PreviousExercise, idx: number }) => {
+	const dispatch = useAppDispatch()
 	return (
 		<div className='w-11/12 mx-auto bg-light-gray py-1 mt-2 mb-6 rounded-xl'>
 			<div className='bg-primary-blue grid grid-cols-3 w-5/6 mx-auto rounded-xl my-2'>
 				<p className='text-white'>{exercise.order}.</p>
 				<strong className='text-white'>{exercise.name}</strong>
-				<span className='w-11/12 mx-auto'>
-					<FaPencilAlt
-						color='#FFF'
-						style={{ 'display': 'unset', 'verticalAlign': 'unset' }}
-						onClick={() => { alert('Edit') }}
-					/>
-				</span>
+				{
+					exercise.editable ?
+						<button
+							className='text-red-500 font-medium'
+							onClick={() => dispatch(toggleEditable(idx))}
+						>
+							Cancel
+						</button> :
+						<span className='w-11/12 mx-auto'>
+							<FaPencilAlt
+								color='#FFF'
+								style={{ 'display': 'unset', 'verticalAlign': 'unset' }}
+								onClick={() => { dispatch(toggleEditable(idx)) }}
+							/>
+						</span>}
 			</div>
 			<div className='grid-cols-5 grid text-white w-11/12 mx-auto'>
 				<strong>Set</strong>

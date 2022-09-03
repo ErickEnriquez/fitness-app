@@ -30,13 +30,16 @@ const PreviousWorkout = () => {
 
 	const exerciseList = useAppSelector(selectExercises)
 
-	const exercises = exerciseList && exerciseList.map(item => (
+	const exercises = exerciseList && exerciseList.map((item, i) => (
 		<React.Fragment key={item.id}>
-			<PreviousExercise exercise={{
-				...item,
-				//convert to Decimal array to avoid typescript complaining about "mismatched types"
-				weights: [...item.weights] as Decimal[]
-			}} />
+			<PreviousExercise
+				exercise={{
+					...item,
+					//convert to Decimal array to avoid typescript complaining about "mismatched types"
+					weights: [...item.weights] as Decimal[]
+				}}
+				idx={i}
+			/>
 		</React.Fragment>
 	))
 
@@ -60,6 +63,7 @@ const PreviousWorkout = () => {
 					onClick={() => {
 						const r = window.confirm('Are you sure you want to delete workout, this cannot be undone')
 						if (!r) return
+						alert('TODO: DELETE THE WORKOUT')
 						// dispatch(deleteWorkout())
 					}}
 				>
