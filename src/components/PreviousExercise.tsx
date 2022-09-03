@@ -24,9 +24,10 @@ const PreviousExercise = ({ exercise }: { exercise: PreviousExercise }) => {
 			<ul className='grid-cols-5 grid text-white w-11/12 mx-auto'>
 				{exercise.weights.map((weight, idx) => (
 					<React.Fragment key={idx}>
-						<li className='text-primary-blue bg-white w-1/4 mx-auto rounded-xl pb-2'>{idx + 1}</li>
-						<li className='col-span-2'>{weight}</li>
-						<li className='col-span-2'>{exercise.reps}</li>
+						<li className='text-primary-blue bg-white w-1/4 mx-auto rounded-xl pb-2 my-2 font-medium'>{idx + 1}</li>
+						<li className='col-span-2 font-bold'>{weight}</li>
+						<li className='col-span-2 font-bold'>{exercise.reps}</li>
+						<hr className='col-span-5' />
 					</React.Fragment>
 				))}
 			</ul>
