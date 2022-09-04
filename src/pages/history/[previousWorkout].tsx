@@ -4,11 +4,8 @@ import { selectStatus, selectWorkout, getWorkoutDataAsync, selectExercises } fro
 
 import { format } from 'date-fns'
 
-import Loading from '@components/Loading'
 import Layout from '@components/Layout'
 import Card from '@components/Card'
-import SignIn from '@components/SignIn'
-import Fail from '@components/Fail'
 import BackBtn from '@components/BackBtn'
 import PreviousExercise from '@components/PreviousExercise'
 
@@ -16,7 +13,6 @@ import { FaTrash } from 'react-icons/fa'
 
 import router from 'next/router'
 
-import { useSession } from 'next-auth/react'
 
 import { useAppSelector, useAppDispatch } from '@app/hooks'
 import { Decimal } from '@prisma/client/runtime'
@@ -25,7 +21,6 @@ import { Decimal } from '@prisma/client/runtime'
 const PreviousWorkout = () => {
 	const pageStatus = useAppSelector(selectStatus)
 	const dispatch = useAppDispatch()
-	const { status } = useSession()
 	const workout = useAppSelector(selectWorkout)
 
 	const exerciseList = useAppSelector(selectExercises)
@@ -48,12 +43,11 @@ const PreviousWorkout = () => {
 		if (params.previousWorkout) dispatch(getWorkoutDataAsync(Number(params.previousWorkout)))
 	}, [router.query])
 
-	if (pageStatus === 'loading' || status === 'loading') return <Layout><Loading /></Layout>
-	else if (status === 'unauthenticated') return <SignIn />
-	else if (pageStatus === 'failed') return <Layout><Fail /></Layout>
-
 	return (
-		<Layout title='Workout' >
+		<Layout title='Workout'
+			pageStatus={pageStatus}
+			failHandler={() => router.push('/')}
+		>
 			<div className='grid grid-cols-5 my-4'>
 				<BackBtn href={'/calendar'} />
 				<span
