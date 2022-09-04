@@ -10,7 +10,7 @@ import SignIn from '@components/SignIn'
 import Link from 'next/link'
 import { useAppDispatch, useAppSelector } from '@app/hooks'
 import PrevWorkoutList from '@features/exercise/PrevWorkoutList'
-import { editWeight, editNotes, editIntensity, editOrder, selectActiveEntry, toggleExerciseComplete } from '@features/exercise/exerciseSlice'
+import { editWeight, editNotes, editIntensity, editOrder, selectActiveEntry, toggleExerciseComplete } from '@features/exercise/ExerciseSlice'
 
 import { useSession } from 'next-auth/react'
 

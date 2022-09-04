@@ -6,7 +6,7 @@ import {
 	getMorePreviousWorkouts,
 	removePreviousWorkout,
 	selectStatus
-} from '@features/exercise/exerciseSlice'
+} from '@features/exercise/ExerciseSlice'
 
 
 

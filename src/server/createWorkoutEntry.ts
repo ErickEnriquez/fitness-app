@@ -1,5 +1,5 @@
 import prisma from 'prisma/prisma'
-import { activeWorkoutInfo } from '@features/exercise/exerciseSlice'
+import { activeWorkoutInfo } from '@features/exercise/ExerciseSlice'
 export  async function createWorkoutEntry(entry: activeWorkoutInfo): Promise<number | boolean> { 
 	try {
 		const workoutEntry = await prisma.workoutEntry.create({

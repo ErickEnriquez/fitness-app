@@ -9,7 +9,7 @@ import {
 	//state grabbers
 	selectEntries,
 }
-	from '@features/exercise/exerciseSlice'
+	from '@features/exercise/ExerciseSlice'
 
 
 const ExerciseList = () => {

@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { signOut } from 'next-auth/react'
 import { useAppDispatch } from '@app/hooks'
 
-import { resetState as resetExercise } from '@features/exercise/exerciseSlice'
+import { resetState as resetExercise } from '@features/exercise/ExerciseSlice'
 import { resetState as resetCalendar } from '@features/calendar/CalendarSlice'
 import { resetState as resetCardio } from '@features/cardio/CardioSlice'
 import { resetState as resetPrevWorkout } from '@features/history/PreviousWorkoutSlice'

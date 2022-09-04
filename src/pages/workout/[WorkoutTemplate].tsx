@@ -10,7 +10,7 @@ import {
 	editPreWorkout,
 	resetState,
 	clearStatus
-} from '@features/exercise/exerciseSlice'
+} from '@features/exercise/ExerciseSlice'
 import Loading from '@components/Loading'
 import Success from '@components/Success'
 import Fail from '@components/Fail'

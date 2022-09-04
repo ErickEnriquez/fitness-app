@@ -32,11 +32,11 @@ interface UserEntry extends ExerciseTemplate {
 }
 
 export interface ExerciseState {
+	status: 'idle' | 'loading' | 'failed' | 'success'
 	entries: UserEntry[]
 	workouts: WorkoutInfo[]
 	activeWorkout: number | null
 	activeEntry: number
-	state: 'idle' | 'loading' | 'failed ' | 'success'
 	//get the stats of the last workout of that given type ie push heavy, pull heavy, etc
 	previousWorkout: PreviousWorkout[]
 	workoutEntry: activeWorkoutInfo,
@@ -48,9 +48,9 @@ export interface PreviousWorkout extends Omit<WorkoutEntry, 'date'> {
 }
 
 const initialState = {
+	status: 'idle',
 	entries: [] as UserEntry[],
 	workouts: [] as WorkoutInfo[],
-	status: 'idle',
 	activeWorkout: null as number,
 	activeEntry: null as number,
 	previousWorkout: [] as PreviousWorkout[],
@@ -218,7 +218,7 @@ export const exerciseSlice = createSlice({
 				state.status = 'idle'
 				state.workouts = action.payload
 			})
-			.addCase(getWorkoutAsync.rejected, (state) => { state.status = 'error' })
+			.addCase(getWorkoutAsync.rejected, (state) => { state.status = 'failed' })
 			//================ getting the workout template for a workout ============================
 			.addCase(getExerciseTemplates.pending, (state) => { state.status = 'loading' })
 			.addCase(getExerciseTemplates.fulfilled, (state, action) => {
@@ -244,7 +244,7 @@ export const exerciseSlice = createSlice({
 					notes: ''
 				}
 			})
-			.addCase(getExerciseTemplates.rejected, (state) => { state.status = 'error' })
+			.addCase(getExerciseTemplates.rejected, (state) => { state.status = 'failed' })
 			//================= posting the exercise entries =====================================
 			.addCase(postExerciseEntries.pending, (state) => { state.status = 'loading' })
 			.addCase(postExerciseEntries.fulfilled, (state) => { state.status = 'success' })
