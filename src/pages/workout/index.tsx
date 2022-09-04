@@ -1,15 +1,14 @@
 import React, { useEffect, useMemo } from 'react'
 import { NextPage } from 'next'
 import Link from 'next/link'
-import Loading from '@components/Loading'
 import Layout from '@components/Layout'
 import Card from '@components/Card'
-import SignIn from '@components/SignIn'
 
 import { useSession } from 'next-auth/react'
 
 import { useAppDispatch, useAppSelector } from '@app/hooks'
-import { getWorkoutAsync, selectWorkouts, getExerciseTemplates, selectStatus } from '@features/exercise/exerciseSlice'
+import { getWorkoutAsync, selectWorkouts, getExerciseTemplates, selectStatus } from '@features/exercise/ExerciseSlice'
+import { useRouter } from 'next/router'
 
 const WorkoutPage: NextPage = () => {
 	const dispatch = useAppDispatch()
@@ -25,6 +24,7 @@ const WorkoutPage: NextPage = () => {
 		}
 	}, [status])
 
+	const router = useRouter()
 
 	//useMemo is used to avoid sorting this data every time the page is rendered
 	const previous = useMemo(() => {
@@ -33,13 +33,12 @@ const WorkoutPage: NextPage = () => {
 		return previousWorkouts
 	}, [workouts])
 
-	if (pageStatus === 'loading' || status === 'loading') return <Loading />
-	else if (status === 'unauthenticated') return <SignIn />
-	else if (pageStatus === 'error') {
-		return <div>Error</div>
-	}
+
 	return (
-		<Layout>
+		<Layout
+			pageStatus={pageStatus}
+			failHandler={() => { router.push('/') }}
+		>
 			<main className='text-center my-4'>
 				<Card title={'Your Workouts'}>
 					<ul className='grid grid-cols-2 w-11/12 mx-auto'>
