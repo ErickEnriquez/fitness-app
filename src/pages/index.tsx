@@ -8,7 +8,7 @@ const IndexPage: NextPage = () => {
 		<Layout >
 			<main className='text-center'>
 				<div className='mt-10 flex flex-col'>
-					<h1 className='text-white mb-10 text-3xl'>{`Welcome`}</h1>
+					<h1 className='text-white mb-10 text-3xl'>{'Welcome'}</h1>
 					<h2 className='text-white mb-10 text-2xl'>Quick Links</h2>
 					<Link href='/workout'>
 						<a className={`rounded-full bg-primary-blue text-white px-8 py-2 mb-6 w-11/12 mx-auto
