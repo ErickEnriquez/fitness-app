@@ -39,7 +39,7 @@ model ExerciseEntry {
   exerciseID Int
   exercise   ExerciseTemplate @relation(fields: [exerciseID], references: [id])
   workoutID  Int
-  workout    WorkoutEntry     @relation(fields: [workoutID], references: [id])
+  workout    WorkoutEntry     @relation(fields: [workoutID], references: [id], onDelete: Cascade)
   order      Int?
 }
 

@@ -4,16 +4,18 @@ import axios from 'axios'
 
 import type { AppState } from '@app/store'
 import { WorkoutEntry, ExerciseEntry, ExerciseTemplate, Movement } from '@prisma/client'
+import { Decimal } from '@prisma/client/runtime'
 
 //expand the ExerciseEntry field to include the name of the exercise as well as the number of sets
 export interface PreviousExercise extends ExerciseEntry {
 	name: string,
 	reps: number
+	editable: boolean
 }
 
-
+type sliceStatus = 'idle' | 'loading' | 'failed' | 'success'
 export interface PreviousWorkoutState {
-	status: 'idle' | 'loading' | 'failed' | 'success'
+	status: sliceStatus
 	workout: WorkoutEntry
 	exercises: PreviousExercise[]
 }
@@ -50,7 +52,12 @@ export const getWorkoutDataAsync = createAsyncThunk(
 				return axios.get('/api/movement', { params: { movementId: template.movementID } })
 			})).then(r => r.map(m => m.data)) as Movement[]
 
-			const data = exercises.map((e, idx) => ({ ...e, reps: templates[idx].reps, name: movements[idx].name })) as PreviousExercise[]
+			const data = exercises.map((e, idx) => ({
+				...e,
+				reps: templates[idx].reps,
+				name: movements[idx].name,
+				editable: false
+			})) as PreviousExercise[]
 
 			return { exercises: data, workout: prevWorkout }
 		} catch (err) {
@@ -66,8 +73,40 @@ export const PreviousWorkoutSlice = createSlice({
 	name: 'previousWorkout',
 	initialState,
 	reducers: {
-		clearStatus: (state) => { state.status = 'idle' },
-		resetState: () => initialState
+		clearStatus: (state) => {
+			state.status = 'idle'
+		},
+		resetState: () => initialState,
+		editWorkoutNotes: (state, action: PayloadAction<string>) => {
+			state.workout.notes = action.payload
+		},
+		editWorkoutIntensity: (state, action: PayloadAction<number>) => {
+			state.workout.grade = action.payload
+		},
+		editWorkoutOrder: (state) => {
+			state.workout.preWorkout = !state.workout.preWorkout
+		},
+		editExerciseNotes: (state, action: PayloadAction<{ text: string, idx: number }>) => {
+			const { text, idx } = action.payload
+			state.exercises[idx].notes = text
+		},
+		editExerciseWeight: (state, action: PayloadAction<{ weight: number, exerciseIdx: number, setNumber: number }>) => {
+			const { weight, exerciseIdx, setNumber } = action.payload
+			state.exercises[exerciseIdx].weights[setNumber] = weight as unknown as Decimal
+		},
+		editExerciseIntensity: (state, action: PayloadAction<{ idx: number, val: number }>) => {
+			const { idx, val } = action.payload
+			if (isNaN(val) || val > 10) return
+			state.exercises[idx].intensity = val
+		},
+		editExerciseOrder: (state, action: PayloadAction<{ idx: number, val: number }>) => {
+			const { idx, val } = action.payload
+			if (isNaN(val) || val <= 0) return
+			state.exercises[idx].order = val
+		},
+		toggleEditable: (state, action: PayloadAction<number>) => {
+			state.exercises[action.payload].editable = !state.exercises[action.payload].editable
+		},
 	},
 	extraReducers(builder) {
 		builder
@@ -83,10 +122,14 @@ export const PreviousWorkoutSlice = createSlice({
 
 export const {
 	clearStatus,
-	resetState
+	resetState,
+	editWorkoutNotes,
+	editExerciseNotes,
+	editExerciseWeight,
+	toggleEditable
 } = PreviousWorkoutSlice.actions
 
-export const selectStatus = (state: AppState) => state.previousWorkout.status
+export const selectStatus = (state: AppState) => state.previousWorkout.status as sliceStatus
 export const selectWorkout = (state: AppState) => state.previousWorkout.workout
 export const selectExercises = (state: AppState) => state.previousWorkout.exercises
 
