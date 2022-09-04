@@ -10,8 +10,8 @@ import Success from '@components/Success'
 interface LayoutProps {
 	title?: string
 	children?: React.ReactNode
-	pageStatus: 'failed' | 'idle' | 'success' | 'loading'
-	failHandler: () => void
+	pageStatus?: 'failed' | 'idle' | 'success' | 'loading'
+	failHandler?: () => void
 	successHandler?: () => void
 
 }
