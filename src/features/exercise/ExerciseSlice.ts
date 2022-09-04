@@ -31,8 +31,9 @@ interface UserEntry extends ExerciseTemplate {
 	name: string
 }
 
+type sliceStatus = 'idle' | 'loading' | 'failed' | 'success'
 export interface ExerciseState {
-	status: 'idle' | 'loading' | 'failed' | 'success'
+	status: sliceStatus
 	entries: UserEntry[]
 	workouts: WorkoutInfo[]
 	activeWorkout: number | null
@@ -278,7 +279,8 @@ export const {
 
 export const selectWorkouts = (state: AppState) => state.exercise.workouts
 export const selectEntries = (state: AppState) => state.exercise.entries
-export const selectStatus = (state: AppState) => state.exercise.status
+export const selectStatus = (state: AppState) => state.exercise.status as sliceStatus
 export const selectActiveEntry = (state: AppState) => state.exercise.activeEntry
+export const selectActiveWorkout = (state: AppState) => state.exercise.activeWorkout
 export const selectPreviousExerciseEntries = (state: AppState) => state.exercise.previousWorkout
 export default exerciseSlice.reducer
