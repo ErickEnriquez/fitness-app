@@ -1,14 +1,11 @@
 import React from 'react'
 import Layout from '@components/Layout'
 
-import Loading from '@components/Loading'
-import Success from '@components/Success'
-import Fail from '@components/Fail'
+
 import Card from '@components/Card'
 import NumberInput from '@components/NumberInput'
 import Notes from '@components/Notes'
 import SubmitBtn from '@components/SubmitBtn'
-import SignIn from '@components/SignIn'
 
 import { useAppSelector, useAppDispatch } from '@app/hooks'
 import {
@@ -24,7 +21,6 @@ import {
 	selectStatus
 } from '@features/cardio/CardioSlice'
 
-import { useSession } from 'next-auth/react'
 
 import { CardioType } from '@prisma/client'
 
@@ -32,20 +28,17 @@ const workoutOptions = [CardioType.bike, CardioType.run, CardioType.climbing, Ca
 
 const Cardio = (): JSX.Element => {
 
-	const { status } = useSession()
-
 	const { intensity, caloriesBurned, distance, time, notes } = useAppSelector(selectCardioState)
 	const pageStatus = useAppSelector(selectStatus)
 
 	const dispatch = useAppDispatch()
 
-
-	if (pageStatus === 'loading' || status === 'loading') return <Layout><Loading /></Layout>
-	else if (status === 'unauthenticated') return <SignIn />
-	else if (pageStatus === 'failed') return <Layout><Fail clickHandler={() => dispatch(clearCardioState())} /></Layout>
-	else if (pageStatus === 'success') return <Layout><Success clickHandler={() => dispatch(clearCardioState())} /></Layout>
 	return (
-		<Layout>
+		<Layout
+			pageStatus={pageStatus}
+			failHandler={() => dispatch(clearCardioState())}
+			successHandler={() => dispatch(clearCardioState())}
+		>
 			<main className="text-center my-4 py-4">
 				<Card title="Enter Cardio Details"
 					style={{ textDecoration: 'underline' }}
