@@ -2,16 +2,13 @@ import React, { useEffect } from 'react'
 
 import { selectStatus, selectActiveDate, getWorkoutsAsync } from '@features/calendar/CalendarSlice'
 
-import Loading from '@components/Loading'
 import CalendarHeader from '@features/calendar/Header'
 import CalendarWeekDays from '@features/calendar/Weekdays'
 import CalendarDates from '@features/calendar/CalendarDates'
 import Layout from '@components/Layout'
 import Card from '@components/Card'
-import SignIn from '@components/SignIn'
-import Fail from '@components/Fail'
 
-import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
 
 import { useAppSelector, useAppDispatch } from '@app/hooks'
 
@@ -21,7 +18,6 @@ const Calendar = () => {
 	const pageStatus = useAppSelector(selectStatus)
 	const active = useAppSelector(selectActiveDate)
 	const dispatch = useAppDispatch()
-	const { status } = useSession()
 
 	useEffect(() => {
 		dispatch(
@@ -32,12 +28,16 @@ const Calendar = () => {
 	}, [])
 	//grab the workout templates from the server on page load
 
-	if (pageStatus === 'loading' || status === 'loading') return <Layout><Loading /></Layout>
-	else if (status === 'unauthenticated') return <SignIn />
-	else if (pageStatus === 'failed') return <Layout><Fail /></Layout>
+
 
 	return (
-		<Layout>
+		<Layout
+			pageStatus={pageStatus}
+			failHandler={() => {
+				const router = useRouter()
+				router.push('/')
+			}}
+		>
 			<Card title='Calendar' style={{ textAlign: 'center' }}>
 				<CalendarHeader />
 				<table className="mx-auto w-11/12 mt-8">
