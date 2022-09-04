@@ -126,7 +126,11 @@ export const {
 	editWorkoutNotes,
 	editExerciseNotes,
 	editExerciseWeight,
-	toggleEditable
+	toggleEditable,
+	editExerciseIntensity,
+	editExerciseOrder,
+	editWorkoutIntensity,
+	editWorkoutOrder
 } = PreviousWorkoutSlice.actions
 
 export const selectStatus = (state: AppState) => state.previousWorkout.status as sliceStatus
