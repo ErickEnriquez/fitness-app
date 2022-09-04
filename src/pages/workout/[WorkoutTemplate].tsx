@@ -9,7 +9,9 @@ import {
 	editWorkoutGrade,
 	editPreWorkout,
 	resetState,
-	clearStatus
+	clearStatus,
+	selectStatus,
+	selectActiveWorkout
 } from '@features/exercise/ExerciseSlice'
 import Loading from '@components/Loading'
 import Success from '@components/Success'
@@ -25,8 +27,8 @@ import { useSession } from 'next-auth/react'
 const ExerciseTemplate = () => {
 
 	const { status } = useSession()
-	const pageStatus = useAppSelector(state => state.exercise.status)
-	const workoutID = useAppSelector(state => state.exercise.activeWorkout)
+	const pageStatus = useAppSelector(selectStatus)
+	const workoutID = useAppSelector(selectActiveWorkout)
 
 	const activeWorkout = useAppSelector(state => state.exercise.workouts.find(w => w.id === workoutID))
 	const workoutEntry = useAppSelector(state => state.exercise.workoutEntry)
