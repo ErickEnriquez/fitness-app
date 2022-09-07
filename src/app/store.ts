@@ -15,10 +15,11 @@ const reducers = combineReducers({
 	exercise: exerciseReducer,
 	calendar: CalendarReducer,
 	cardio: CardioReducer,
-	previousWorkout:PreviousWorkoutReducer
+	previousWorkout: PreviousWorkoutReducer
 })
 
 const persistConfig = {
+	whiteList: ['exercise'],
 	key: 'root',
 	storage,
 }
