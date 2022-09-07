@@ -59,7 +59,7 @@ const deleteWorkout = async (req: NextApiRequest, res: NextApiResponse) => {
 
 const updateWorkout = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
-		await updateWorkoutEntry(req.body as WorkoutEntry)
+		await updateWorkoutEntry(req.body.workout as WorkoutEntry)
 		res.status(200).end()
 	}
 	catch (err) {
