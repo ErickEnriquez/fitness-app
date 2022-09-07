@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-const BackBtn = ({ href, clickHandler }: { href: string, clickHandler: () => void }) => {
+const BackBtn = ({ href, clickHandler }: { href: string, clickHandler?: () => void }) => {
 	return (
 		<Link href={href}>
 			<span className="flex items-center">

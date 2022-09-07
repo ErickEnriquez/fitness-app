@@ -11,7 +11,7 @@ const Fail = ({ clickHandler }: props) => {
 				<span>Error</span>
 				<button
 					onClick={clickHandler}
-					className='bg-cyan-500 px-5 rounded-full shadow-lg shadow-black/50'>Exit
+					className='bg-primary-blue px-5 rounded-full shadow-lg shadow-black/50'>Exit
 				</button>
 			</div>
 			<div className="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700">

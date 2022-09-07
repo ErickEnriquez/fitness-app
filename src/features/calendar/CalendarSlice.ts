@@ -83,7 +83,7 @@ export const CalendarSlice = createSlice({
 				state.status = 'loading'
 			})
 			.addCase(getWorkoutsAsync.fulfilled, (state, action) => {
-				state.status = 'success'
+				state.status = 'idle'
 				state.workouts = action.payload.previousWorkouts
 				state.cardios = action.payload.cardio
 			})

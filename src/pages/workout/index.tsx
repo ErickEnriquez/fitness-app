@@ -1,16 +1,13 @@
 import React, { useEffect, useMemo } from 'react'
 import { NextPage } from 'next'
 import Link from 'next/link'
-import Loading from '@components/Loading'
-import Fail from '@components/Fail'
 import Layout from '@components/Layout'
 import Card from '@components/Card'
-import SignIn from '@components/SignIn'
 
 import { useSession } from 'next-auth/react'
 
 import { useAppDispatch, useAppSelector } from '@app/hooks'
-import { getWorkoutAsync, selectWorkouts, getExerciseTemplates, selectStatus } from '@features/exercise/exerciseSlice'
+import { getWorkoutAsync, selectWorkouts, getExerciseTemplates, selectStatus } from '@features/exercise/ExerciseSlice'
 import { useRouter } from 'next/router'
 
 const WorkoutPage: NextPage = () => {
@@ -18,6 +15,7 @@ const WorkoutPage: NextPage = () => {
 	const workouts = useAppSelector(selectWorkouts)
 	const pageStatus = useAppSelector(selectStatus)
 	const router = useRouter()
+
 
 	const { data, status } = useSession()
 
@@ -37,11 +35,12 @@ const WorkoutPage: NextPage = () => {
 		return previousWorkouts
 	}, [workouts])
 
-	if (pageStatus === 'loading' || status === 'loading') return <Loading />
-	else if (status === 'unauthenticated') return <SignIn />
-	else if (pageStatus === 'error')  return <Fail clickHandler={() => router.push('/')} /> 
+
 	return (
-		<Layout>
+		<Layout
+			pageStatus={pageStatus}
+			failHandler={() => { router.push('/') }}
+		>
 			<main className='text-center my-4'>
 				<Card title={'Your Workouts'}>
 					<ul className='grid grid-cols-2 w-11/12 mx-auto'>
@@ -50,7 +49,7 @@ const WorkoutPage: NextPage = () => {
 								<Link href={`/workout/${item.id}`} key={idx}>
 									<li
 										className={`
-									rounded-3xl my-4 py-8  w-11/12 mx-auto text-white bg-cyan-700 outline-cyan-700 shadow-lg shadow-black/70 
+									rounded-3xl my-4 py-8  w-11/12 mx-auto text-white bg-primary-blue outline-primary-blue shadow-lg shadow-black/70 
 									hover:bg-white hover:outline hover:text-cyan-900 hover:cursor-pointer`
 										}
 										onClick={() => dispatch(getExerciseTemplates(item.id))}
@@ -66,9 +65,13 @@ const WorkoutPage: NextPage = () => {
 				<Card title={'Previous Workouts'}>
 					<ul>
 						{workouts && previous.map((workout, idx) => (
-							<li key={idx} className='text-white capitalize my-4'>
-								<strong className='underline'>{workout.name} - {new Date(workout.date).toLocaleDateString()} </strong>
-							</li>
+							<Link key={idx} href={`/history/${workout.prevWorkoutId}`}>
+								<a >
+									<li className='text-white capitalize my-4'>
+										<strong className='underline'>{workout.name} - {new Date(workout.date).toLocaleDateString()} </strong>
+									</li>
+								</a>
+							</Link>
 						))}
 					</ul>
 				</Card>

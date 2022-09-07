@@ -3,9 +3,10 @@ import { useRouter } from 'next/router'
 import { signOut } from 'next-auth/react'
 import { useAppDispatch } from '@app/hooks'
 
-import { resetState as resetExercise } from '@features/exercise/exerciseSlice'
+import { resetState as resetExercise } from '@features/exercise/ExerciseSlice'
 import { resetState as resetCalendar } from '@features/calendar/CalendarSlice'
 import { resetState as resetCardio } from '@features/cardio/CardioSlice'
+import { resetState as resetPrevWorkout } from '@features/history/PreviousWorkoutSlice'
 
 const NavLinks = () => {
 	const dispatch = useAppDispatch()
@@ -20,6 +21,7 @@ const NavLinks = () => {
 					dispatch(resetCardio())
 					dispatch(resetCalendar())
 					dispatch(resetExercise())
+					dispatch(resetPrevWorkout())
 					signOut()
 				}}>Sign out
 			</button>
@@ -31,7 +33,7 @@ const NavLink = ({ url, name }: { url: string, name: string }) => {
 	const router = useRouter()
 	return (
 		<Link href={url}>
-			<a className={`font-bold my-4 mx-0 sm:mx-6 flex flex-col rounded-xl hover:underline ${url === router.pathname ? 'bg-white text-cyan-700 py-1' : ''}`} >
+			<a className={`font-bold my-4 mx-0 sm:mx-6 flex flex-col rounded-xl hover:underline ${url === router.pathname ? 'bg-white text-primary-blue py-1' : ''}`} >
 				{name}
 			</a>
 		</Link>

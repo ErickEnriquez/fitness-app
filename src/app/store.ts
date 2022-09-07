@@ -6,14 +6,16 @@ import { persistReducer } from 'redux-persist'
 import thunk from 'redux-thunk'
 // import thunkMiddleware from 'redux-thunk'
 
-import exerciseReducer from '../features/exercise/exerciseSlice'
+import exerciseReducer from '../features/exercise/ExerciseSlice'
 import CalendarReducer from '@features/calendar/CalendarSlice'
 import CardioReducer from '@features/cardio/CardioSlice'
+import PreviousWorkoutReducer from '@features/history/PreviousWorkoutSlice'
 
 const reducers = combineReducers({
 	exercise: exerciseReducer,
 	calendar: CalendarReducer,
-	cardio: CardioReducer
+	cardio: CardioReducer,
+	previousWorkout:PreviousWorkoutReducer
 })
 
 const persistConfig = {

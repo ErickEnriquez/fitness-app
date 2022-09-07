@@ -31,12 +31,13 @@ interface UserEntry extends ExerciseTemplate {
 	name: string
 }
 
+type sliceStatus = 'idle' | 'loading' | 'failed' | 'success'
 export interface ExerciseState {
+	status: sliceStatus
 	entries: UserEntry[]
 	workouts: WorkoutInfo[]
 	activeWorkout: number | null
 	activeEntry: number
-	state: 'idle' | 'loading' | 'failed ' | 'success'
 	//get the stats of the last workout of that given type ie push heavy, pull heavy, etc
 	previousWorkout: PreviousWorkout[]
 	workoutEntry: activeWorkoutInfo,
@@ -48,9 +49,9 @@ export interface PreviousWorkout extends Omit<WorkoutEntry, 'date'> {
 }
 
 const initialState = {
+	status: 'idle',
 	entries: [] as UserEntry[],
 	workouts: [] as WorkoutInfo[],
-	status: 'idle',
 	activeWorkout: null as number,
 	activeEntry: null as number,
 	previousWorkout: [] as PreviousWorkout[],
@@ -95,8 +96,8 @@ export const getWorkoutAsync = createAsyncThunk(
 			return data
 		}
 		catch (err) {
-			console.warn(err)
-			return rejectWithValue(err)
+			console.error(err)
+			return rejectWithValue('Unable to get workout async')
 		}
 	}
 )
@@ -104,27 +105,31 @@ export const getWorkoutAsync = createAsyncThunk(
 //given a workoutID get the template of exercises for that given workout
 export const getExerciseTemplates = createAsyncThunk(
 	'exercise/getExerciseTemplates',
-	async (id: number, { getState }) => {
+	async (id: number, { getState, rejectWithValue }) => {
+		try {
+			const { exercise: { workouts } } = getState() as AppState
+			const prevWorkoutID = workouts.find(workout => workout.id === id)?.prevWorkoutId
 
-		const { exercise: { workouts } } = getState() as AppState
-		const prevWorkoutID = workouts.find(workout => workout.id === id)?.prevWorkoutId
+			const [exercisesList, prevMeta, prevExercises] = await Promise.all([
+				axios.get('/api/exercise-templates', { params: { workoutId: id } }),
+				axios.get('/api/workout-entry', { params: { Id: prevWorkoutID } }),
+				axios.get('/api/exercise-entry', { params: { workoutId: prevWorkoutID } })
+			]).then(list => ([
+				list[0].data,
+				list[1].data as LastWorkoutEntry,
+				list[2].data as ExerciseEntry
+			]))
 
-		const [exercisesList, prevMeta, prevExercises] = await Promise.all([
-			axios.get('/api/exercise-templates', { params: { workoutId: id } }),
-			axios.get('/api/workout-entry', { params: { Id: prevWorkoutID } }),
-			axios.get('/api/exercise-entry', { params: { workoutId: prevWorkoutID } })
-		]).then(list => ([
-			list[0].data,
-			list[1].data as LastWorkoutEntry,
-			list[2].data as ExerciseEntry
-		]))
+			const previousWorkout: PreviousWorkout = prevWorkoutID && { ...prevMeta, date: prevMeta.date, exercises: prevExercises }
 
-		const previousWorkout: PreviousWorkout = prevWorkoutID && { ...prevMeta, date: prevMeta.date, exercises: prevExercises }
-
-		return {
-			exercises: exercisesList,
-			workoutId: id,
-			previousWorkout
+			return {
+				exercises: exercisesList,
+				workoutId: id,
+				previousWorkout
+			}
+		} catch (err) {
+			console.error(err)
+			return rejectWithValue('Unable to get exercises')
 		}
 	}
 )
@@ -135,10 +140,15 @@ export const getExerciseTemplates = createAsyncThunk(
 export const getMorePreviousWorkouts = createAsyncThunk(
 	'exercise/getMorePreviousWorkouts',
 	async (skipNum: number, { getState, rejectWithValue }) => {
-		const { exercise: { activeWorkout } } = getState() as AppState
-		const workout = await axios.get('/api/workout-entry', { params: { workoutType: activeWorkout, skip: skipNum } })
-		if (!workout.data) return rejectWithValue('no readings found')
-		return workout.data
+		try {
+			const { exercise: { activeWorkout } } = getState() as AppState
+			const workout = await axios.get('/api/workout-entry', { params: { workoutType: activeWorkout, skip: skipNum } })
+			if (!workout.data) return rejectWithValue('no readings found')
+			return workout.data
+		} catch (err) {
+			console.error('No Readings Found')
+			return rejectWithValue('No Readings Found')
+		}
 	}
 )
 
@@ -152,8 +162,11 @@ export const postExerciseEntries = createAsyncThunk(
 			return rejectWithValue({ mes: 'You must complete all entries before submitting', entries })
 		}
 		else {
-			const response = await axios.post('/api/exercise-entry', { entries, workoutEntry })
-			return response.data
+			try {
+				const response = await axios.post('/api/exercise-entry', { entries, workoutEntry })
+				return response.data
+			}
+			catch (err) { return rejectWithValue('Error posting entries') }
 		}
 	}
 )
@@ -202,16 +215,6 @@ export const exerciseSlice = createSlice({
 		clearStatus: (state) => {
 			state.status = 'idle'
 		},
-		//return the state of the exercise slice back to initial state
-		clearState: (state) => {
-			state.status = 'idle'
-			state.entries = [] as UserEntry[]
-			state.workouts = [] as WorkoutInfo[]
-			state.activeWorkout = null as number
-			state.activeEntry = null as number
-			state.previousWorkout = [] as PreviousWorkout[]
-			state.workoutEntry = null as activeWorkoutInfo
-		},
 		removePreviousWorkout: (state) => {
 			state.previousWorkout.pop()
 		},
@@ -225,7 +228,7 @@ export const exerciseSlice = createSlice({
 				state.status = 'idle'
 				state.workouts = action.payload
 			})
-			.addCase(getWorkoutAsync.rejected, (state) => { state.status = 'error' })
+			.addCase(getWorkoutAsync.rejected, (state) => { state.status = 'failed' })
 			//================ getting the workout template for a workout ============================
 			.addCase(getExerciseTemplates.pending, (state) => { state.status = 'loading' })
 			.addCase(getExerciseTemplates.fulfilled, (state, action) => {
@@ -251,7 +254,7 @@ export const exerciseSlice = createSlice({
 					notes: ''
 				}
 			})
-			.addCase(getExerciseTemplates.rejected, (state) => { state.status = 'error' })
+			.addCase(getExerciseTemplates.rejected, (state) => { state.status = 'failed' })
 			//================= posting the exercise entries =====================================
 			.addCase(postExerciseEntries.pending, (state) => { state.status = 'loading' })
 			.addCase(postExerciseEntries.fulfilled, (state) => { state.status = 'success' })
@@ -277,7 +280,6 @@ export const {
 	editWorkoutNotes,
 	editWorkoutGrade,
 	editPreWorkout,
-	clearState,
 	clearStatus,
 	removePreviousWorkout,
 	resetState
@@ -286,7 +288,8 @@ export const {
 
 export const selectWorkouts = (state: AppState) => state.exercise.workouts
 export const selectEntries = (state: AppState) => state.exercise.entries
-export const selectStatus = (state: AppState) => state.exercise.status
+export const selectStatus = (state: AppState) => state.exercise.status as sliceStatus
 export const selectActiveEntry = (state: AppState) => state.exercise.activeEntry
+export const selectActiveWorkout = (state: AppState) => state.exercise.activeWorkout
 export const selectPreviousExerciseEntries = (state: AppState) => state.exercise.previousWorkout
 export default exerciseSlice.reducer

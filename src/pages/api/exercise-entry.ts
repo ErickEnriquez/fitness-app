@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { postExerciseEntries } from '@server/postExerciseEntries'
 import { createWorkoutEntry } from '@server/createWorkoutEntry'
 import { getExerciseEntries } from '@server/getExerciseEntries'
-import { activeWorkoutInfo } from '@features/exercise/exerciseSlice'
+import { activeWorkoutInfo } from '@features/exercise/ExerciseSlice'
 
 import { unstable_getServerSession } from 'next-auth/next'
 import { authOptions } from '@auth/[...nextauth]'
