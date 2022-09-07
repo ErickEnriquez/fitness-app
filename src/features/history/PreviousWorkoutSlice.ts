@@ -69,6 +69,23 @@ export const getWorkoutDataAsync = createAsyncThunk(
 	}
 )
 
+/**
+ * delete the workout that we are currently on
+ */
+export const deleteWorkout = createAsyncThunk(
+	'previousWorkout/deleteWorkout',
+	async (_, { rejectWithValue, getState }) => {
+		try {
+			const { previousWorkout } = getState() as AppState
+			await axios.delete('/api/workout-entry', { params: { workoutId: previousWorkout.workout.id } })
+		}
+		catch (err) {
+			console.error(err)
+			return rejectWithValue(err)
+		}
+	}
+)
+
 
 
 export const PreviousWorkoutSlice = createSlice({
@@ -126,6 +143,9 @@ export const PreviousWorkoutSlice = createSlice({
 				state.exercises = action.payload.exercises.sort((a, b) => a.order - b.order)
 				state.workout = action.payload.workout
 			})
+			.addCase(deleteWorkout.pending, state => { state.status = 'loading' })
+			.addCase(deleteWorkout.rejected, state => { state.status = 'failed' })
+			.addCase(deleteWorkout.fulfilled, state => { state.status = 'success' })
 	},
 })
 

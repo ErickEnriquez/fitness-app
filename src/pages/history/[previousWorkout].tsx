@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 
-import { selectStatus, selectWorkout, getWorkoutDataAsync, selectExercises, selectChanged } from '@features/history/PreviousWorkoutSlice'
+import { selectStatus, selectWorkout, getWorkoutDataAsync, selectExercises, selectChanged, deleteWorkout } from '@features/history/PreviousWorkoutSlice'
 
 import { format } from 'date-fns'
 
@@ -57,10 +57,9 @@ const PreviousWorkout = () => {
 								hover:outline-red-500 hover:outline hover:bg-white hover:text-red-500
 								flex items-center justify-center h-10 font-bold col-start-5'
 					onClick={() => {
-						const r = window.confirm('Are you sure you want to delete workout, this cannot be undone')
+						const r = window.confirm('Are you sure you want to delete workout? THIS CANNOT BE UNDONE')
 						if (!r) return
-						alert('TODO: DELETE THE WORKOUT')
-						// dispatch(deleteWorkout())
+						dispatch(deleteWorkout())
 					}}
 				>
 					<FaTrash style={{ 'display': 'unset', 'verticalAlign': 'unset' }} />
