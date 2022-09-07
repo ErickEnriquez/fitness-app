@@ -11,8 +11,6 @@ import PrevWorkoutList from '@features/exercise/PrevWorkoutList'
 import { editWeight, editNotes, editIntensity, editOrder, selectActiveEntry, toggleExerciseComplete } from '@features/exercise/ExerciseSlice'
 
 
-
-
 const ExerciseItem = () => {
 
 	const dispatch = useAppDispatch()
@@ -26,7 +24,7 @@ const ExerciseItem = () => {
 	//check if all of the weight entries are completed and if so, mark the exercise as complete
 	const toggleCompleted = () => {
 		//if all entries are not empty and we are false change to true
-		if (!exerciseEntry.completed && exerciseEntry.weights.every(weight => weight)) {
+		if (!exerciseEntry.completed && exerciseEntry.weights.every(weight => !isNaN(weight))) {
 			dispatch(toggleExerciseComplete(exerciseEntry.id))
 		}
 		//if some entries get deleted change the completed to false

@@ -34,7 +34,7 @@ const getWorkout = async (req: NextApiRequest, res: NextApiResponse) => {
 		await getWorkoutEntry(Number(req.query.Id)) :
 		await getWorkoutEntry(Number(req.query.workoutType), Number(req.query.skip), true)
 
-	if (workout === null) {
+	if (!workout) {
 		res.status(404).end()
 		return
 	}

@@ -25,9 +25,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
  * @param res 
  * @returns 
  */
-const getProgramData = async (req: NextApiRequest, res: NextApiResponse, session: Session) => {
+const getProgramData = async (_: NextApiRequest, res: NextApiResponse, session: Session) => {
 	try {
 		const program = await getProgram(session.user.id)
+		if (!program) {
+			res.status(404).end()
+			return
+		}
 		res.status(200).json(program)
 	} catch (err) {
 		res.status(500).end()
