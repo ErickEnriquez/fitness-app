@@ -86,6 +86,22 @@ export const deleteWorkout = createAsyncThunk(
 	}
 )
 
+export const updateData = createAsyncThunk(
+	'previousWorkout/updateData',
+	async (_, { rejectWithValue, getState }) => {
+		try {
+			const { previousWorkout } = getState() as AppState
+			await Promise.all([
+				axios.put('/api/calendar/workout-entry', { workout: previousWorkout.workout }),
+				axios.put('/api/exerciseEntry', { exercises: previousWorkout.exercises })
+			])
+		}
+		catch (err) {
+			console.error(err)
+			return rejectWithValue(err)
+		}
+	}
+)
 
 
 export const PreviousWorkoutSlice = createSlice({
@@ -143,9 +159,14 @@ export const PreviousWorkoutSlice = createSlice({
 				state.exercises = action.payload.exercises.sort((a, b) => a.order - b.order)
 				state.workout = action.payload.workout
 			})
+			//delete workout 
 			.addCase(deleteWorkout.pending, state => { state.status = 'loading' })
 			.addCase(deleteWorkout.rejected, state => { state.status = 'failed' })
 			.addCase(deleteWorkout.fulfilled, state => { state.status = 'success' })
+			// update data thunk responses
+			.addCase(updateData.pending, state => { state.status = 'loading' })
+			.addCase(updateData.rejected, state => { state.status = 'failed' })
+			.addCase(updateData.fulfilled, state => { state.status = 'success' })
 	},
 })
 
