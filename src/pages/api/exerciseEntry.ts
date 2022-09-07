@@ -37,10 +37,11 @@ const getTemplate = async (req: NextApiRequest, res: NextApiResponse) => {
 
 const updateExercises = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
-		const previousExercises = req.body as PreviousExercise[]
+		const previousExercises = req.body.exercises as PreviousExercise[]
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const exercises = previousExercises.map(({ reps, name, editable, ...rest }) => rest) as ExerciseEntry[]
 		await updateExerciseEntries(exercises)
+		res.status(200).end()
 	} catch (err) {
 		console.error(err)
 		res.status(500).end()
