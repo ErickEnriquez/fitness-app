@@ -1,6 +1,11 @@
 import React, { useEffect } from 'react'
 
-import { selectStatus, selectWorkout, getWorkoutDataAsync, selectExercises, selectChanged, deleteWorkout } from '@features/history/PreviousWorkoutSlice'
+import {
+	selectStatus,
+	selectWorkout, getWorkoutDataAsync,
+	selectExercises, selectChanged,
+	deleteWorkout, updateData
+} from '@features/history/PreviousWorkoutSlice'
 
 import { format } from 'date-fns'
 
@@ -12,7 +17,6 @@ import PreviousExercise from '@components/PreviousExercise'
 import { FaTrash } from 'react-icons/fa'
 
 import router from 'next/router'
-
 
 import { useAppSelector, useAppDispatch } from '@app/hooks'
 import { Decimal } from '@prisma/client/runtime'
@@ -89,7 +93,10 @@ const PreviousWorkout = () => {
 						<strong>{workout.preWorkout ? 'Yes' : 'No'}</strong>
 					</div>
 					{exercises}
-					< SubmitBtn isDisabled={!isEdited} clickHandler={() => alert('Submit Changes')} />
+					< SubmitBtn
+						isDisabled={!isEdited}
+						clickHandler={() => { dispatch(updateData()) }}
+					/>
 				</Card>
 			}
 		</Layout >
