@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getPreviousWorkouts } from '@server/getPreviousWorkouts'
-
+import { deleteWorkoutEntry } from '@server/deleteWorkoutEntry'
 import { unstable_getServerSession } from 'next-auth/next'
 import { authOptions } from '@auth/[...nextauth]'
 
@@ -13,6 +13,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 	}
 	switch (req.method) {
 		case 'GET': await getCalendarWorkouts(req, res)
+			break
+		case 'DELETE': await deleteWorkout(req, res)
 			break
 		default:
 			res.status(405).json({ message: 'Method not allowed' })
@@ -35,5 +37,16 @@ const getCalendarWorkouts = async (req: NextApiRequest, res: NextApiResponse) =>
 		res.status(200).json(data)
 	} catch (err) {
 		res.status(500).json({ message: err })
+	}
+}
+
+const deleteWorkout = async (req: NextApiRequest, res: NextApiResponse) => {
+	try {
+		const workoutId = Number(req.query.workoutId)
+		await deleteWorkoutEntry(workoutId)
+		res.status(200).end()
+	}
+	catch (err) {
+		res.status(500).end()
 	}
 }
