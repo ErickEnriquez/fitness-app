@@ -49,6 +49,7 @@ const PreviousWorkout = () => {
 		<Layout title='Workout'
 			pageStatus={pageStatus}
 			failHandler={() => router.push('/')}
+			successHandler={() => router.push('/')}
 		>
 			<div className='grid grid-cols-5 my-4'>
 				<BackBtn href={'/calendar'} />
