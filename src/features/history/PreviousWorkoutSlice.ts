@@ -18,13 +18,15 @@ export interface PreviousWorkoutState {
 	status: sliceStatus
 	workout: WorkoutEntry
 	exercises: PreviousExercise[]
+	changed: boolean
 }
 
 
 const initialState = {
 	status: 'idle',
 	workout: null as WorkoutEntry,
-	exercises: [] as PreviousExercise[]
+	exercises: [] as PreviousExercise[],
+	changed: false
 }
 
 /**
@@ -79,30 +81,37 @@ export const PreviousWorkoutSlice = createSlice({
 		resetState: () => initialState,
 		editWorkoutNotes: (state, action: PayloadAction<string>) => {
 			state.workout.notes = action.payload
+			state.changed = true
 		},
 		editWorkoutIntensity: (state, action: PayloadAction<number>) => {
 			state.workout.grade = action.payload
+			state.changed = true
 		},
 		editWorkoutOrder: (state) => {
 			state.workout.preWorkout = !state.workout.preWorkout
+			state.changed = true
 		},
 		editExerciseNotes: (state, action: PayloadAction<{ text: string, idx: number }>) => {
 			const { text, idx } = action.payload
 			state.exercises[idx].notes = text
+			state.changed = true
 		},
 		editExerciseWeight: (state, action: PayloadAction<{ weight: number, exerciseIdx: number, setNumber: number }>) => {
 			const { weight, exerciseIdx, setNumber } = action.payload
 			state.exercises[exerciseIdx].weights[setNumber] = weight as unknown as Decimal
+			state.changed = true
 		},
 		editExerciseIntensity: (state, action: PayloadAction<{ idx: number, val: number }>) => {
 			const { idx, val } = action.payload
 			if (isNaN(val) || val > 10) return
 			state.exercises[idx].intensity = val
+			state.changed = true
 		},
 		editExerciseOrder: (state, action: PayloadAction<{ idx: number, val: number }>) => {
 			const { idx, val } = action.payload
 			if (isNaN(val) || val <= 0) return
 			state.exercises[idx].order = val
+			state.changed = true
 		},
 		toggleEditable: (state, action: PayloadAction<number>) => {
 			state.exercises[action.payload].editable = !state.exercises[action.payload].editable
@@ -136,6 +145,7 @@ export const {
 export const selectStatus = (state: AppState) => state.previousWorkout.status as sliceStatus
 export const selectWorkout = (state: AppState) => state.previousWorkout.workout
 export const selectExercises = (state: AppState) => state.previousWorkout.exercises
+export const selectChanged = (state: AppState) => state.previousWorkout.changed
 
 
 export default PreviousWorkoutSlice.reducer
