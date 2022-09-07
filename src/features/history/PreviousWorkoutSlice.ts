@@ -77,7 +77,7 @@ export const deleteWorkout = createAsyncThunk(
 	async (_, { rejectWithValue, getState }) => {
 		try {
 			const { previousWorkout } = getState() as AppState
-			await axios.delete('/api/workout-entry', { params: { workoutId: previousWorkout.workout.id } })
+			await axios.delete('/api/calendar/workout-entry', { params: { workoutId: previousWorkout.workout.id } })
 		}
 		catch (err) {
 			console.error(err)
