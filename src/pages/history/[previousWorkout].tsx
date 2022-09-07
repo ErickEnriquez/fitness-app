@@ -89,7 +89,7 @@ const PreviousWorkout = () => {
 						<strong>{workout.preWorkout ? 'Yes' : 'No'}</strong>
 					</div>
 					{exercises}
-					< SubmitBtn isDisabled={isEdited} clickHandler={() => alert('Submit Changes')} />
+					< SubmitBtn isDisabled={!isEdited} clickHandler={() => alert('Submit Changes')} />
 				</Card>
 			}
 		</Layout >
