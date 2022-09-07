@@ -93,7 +93,13 @@ export const updateData = createAsyncThunk(
 			const { previousWorkout } = getState() as AppState
 			await Promise.all([
 				axios.put('/api/calendar/workout-entry', { workout: previousWorkout.workout }),
-				axios.put('/api/exerciseEntry', { exercises: previousWorkout.exercises })
+				axios.put('/api/exerciseEntry', {
+					exercises: previousWorkout.exercises.map(e => ({
+						...e,
+						weights: e.weights.map(w => Number(w))
+					}
+					))
+				})
 			])
 		}
 		catch (err) {
