@@ -10,35 +10,23 @@ interface props {
 const PreviousWorkoutItem = ({ previousWorkout, workoutDate }: props) => {
 	return (
 		<>
-			<table className='w-11/12 mx-auto mt-4'>
-				<thead>
-					<tr className='outline-primary-blue outline bg-white text-primary-blue'>
-						<th>Order</th>
-						<th>Intensity</th>
-						<th>Date</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>{previousWorkout.order}</td>
-						<td>{previousWorkout.intensity}</td>
-						<td>{format(new Date(workoutDate), 'MM/dd/yyyy')}</td>
-					</tr>
-				</tbody>
-			</table>
-			<div className=' w-11/12 mx-auto mt-4'>
-				<table className='w-full mt-4'>
-					<thead>
-						<tr className='bg-primary-blue border-collapse rounded-2xl'>
-							{previousWorkout.weights.map((_, i) => (<th key={i}>{i + 1}</th>))}
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							{previousWorkout.weights.map((weight, i) => <td key={i}>{weight} lbs</td>)}
-						</tr>
-					</tbody>
-				</table>
+			<div className='w-11/12 mx-auto mt-4'>
+				<div className=' bg-white outline-primary-blue text-primary-blue rounded-xl grid grid-cols-3'>
+					<strong>Order</strong>
+					<strong>Intensity</strong>
+					<strong>Date</strong>
+				</div>
+				<div className='grid grid-cols-3'>
+					<strong>{previousWorkout.order}</strong>
+					<strong>{previousWorkout.intensity}</strong>
+					<strong>{format(new Date(workoutDate), 'MM/dd/yyyy')}</strong>
+				</div>
+				<div className={`bg-primary-blue text-white rounded-xl grid grid-cols-${previousWorkout.weights.length} my-4`}>
+					{previousWorkout.weights.map((_, i) => (<strong key={i}>{i + 1}</strong>))}
+				</div>
+				<div className={`rounded-xl grid grid-cols-${previousWorkout.weights.length}`}>
+					{previousWorkout.weights.map((w, i) => (<strong key={i}>{w} lbs</strong>))}
+				</div>
 			</div>
 			{previousWorkout.notes &&
 				<div className='bg-light-gray w-11/12 mx-auto my-8 rounded-xl py-2'>
