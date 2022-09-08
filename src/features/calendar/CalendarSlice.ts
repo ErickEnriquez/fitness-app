@@ -11,22 +11,20 @@ import { PreviousWorkoutsEntry } from '@server/getPreviousWorkouts'
  * @property {string} status status of the slice returns if we are loading, success, or failed
  * @property {WorkoutEntry[]} workouts the list of workouts that have been made
  * @property {Date} activeDate the active date that we are currently on
- * @property {Date} selectedDate the date we have selected
  */
 export interface CalendarState {
 	status: 'idle' | 'loading' | 'failed' | 'success'
 	workouts: PreviousWorkoutsEntry[]
-	cardios: PreviousCardio[]
+	cardioList: PreviousCardio[]
 	activeDate: string
-	selectedDate: string
+
 }
 
 const initialState: CalendarState = {
 	status: 'idle',
 	workouts: [] as PreviousWorkoutsEntry[],
-	cardios: [] as PreviousCardio[],
+	cardioList: [] as PreviousCardio[],
 	activeDate: new Date().toISOString(),
-	selectedDate: new Date().toISOString(),
 }
 
 /**
@@ -37,12 +35,12 @@ export const getWorkoutsAsync = createAsyncThunk(
 	//pass the start and the end dates to the reducer function
 	async ({ start, end }: { start: string, end: string }, { rejectWithValue }) => {
 		try {
-			const previousCardios = axios.get('/api/calendar/cardio', { params: { start, end } })
+			const previousCardioList = axios.get('/api/calendar/cardio', { params: { start, end } })
 			const program = axios.get('/api/program')
 
 			const [p, cardio] = await Promise.all([
 				program,
-				previousCardios
+				previousCardioList
 			]).then(list => [list[0].data, list[1].data])
 
 			const workoutTemplates = await axios.get('/api/workout-template', { params: { programId: p.id as Program } })
@@ -69,9 +67,6 @@ export const CalendarSlice = createSlice({
 		clearStatus: (state) => {
 			state.status = 'idle'
 		},
-		editSelectedDate: (state, action: PayloadAction<string>) => {
-			state.selectedDate = action.payload
-		},
 		editActiveDate: (state, action: PayloadAction<string>) => {
 			state.activeDate = action.payload
 		},
@@ -85,7 +80,7 @@ export const CalendarSlice = createSlice({
 			.addCase(getWorkoutsAsync.fulfilled, (state, action) => {
 				state.status = 'idle'
 				state.workouts = action.payload.previousWorkouts
-				state.cardios = action.payload.cardio
+				state.cardioList = action.payload.cardio
 			})
 			.addCase(getWorkoutsAsync.rejected, (state) => {
 				state.status = 'failed'
@@ -97,14 +92,12 @@ export const CalendarSlice = createSlice({
 export const {
 	clearStatus,
 	editActiveDate,
-	editSelectedDate,
 	resetState
 } = CalendarSlice.actions
 
 export const selectStatus = (state: AppState) => state.calendar.status
 export const selectWorkouts = (state: AppState) => state.calendar.workouts
 export const selectActiveDate = (state: AppState) => state.calendar.activeDate
-export const selectSelectedDate = (state: AppState) => state.calendar.selectedDate
-export const selectCardioList = (state: AppState) => state.calendar.cardios
+export const selectCardioList = (state: AppState) => state.calendar.cardioList
 
 export default CalendarSlice.reducer
