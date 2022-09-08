@@ -2,8 +2,8 @@ import React from 'react'
 import { FaPencilAlt } from 'react-icons/fa'
 import { useAppDispatch } from '@app/hooks'
 import { toggleEditable, PreviousExercise, editExerciseWeight, editExerciseIntensity, editExerciseOrder, editExerciseNotes } from '@features/history/PreviousWorkoutSlice'
-import NumberInput from './NumberInput'
-import Notes from './Notes'
+import NumberInput from '../../components/NumberInput'
+import Notes from '../../components/Notes'
 
 
 const PreviousExercise = ({ exercise, idx }: { exercise: PreviousExercise, idx: number }) => {
