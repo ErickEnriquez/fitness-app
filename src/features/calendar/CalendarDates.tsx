@@ -59,7 +59,7 @@ const Week = (date: Date, activeDate: Date, previousWorkouts: PreviousWorkoutsEn
 			>
 				<div className='grid grid-rows-2'>
 					<span className='flex flex-col'>
-						<span className={`${workoutThisDay ? 'bg-green-600' : 'opacity-100'} h-4`}></span>
+						<span className={`${workoutThisDay ? 'bg-primary-green' : 'opacity-100'} h-4`}></span>
 						<span className={`${cardioThisDay ? 'bg-purple-600' : 'opacity-100'} h-4`}></span>
 					</span>
 					<Link href={`${workoutThisDay ? `/history/${workoutThisDay?.id}` : ''}`}>
