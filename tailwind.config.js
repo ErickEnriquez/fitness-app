@@ -14,6 +14,8 @@ module.exports = {
 				'secondary-green': '#86efac',
 				'accent-green': '#84cc16',
 				'primary-red': '#EF4444',
+				'secondary-red': '#fee2e2',
+				'accent-red': '#b91c1c',
 				'primary-purple': '#7E22CD'
 			},
 		},
