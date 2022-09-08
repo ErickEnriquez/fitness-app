@@ -30,7 +30,7 @@ const MobileMenu = () => {
 			height: '95vh'
 		},
 		bmMenu: {
-			background: '#373a47',
+			background: '#334154',
 			padding: '2.5em 1.5em 0',
 			fontSize: '1.15em'
 		},
@@ -38,7 +38,7 @@ const MobileMenu = () => {
 			fill: '#373a47'
 		},
 		bmItemList: {
-			color: '#b8b7ad',
+			color: '#FFFFFF',
 			padding: '0.8em',
 			display: 'flex',
 			flexDirection: 'Column'
