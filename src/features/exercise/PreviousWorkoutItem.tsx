@@ -41,7 +41,7 @@ const PreviousWorkoutItem = ({ previousWorkout, workoutDate }: props) => {
 				</table>
 			</div>
 			{previousWorkout.notes &&
-				<div className='outline-primary-blue outline w-3/4 mx-auto my-8 rounded-xl'>
+				<div className='bg-light-gray w-11/12 mx-auto my-8 rounded-xl py-2'>
 					<strong className='my-8'>
 						<h3 className='text-xl bg-white w-3/4 mx-auto rounded-xl text-primary-blue'> Notes</h3>
 						<p className='text-m w-11/12 mx-auto mt-2'>
