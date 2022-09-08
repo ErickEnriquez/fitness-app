@@ -58,8 +58,8 @@ const PreviousWorkout = () => {
 			<div className='grid grid-cols-5 my-4'>
 				<BackBtn href={'/calendar'} />
 				<span
-					className='bg-red-500 px-8 rounded-full w-3/4 mx-auto shadow-lg shadow-black/70  text-white
-								hover:outline-red-500 hover:outline hover:bg-white hover:text-red-500
+					className='bg-primary-red px-8 rounded-full w-3/4 mx-auto shadow-lg shadow-black/70  text-white
+								hover:outline-primary-red hover:outline hover:bg-white hover:text-primary-red
 								flex items-center justify-center h-10 font-bold col-start-5'
 					onClick={() => {
 						const r = window.confirm('Are you sure you want to delete workout? THIS CANNOT BE UNDONE')

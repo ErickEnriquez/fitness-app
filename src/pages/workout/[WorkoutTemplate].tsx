@@ -60,9 +60,9 @@ const ExerciseTemplate = () => {
 									dispatch(resetState())
 									router.push('/workout')
 								}}
-								className={`text-white bg-red-500 rounded-full flex items-center justify-center
-							w-11/12 mx-auto outline-red-500 shadow-lg shadow-black/70
-							hover:bg-white hover:text-red-500 hover:outline`}
+								className={`text-white bg-primary-red rounded-full flex items-center justify-center
+							w-11/12 mx-auto outline-primary-red shadow-lg shadow-black/70
+							hover:bg-white hover:text-primary-red hover:outline`}
 							>
 								Exit
 							</a>

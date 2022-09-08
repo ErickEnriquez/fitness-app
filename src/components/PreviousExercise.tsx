@@ -17,7 +17,7 @@ const PreviousExercise = ({ exercise, idx }: { exercise: PreviousExercise, idx: 
 				{
 					exercise.editable ?
 						<button
-							className='text-red-500 font-medium'
+							className='text-primary-red font-medium'
 							onClick={() => dispatch(toggleEditable(idx))}
 						>
 							Cancel
