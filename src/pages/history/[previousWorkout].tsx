@@ -57,7 +57,7 @@ const PreviousWorkout = () => {
 		>
 			<div className='grid grid-cols-5 my-4'>
 				<Link href={'/calendar'}>
-					<Button text='back' color='primary-blue' />
+					<a> <Button text='Back' color='primary-blue' /></a>
 				</Link>
 				<span
 					className='bg-primary-red px-8 rounded-full w-3/4 mx-auto shadow-lg shadow-black/70  text-white

@@ -40,7 +40,9 @@ const ExerciseItem = () => {
 					<div>
 						<div className='grid grid-cols-4 my-4'>
 							<Link href={`/workout/${exerciseEntry.workoutId}`}>
-								<Button color='primary-blue' text='back' clickHandler={toggleCompleted} />
+								<a>
+									<Button color='primary-blue' text='Back' clickHandler={toggleCompleted} />
+								</a>
 							</Link>
 							<h2 className='mx-auto1 text-white text-center col-span-2 bg-dark-gray rounded-2xl'>
 								<span className='text-3xl font-bold'>
