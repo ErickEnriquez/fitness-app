@@ -42,22 +42,16 @@ const ExerciseTemplate = () => {
 		>
 			{workoutEntry &&
 				<main className='text-center mt-4'>
-					<div className='grid grid-cols-4 mb-6'>
-						<a
-							onClick={e => {
-								e.preventDefault()
+					<div className='grid grid-cols-5 mb-6'>
+						<Button text='Exit' color='primary-red'
+							clickHandler={() => {
 								const r = window.confirm('Are you sure you want to cancel this workout?')
 								if (!r) return
 								dispatch(resetState())
 								router.push('/workout')
 							}}
-							className={`text-white bg-primary-red rounded-full flex items-center justify-center
-							w-11/12 mx-auto outline-primary-red shadow-lg shadow-black/70
-							hover:bg-white hover:text-primary-red hover:outline`}
-						>
-							Exit
-						</a>
-						<h1 className='text-white col-span-2 mx-auto text-3xl capitalize font-bold bg-dark-gray px-8 py-1 rounded-2xl'>
+						/>
+						<h1 className='text-white col-span-3 mx-auto text-3xl capitalize font-bold bg-dark-gray px-8 py-1 rounded-2xl'>
 							{activeWorkout && activeWorkout.name}
 						</h1>
 						<br />
