@@ -35,7 +35,7 @@ const CalendarDates = () => {
 
 	while (currentDate <= endDate) {
 		allWeeks.push(
-			Week(currentDate, activeDate, previousWorkouts, previousCardio)
+			Week(currentDate, activeDate, previousWorkouts, previousCardio as PreviousCardio[])
 		)
 		currentDate = addDays(currentDate, 7)
 	}
@@ -54,13 +54,13 @@ const Week = (date: Date, activeDate: Date, previousWorkouts: PreviousWorkoutsEn
 		const cardioThisDay = previousCardio.find(cardio => isSameDay(parseISO(cardio.timeCreated), currentDate))
 		week.push(
 			<td key={day}
-				className={`${isSameMonth(activeDate, currentDate) ? 'text-white bg-slate-500' : 'text-slate-500'} 
+				className={`${isSameMonth(activeDate, currentDate) ? 'text-white bg-light-gray' : 'text-light-gray'} 
 			text-center pb-6 outline outline-white outline-1 text-l font-heavy rounded-sm`}
 			>
 				<div className='grid grid-rows-2'>
 					<span className='flex flex-col'>
 						<span className={`${workoutThisDay ? 'bg-primary-green' : 'opacity-100'} h-4`}></span>
-						<span className={`${cardioThisDay ? 'bg-purple-600' : 'opacity-100'} h-4`}></span>
+						<span className={`${cardioThisDay ? 'bg-primary-purple' : 'opacity-100'} h-4`}></span>
 					</span>
 					<Link href={`${workoutThisDay ? `/history/${workoutThisDay?.id}` : ''}`}>
 						<span className={`${isSameDay(currentDate, new Date()) ? 'text-primary-red' : ''}`}>
