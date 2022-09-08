@@ -12,7 +12,7 @@ import { format } from 'date-fns'
 import Layout from '@components/Layout'
 import Card from '@components/Card'
 import BackBtn from '@components/BackBtn'
-import PreviousExercise from '@components/PreviousExercise'
+import PreviousExercise from '@features/history/PreviousExercise'
 
 import { FaTrash } from 'react-icons/fa'
 
