@@ -11,16 +11,16 @@ import { format } from 'date-fns'
 
 import Layout from '@components/Layout'
 import Card from '@components/Card'
-import BackBtn from '@components/BackBtn'
-import PreviousExercise from '@components/PreviousExercise'
+import Button from '@components/util/Button'
+import PreviousExercise from '@features/history/PreviousExercise'
 
 import { FaTrash } from 'react-icons/fa'
 
 import router from 'next/router'
+import Link from 'next/link'
 
 import { useAppSelector, useAppDispatch } from '@app/hooks'
 import { Decimal } from '@prisma/client/runtime'
-import SubmitBtn from '@components/SubmitBtn'
 
 
 const PreviousWorkout = () => {
@@ -56,10 +56,12 @@ const PreviousWorkout = () => {
 			successHandler={() => router.push('/')}
 		>
 			<div className='grid grid-cols-5 my-4'>
-				<BackBtn href={'/calendar'} />
+				<Link href={'/calendar'}>
+					<a> <Button text='Back' color='primary-blue' /></a>
+				</Link>
 				<span
-					className='bg-red-500 px-8 rounded-full w-3/4 mx-auto shadow-lg shadow-black/70  text-white
-								hover:outline-red-500 hover:outline hover:bg-white hover:text-red-500
+					className='bg-primary-red px-8 rounded-full w-3/4 mx-auto shadow-lg shadow-black/70  text-white
+								hover:outline-primary-red hover:outline hover:bg-white hover:text-primary-red
 								flex items-center justify-center h-10 font-bold col-start-5'
 					onClick={() => {
 						const r = window.confirm('Are you sure you want to delete workout? THIS CANNOT BE UNDONE')
@@ -93,10 +95,13 @@ const PreviousWorkout = () => {
 						<strong>{workout.preWorkout ? 'Yes' : 'No'}</strong>
 					</div>
 					{exercises}
-					< SubmitBtn
-						isDisabled={!isEdited}
-						clickHandler={() => { dispatch(updateData()) }}
-					/>
+					{isEdited && (
+						< Button
+							color='primary-green'
+							text='Submit'
+							clickHandler={() => { dispatch(updateData()) }}
+						/>)
+					}
 				</Card>
 			}
 		</Layout >

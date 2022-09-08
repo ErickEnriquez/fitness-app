@@ -10,7 +10,7 @@ const Nav = () => {
 			<div className='flex md:hidden'><MobileMenu /></div>
 			<div className='hidden md:flex'>
 				<NavLinks />
-				{status === 'authenticated' && <Image width={50} height={50} src={data.user.image} />}
+				{status === 'authenticated' && <Image layout={'intrinsic'} width={50} height={50} priority={true} src={data.user.image} />}
 			</div>
 		</nav>
 	)

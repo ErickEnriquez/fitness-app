@@ -1,14 +1,22 @@
 import React from 'react'
 
 interface buttonProps {
-	clickHandler: () => void
+	clickHandler?: () => void
+	color?: string
 	text: string
+	disabled?: boolean
 }
 
-const Button = ({ clickHandler, text }: buttonProps) => {
+const Button = ({ clickHandler, text, color, disabled }: buttonProps) => {
 	return (
 		<button
-			className='bg-primary-blue hover:bg-white hover:text-primary-blue text-white font-bold py-2 px-4 rounded-full w-11/12 mx-auto'
+			disabled={disabled || false}
+			className={` ${color ? `bg-${color} hover:outline-${color} hover:text-${color}`
+				: 'bg-primary-purple hover:outline-primary-purple hover:text-primary-purple'}
+				text-center px-8 rounded-full w-3/4 mx-auto text-white shadow-lg shadow-black/70 
+				hover:outline hover:bg-white 
+				flex items-center justify-center h-10 font-bold`
+			}
 			onClick={clickHandler}
 		>{text}</button>
 	)

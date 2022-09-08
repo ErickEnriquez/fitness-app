@@ -2,18 +2,17 @@
 import { format, subMonths, addMonths, startOfMonth, endOfMonth } from 'date-fns'
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'
 import { useAppDispatch, useAppSelector } from '@app/hooks'
-import { selectActiveDate, editSelectedDate, editActiveDate, getWorkoutsAsync } from '@features/calendar/CalendarSlice'
+import { selectActiveDate, editActiveDate, getWorkoutsAsync } from '@features/calendar/CalendarSlice'
 
 const Header = () => {
 	const dispatch = useAppDispatch()
 	const active = new Date(useAppSelector(selectActiveDate))
 
 	return (
-		<div className="text-white w-11/12 mx-auto flex justify-evenly	mt-4 bg-slate-500 py-2 rounded-xl">
+		<div className="text-white w-11/12 mx-auto flex justify-evenly	mt-4 bg-light-gray py-2 rounded-xl">
 			<h3
 				className='hover:cursor-pointer'
 				onClick={() => {
-					dispatch(editSelectedDate(new Date().toISOString()))
 					dispatch(editActiveDate(new Date().toISOString()))
 					dispatch(
 						getWorkoutsAsync({

@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import Layout from '@components/Layout'
 import Notes from '@components/Notes'
 import NumberInput from '@components/NumberInput'
-import BackBtn from '@components/BackBtn'
+import Button from '@components/util/Button'
 
 import Link from 'next/link'
 import { useAppDispatch, useAppSelector } from '@app/hooks'
@@ -38,9 +38,13 @@ const ExerciseItem = () => {
 			<main>
 				{exerciseEntry ?
 					<div>
-						<div className='grid grid-cols-4 my-4'>
-							<BackBtn href={`/workout/${exerciseEntry.workoutId}`} clickHandler={toggleCompleted} />
-							<h2 className='mx-auto1 text-white text-center col-span-2 bg-dark-gray rounded-2xl'>
+						<div className='grid grid-cols-5 my-4'>
+							<Link href={`/workout/${exerciseEntry.workoutId}`}>
+								<a>
+									<Button color='primary-blue' text='Back' clickHandler={toggleCompleted} />
+								</a>
+							</Link>
+							<h2 className='mx-auto1 text-white text-center col-span-3 bg-dark-gray rounded-2xl'>
 								<span className='text-3xl font-bold'>
 									{exerciseEntry.name}
 								</span>
@@ -81,7 +85,11 @@ const ExerciseItem = () => {
 								changeHandler={(e) => dispatch(editNotes({ movementID: exerciseEntry.movementID, value: e.target.value }))}
 							/>
 						</div>
-						<button className='bg-white rounded-full mx-auto block my-8 w-11/12 py-3 text-primary-blue font-bold' onClick={() => setPreviousInfo(prev => !prev)}> Show Previous Workout</button>
+						<div className='my-4'>
+							<Button color="primary-blue" text='Show Previous Workout'
+								clickHandler={() => setPreviousInfo(prev => !prev)}
+							/>
+						</div>
 						{previousInfo && <PrevWorkoutList />}
 					</div>
 					:

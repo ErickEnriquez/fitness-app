@@ -5,6 +5,7 @@ import { selectStatus, selectActiveDate, getWorkoutsAsync } from '@features/cale
 import CalendarHeader from '@features/calendar/Header'
 import CalendarWeekDays from '@features/calendar/Weekdays'
 import CalendarDates from '@features/calendar/CalendarDates'
+import CalendarKey from '@features/calendar/CalendarKey'
 import Layout from '@components/Layout'
 import Card from '@components/Card'
 
@@ -44,6 +45,7 @@ const Calendar = () => {
 					<CalendarWeekDays />
 					<CalendarDates />
 				</table>
+				<CalendarKey />
 			</Card>
 		</Layout>
 	)

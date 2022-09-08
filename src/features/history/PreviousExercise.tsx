@@ -2,22 +2,21 @@ import React from 'react'
 import { FaPencilAlt } from 'react-icons/fa'
 import { useAppDispatch } from '@app/hooks'
 import { toggleEditable, PreviousExercise, editExerciseWeight, editExerciseIntensity, editExerciseOrder, editExerciseNotes } from '@features/history/PreviousWorkoutSlice'
-import NumberInput from './NumberInput'
-import { Decimal } from '@prisma/client/runtime'
-import Notes from './Notes'
+import NumberInput from '../../components/NumberInput'
+import Notes from '../../components/Notes'
 
 
 const PreviousExercise = ({ exercise, idx }: { exercise: PreviousExercise, idx: number }) => {
 	const dispatch = useAppDispatch()
 	return (
 		<div className='w-11/12 mx-auto bg-light-gray py-1 mt-2 mb-6 rounded-xl'>
-			<div className='bg-primary-blue grid grid-cols-3 w-5/6 mx-auto rounded-xl my-2'>
+			<div className='bg-primary-blue grid grid-cols-7 w-5/6 mx-auto rounded-xl my-2'>
 				<p className='text-white'>{exercise.order}.</p>
-				<strong className='text-white'>{exercise.name}</strong>
+				<strong className='text-white col-span-5'>{exercise.name}</strong>
 				{
 					exercise.editable ?
 						<button
-							className='text-red-500 font-medium'
+							className='text-primary-red font-medium'
 							onClick={() => dispatch(toggleEditable(idx))}
 						>
 							Cancel
@@ -79,7 +78,6 @@ const PreviousExercise = ({ exercise, idx }: { exercise: PreviousExercise, idx: 
 						<strong className='text-white'>Notes</strong>
 						<p className='text-white'>{exercise.notes}</p>
 					</div>}
-
 				</>
 			}
 		</div >

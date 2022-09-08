@@ -53,6 +53,7 @@ const PrevWorkoutsList = () => {
 						<div className='grid grid-cols-2 w-11/12 mx-auto mt-4'>
 
 							<Button
+								color='primary-blue'
 								clickHandler={() => {
 									dispatch(getMorePreviousWorkouts(skipAmount))
 									setSkipAmount(skipAmount + 1)
@@ -60,6 +61,7 @@ const PrevWorkoutsList = () => {
 								text='More'
 							/>
 							<Button
+								color='primary-blue'
 								clickHandler={() => {
 									dispatch(removePreviousWorkout())
 									if (skipAmount <= 0) {

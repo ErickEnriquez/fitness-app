@@ -5,7 +5,7 @@ import Layout from '@components/Layout'
 import Card from '@components/Card'
 import NumberInput from '@components/NumberInput'
 import Notes from '@components/Notes'
-import SubmitBtn from '@components/SubmitBtn'
+import Button from '@components/util/Button'
 
 import { useAppSelector, useAppDispatch } from '@app/hooks'
 import {
@@ -93,7 +93,9 @@ const Cardio = (): JSX.Element => {
 						changeHandler={e => dispatch(editCardioNotes(e.target.value))}
 					/>
 					<br />
-					<SubmitBtn
+					<Button
+						color='primary-green'
+						text='Submit'
 						clickHandler={() => dispatch(submitCardioInfo())}
 					/>
 				</Card>
