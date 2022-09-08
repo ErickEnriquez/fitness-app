@@ -21,7 +21,6 @@ import Link from 'next/link'
 
 import { useAppSelector, useAppDispatch } from '@app/hooks'
 import { Decimal } from '@prisma/client/runtime'
-import SubmitBtn from '@components/SubmitBtn'
 
 
 const PreviousWorkout = () => {
@@ -96,10 +95,13 @@ const PreviousWorkout = () => {
 						<strong>{workout.preWorkout ? 'Yes' : 'No'}</strong>
 					</div>
 					{exercises}
-					< SubmitBtn
-						isDisabled={!isEdited}
-						clickHandler={() => { dispatch(updateData()) }}
-					/>
+					{isEdited && (
+						< Button
+							color='primary-green'
+							text='Submit'
+							clickHandler={() => { dispatch(updateData()) }}
+						/>)
+					}
 				</Card>
 			}
 		</Layout >

@@ -19,7 +19,7 @@ import Fail from '@components/Fail'
 import Notes from '@components/Notes'
 import Card from '@components/Card'
 import NumberInput from '@components/NumberInput'
-import SubmitBtn from '@components/SubmitBtn'
+import Button from '@components/util/Button'
 import SignIn from '@components/SignIn'
 
 import { useSession } from 'next-auth/react'
@@ -98,7 +98,9 @@ const ExerciseTemplate = () => {
 								</select>
 							</div>
 						</Card>
-						<SubmitBtn
+						<Button
+							text='Submit'
+							color='primary-green'
 							clickHandler={() => dispatch(postExerciseEntries())}
 						/>
 					</main>
