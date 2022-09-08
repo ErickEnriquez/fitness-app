@@ -11,12 +11,13 @@ import { format } from 'date-fns'
 
 import Layout from '@components/Layout'
 import Card from '@components/Card'
-import BackBtn from '@components/BackBtn'
+import Button from '@components/util/Button'
 import PreviousExercise from '@features/history/PreviousExercise'
 
 import { FaTrash } from 'react-icons/fa'
 
 import router from 'next/router'
+import Link from 'next/link'
 
 import { useAppSelector, useAppDispatch } from '@app/hooks'
 import { Decimal } from '@prisma/client/runtime'
@@ -56,7 +57,9 @@ const PreviousWorkout = () => {
 			successHandler={() => router.push('/')}
 		>
 			<div className='grid grid-cols-5 my-4'>
-				<BackBtn href={'/calendar'} />
+				<Link href={'/calendar'}>
+					<Button text='back' color='primary-blue' />
+				</Link>
 				<span
 					className='bg-primary-red px-8 rounded-full w-3/4 mx-auto shadow-lg shadow-black/70  text-white
 								hover:outline-primary-red hover:outline hover:bg-white hover:text-primary-red

@@ -4,7 +4,7 @@ interface buttonProps {
 	clickHandler?: () => void
 	color?: string
 	text: string
-	disabled: boolean
+	disabled?: boolean
 }
 
 const Button = ({ clickHandler, text, color, disabled }: buttonProps) => {

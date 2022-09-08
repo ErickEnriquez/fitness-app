@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import Layout from '@components/Layout'
 import Notes from '@components/Notes'
 import NumberInput from '@components/NumberInput'
-import BackBtn from '@components/BackBtn'
+import Button from '@components/util/Button'
 
 import Link from 'next/link'
 import { useAppDispatch, useAppSelector } from '@app/hooks'
@@ -39,7 +39,9 @@ const ExerciseItem = () => {
 				{exerciseEntry ?
 					<div>
 						<div className='grid grid-cols-4 my-4'>
-							<BackBtn href={`/workout/${exerciseEntry.workoutId}`} clickHandler={toggleCompleted} />
+							<Link href={`/workout/${exerciseEntry.workoutId}`}>
+								<Button color='primary-blue' text='back' clickHandler={toggleCompleted} />
+							</Link>
 							<h2 className='mx-auto1 text-white text-center col-span-2 bg-dark-gray rounded-2xl'>
 								<span className='text-3xl font-bold'>
 									{exerciseEntry.name}
