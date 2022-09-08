@@ -83,11 +83,13 @@ const ExerciseTemplate = () => {
 							</select>
 						</div>
 					</Card>
-					<Button
-						text='Submit'
-						color='primary-green'
-						clickHandler={() => dispatch(postExerciseEntries())}
-					/>
+					<div className='my-6'>
+						<Button
+							text='Submit'
+							color='primary-green'
+							clickHandler={() => dispatch(postExerciseEntries())}
+						/>
+					</div>
 				</main>
 			}
 		</Layout >)
