@@ -63,7 +63,7 @@ const Week = (date: Date, activeDate: Date, previousWorkouts: PreviousWorkoutsEn
 						<span className={`${cardioThisDay ? 'bg-primary-purple' : 'opacity-100'} h-4`}></span>
 					</span>
 					<Link href={`${workoutThisDay ? `/history/${workoutThisDay?.id}` : ''}`}>
-						<span className={`${isSameDay(currentDate, new Date()) ? 'text-primary-red' : ''}`}>
+						<span className={`${isSameDay(currentDate, new Date()) ? 'bg-primary-blue w-1/2 mx-auto rounded-lg' : ''}`}>
 							{format(currentDate, 'dd')}
 						</span>
 					</Link>

@@ -9,7 +9,7 @@ module.exports = {
 				'midnight': '#1E293B',
 				'dark-gray': '#334154',
 				'light-gray': '#64738B',
-				'primary-blue': '#0e7490',
+				'primary-blue': '#05B6D3',
 				'primary-green': '#16A34A',
 				'secondary-green': '#86efac',
 				'accent-green': '#84cc16',
