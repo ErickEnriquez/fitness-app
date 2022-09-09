@@ -35,6 +35,16 @@ const WorkoutPage: NextPage = () => {
 		return previousWorkouts
 	}, [workouts])
 
+	const previousWorkouts = workouts && previous.map((workout, i) =>
+		<Link key={i} href={`/history/${workout.prevWorkoutId}`}>
+			<div className='w-11/12 mx-auto grid grid-cols-3 text-white my-2'>
+				<strong>{workout.name}</strong>
+				<strong>{new Date(workout.date).toLocaleDateString()}</strong>
+				<strong>{workout.grade}</strong>
+			</div>
+		</Link >
+	)
+
 
 	return (
 		<Layout
@@ -50,7 +60,7 @@ const WorkoutPage: NextPage = () => {
 									<li
 										className={`
 									rounded-3xl my-4 py-8  w-11/12 mx-auto text-white bg-primary-blue outline-primary-blue shadow-lg shadow-black/70 
-									hover:bg-white hover:outline hover:text-cyan-900 hover:cursor-pointer`
+									hover:bg-white hover:outline hover:text-primary-blue hover:cursor-pointer`
 										}
 										onClick={() => dispatch(getExerciseTemplates(item.id))}
 									>
@@ -63,17 +73,12 @@ const WorkoutPage: NextPage = () => {
 				</Card>
 				<br />
 				<Card title={'Previous Workouts'}>
-					<ul>
-						{workouts && previous.map((workout, idx) => (
-							<Link key={idx} href={`/history/${workout.prevWorkoutId}`}>
-								<a >
-									<li className='text-white capitalize my-4'>
-										<strong className='underline'>{workout.name} - {new Date(workout.date).toLocaleDateString()} </strong>
-									</li>
-								</a>
-							</Link>
-						))}
-					</ul>
+					<div className='w-11/12 mx-auto my-4 bg-primary-blue grid grid-cols-3 rounded-xl'>
+						<strong className='text-white'>Workout</strong>
+						<strong className='text-white'>Date</strong>
+						<strong className='text-white'>Grade</strong>
+					</div>
+					{previousWorkouts}
 				</Card>
 			</main>
 		</Layout>
