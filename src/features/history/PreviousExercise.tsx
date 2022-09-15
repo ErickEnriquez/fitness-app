@@ -10,7 +10,7 @@ const PreviousExercise = ({ exercise, idx }: { exercise: PreviousExercise, idx: 
 	const dispatch = useAppDispatch()
 	return (
 		<div className='w-11/12 mx-auto bg-light-gray py-1 mt-2 mb-6 rounded-xl'>
-			<div className='bg-primary-blue grid grid-cols-7 w-5/6 mx-auto rounded-xl my-2'>
+			<div className='bg-primary-blue grid grid-cols-7 w-5/6 mx-auto rounded-xl my-2 items-center'>
 				<p className='text-white'>{exercise.order}.</p>
 				<strong className='text-white col-span-5'>{exercise.name}</strong>
 				{
@@ -34,7 +34,7 @@ const PreviousExercise = ({ exercise, idx }: { exercise: PreviousExercise, idx: 
 				<strong className='col-span-2'>Weight</strong>
 				<strong className='col-span-2'>Reps</strong>
 			</div>
-			<ul className='grid-cols-5 grid text-white w-11/12 mx-auto'>
+			<ul className='grid-cols-5 grid text-white w-11/12 mx-auto items-center'>
 				{exercise.weights.map((weight, i) => (
 					<React.Fragment key={i}>
 
@@ -72,13 +72,15 @@ const PreviousExercise = ({ exercise, idx }: { exercise: PreviousExercise, idx: 
 				}
 			</div>
 			{
-				exercise.notes &&
-				<>
-					{exercise.editable ? <Notes val={exercise.notes} changeHandler={e => dispatch(editExerciseNotes({ idx, text: e.target.value }))} /> : <div className='w-5/6 mx-auto'>
-						<strong className='text-white'>Notes</strong>
-						<p className='text-white'>{exercise.notes}</p>
-					</div>}
-				</>
+				exercise.editable ? <Notes val={exercise.notes || ''} changeHandler={e => editExerciseNotes({ text: e.target.value, idx })} />
+					:
+					exercise.notes &&
+					<>
+						{exercise.editable ? <Notes val={exercise.notes} changeHandler={e => dispatch(editExerciseNotes({ idx, text: e.target.value }))} /> : <div className='w-5/6 mx-auto'>
+							<strong className='text-white'>Notes</strong>
+							<p className='text-white'>{exercise.notes}</p>
+						</div>}
+					</>
 			}
 		</div >
 	)
