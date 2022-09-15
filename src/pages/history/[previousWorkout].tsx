@@ -4,7 +4,7 @@ import {
 	selectStatus,
 	selectWorkout, getWorkoutDataAsync,
 	selectExercises, selectChanged,
-	deleteWorkout, updateData
+	deleteWorkout, updateData, toggleEditWorkout, selectEditWorkout, editWorkoutIntensity, togglePreWorkout, editWorkoutNotes
 } from '@features/history/PreviousWorkoutSlice'
 
 import { format } from 'date-fns'
@@ -21,15 +21,18 @@ import Link from 'next/link'
 
 import { useAppSelector, useAppDispatch } from '@app/hooks'
 import { Decimal } from '@prisma/client/runtime'
+import NumberInput from '@components/NumberInput'
+import Notes from '@components/Notes'
 
 
 const PreviousWorkout = () => {
-	const pageStatus = useAppSelector(selectStatus)
 	const dispatch = useAppDispatch()
-	const workout = useAppSelector(selectWorkout)
 
+	const pageStatus = useAppSelector(selectStatus)
+	const workout = useAppSelector(selectWorkout)
 	const exerciseList = useAppSelector(selectExercises)
 	const isEdited = useAppSelector(selectChanged)
+	const editWorkout = useAppSelector(selectEditWorkout)
 
 	const exercises = exerciseList && exerciseList.map((item, i) => (
 		<React.Fragment key={item.id}>
@@ -59,6 +62,9 @@ const PreviousWorkout = () => {
 				<Link href={'/calendar'}>
 					<a> <Button text='Back' color='primary-blue' /></a>
 				</Link>
+				<span className='col-start-4'>
+					<Button text='Edit' color='light-gray' clickHandler={() => dispatch(toggleEditWorkout())}></Button>
+				</span>
 				<span
 					className='bg-primary-red px-8 rounded-full w-3/4 mx-auto shadow-lg shadow-black/70  text-white
 								hover:outline-primary-red hover:outline hover:bg-white hover:text-primary-red
@@ -74,25 +80,46 @@ const PreviousWorkout = () => {
 			</div>
 			{workout &&
 				<Card title={`Workout Id :${workout.id}`}>
-					<h2 className='text-white'>{`Completed: ${format(new Date(workout.date), 'EEE, LLL dd YYY hh:mm aa')}`}</h2>
-					{workout.notes &&
+					<h2 className='text-white'>Completed: <time>{format(new Date(workout.date), 'EEE, LLL dd YYY hh:mm aa')}</time></h2>
+					{
+						editWorkout ?
+							<Notes val={workout.notes || ''} changeHandler={e => dispatch(editWorkoutNotes(e.target.value))} />
+							:
+							workout.notes &&
 
-						<div className='text-center my-6'>
-							<>
-								<h3 className='text-white'>Notes</h3>
-								<div className='bg-light-gray w-11/12 mx-auto text-white rounded-lg'>
-									{workout.notes}
-								</div>
-							</>
-						</div>
+							<div className='text-center my-6'>
+								<>
+									<h3 className='text-white'>Notes</h3>
+									<div className='bg-light-gray w-11/12 mx-auto text-white rounded-lg'>
+										<p className='w-11/12 mx-auto'>
+											{workout.notes}
+										</p>
+									</div>
+								</>
+							</div>
 					}
 					<div className='grid grid-cols-2 bg-primary-blue text-white w-3/4 mx-auto rounded-xl'>
 						<strong>Intensity</strong>
 						<strong>Pre-Workout</strong>
 					</div>
-					<div className='grid grid-cols-2 text-white text-center w-3/4 mx-auto'>
-						<strong>{workout.grade}</strong>
-						<strong>{workout.preWorkout ? 'Yes' : 'No'}</strong>
+					<div className='grid grid-cols-2 text-center w-3/4 mx-auto mt-2'>
+						{editWorkout ?
+							<>
+								<NumberInput name='Intensity' num={workout.grade} changeHandler={e => dispatch(editWorkoutIntensity(Number(e.target.value)))} />
+								<div className="block self-center ">
+									<div className="mt-2">
+										<label className="inline-flex items-center">
+											<input type="checkbox" className="w-6 h-6 rounded-xl" checked={workout.preWorkout} onChange={() => dispatch(togglePreWorkout())} />
+										</label>
+									</div>
+								</div>
+							</> :
+							<>
+								<strong className='text-white '>{workout.grade}</strong>
+								<strong className='text-white '>{workout.preWorkout ? 'Yes' : 'No'}</strong>
+							</>
+						}
+
 					</div>
 					{exercises}
 					{isEdited && (

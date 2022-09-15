@@ -18,6 +18,7 @@ export interface PreviousWorkoutState {
 	status: sliceStatus
 	workout: WorkoutEntry
 	exercises: PreviousExercise[]
+	editWorkout: boolean
 	changed: boolean
 }
 
@@ -26,7 +27,8 @@ const initialState = {
 	status: 'idle',
 	workout: null as WorkoutEntry,
 	exercises: [] as PreviousExercise[],
-	changed: false
+	changed: false,
+	editWorkout: false
 }
 
 /**
@@ -118,15 +120,19 @@ export const PreviousWorkoutSlice = createSlice({
 			state.status = 'idle'
 		},
 		resetState: () => initialState,
+		toggleEditWorkout: (state) => {
+			state.editWorkout = !state.editWorkout
+		},
 		editWorkoutNotes: (state, action: PayloadAction<string>) => {
 			state.workout.notes = action.payload
 			state.changed = true
 		},
 		editWorkoutIntensity: (state, action: PayloadAction<number>) => {
+			if (isNaN(action.payload) || action.payload > 10 || action.payload < 0) return
 			state.workout.grade = action.payload
 			state.changed = true
 		},
-		editWorkoutOrder: (state) => {
+		togglePreWorkout: (state) => {
 			state.workout.preWorkout = !state.workout.preWorkout
 			state.changed = true
 		},
@@ -142,7 +148,7 @@ export const PreviousWorkoutSlice = createSlice({
 		},
 		editExerciseIntensity: (state, action: PayloadAction<{ idx: number, val: number }>) => {
 			const { idx, val } = action.payload
-			if (isNaN(val) || val > 10) return
+			if (isNaN(val) || val > 10 || val < 0) return
 			state.exercises[idx].intensity = val
 			state.changed = true
 		},
@@ -172,13 +178,19 @@ export const PreviousWorkoutSlice = createSlice({
 			// update data thunk responses
 			.addCase(updateData.pending, state => { state.status = 'loading' })
 			.addCase(updateData.rejected, state => { state.status = 'failed' })
-			.addCase(updateData.fulfilled, state => { state.status = 'success' })
+			.addCase(updateData.fulfilled, state => {
+				state.status = 'success'
+				state.editWorkout = false
+				state.exercises = state.exercises.map(exercise => ({ ...exercise, editable: false }))
+				state.changed = false
+			})
 	},
 })
 
 export const {
 	clearStatus,
 	resetState,
+	toggleEditWorkout,
 	editWorkoutNotes,
 	editExerciseNotes,
 	editExerciseWeight,
@@ -186,13 +198,14 @@ export const {
 	editExerciseIntensity,
 	editExerciseOrder,
 	editWorkoutIntensity,
-	editWorkoutOrder
+	togglePreWorkout
 } = PreviousWorkoutSlice.actions
 
 export const selectStatus = (state: AppState) => state.previousWorkout.status as sliceStatus
 export const selectWorkout = (state: AppState) => state.previousWorkout.workout
 export const selectExercises = (state: AppState) => state.previousWorkout.exercises
 export const selectChanged = (state: AppState) => state.previousWorkout.changed
+export const selectEditWorkout = (state: AppState) => state.previousWorkout.editWorkout
 
 
 export default PreviousWorkoutSlice.reducer
