@@ -37,7 +37,7 @@ const ExerciseItem = () => {
 		<Layout>
 			<main>
 				{exerciseEntry ?
-					<div>
+					<>
 						<div className='grid grid-cols-5 my-4'>
 							<Link href={`/workout/${exerciseEntry.workoutId}`}>
 								<a>
@@ -91,7 +91,7 @@ const ExerciseItem = () => {
 							/>
 						</div>
 						{previousInfo && <PrevWorkoutList />}
-					</div>
+					</>
 					:
 					(<div>
 						<h1 className='text-white text-3xl text-center'>No exerciseEntry selected</h1>
