@@ -11,7 +11,8 @@ import {
 	resetState,
 	clearStatus,
 	selectStatus,
-	selectActiveWorkout
+	selectActiveWorkout,
+	selectEntries
 } from '@features/exercise/ExerciseSlice'
 import Notes from '@components/Notes'
 import Card from '@components/Card'
@@ -26,6 +27,7 @@ const ExerciseTemplate = () => {
 
 	const activeWorkout = useAppSelector(state => state.exercise.workouts.find(w => w.id === workoutID))
 	const workoutEntry = useAppSelector(state => state.exercise.workoutEntry)
+	const entries = useAppSelector(selectEntries)
 	const dispatch = useAppDispatch()
 
 	const router = useRouter()
@@ -87,7 +89,14 @@ const ExerciseTemplate = () => {
 						<Button
 							text='Submit'
 							color='primary-green'
-							clickHandler={() => dispatch(postExerciseEntries())}
+							clickHandler={() => {
+								if (entries.some(e => !e.completed)) {
+									const r = window.confirm('You have exercises that are not complete, are you sure you want to submit?')
+									if (!r) return
+								}
+
+								dispatch(postExerciseEntries())
+							}}
 						/>
 					</div>
 				</main>
