@@ -157,17 +157,14 @@ export const postExerciseEntries = createAsyncThunk(
 	async (_, { getState, rejectWithValue }) => {
 		const { exercise: { entries, workoutEntry } } = getState() as AppState
 
-		if (entries.some(e => e.completed !== true)) {
-			console.log('not all entries are completed')
-			return rejectWithValue({ mes: 'You must complete all entries before submitting', entries })
+		if (entries.every(e => e.completed)) {
+			const response = await axios.post('/api/exercise-entry', { entries, workoutEntry })
+			return response.data
 		}
 		else {
-			try {
-				const response = await axios.post('/api/exercise-entry', { entries, workoutEntry })
-				return response.data
-			}
-			catch (err) { return rejectWithValue('Error posting entries') }
+			return rejectWithValue('Error posting data, please check your all your exercises are complete')
 		}
+
 	}
 )
 
