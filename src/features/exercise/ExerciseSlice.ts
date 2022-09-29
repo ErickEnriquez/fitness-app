@@ -65,13 +65,13 @@ export const getWorkoutAsync = createAsyncThunk(
 	async (_, { rejectWithValue }) => {
 		try {
 
-			const program = await axios.get('/api/program')
+			const { id } = await axios.get('/api/program')
 				.then(d => d.data)
 				.catch(err => {
 					throw Error(err)
 				}) as Program
 
-			const workoutTemplates = await axios.get('/api/workout-template', { params: { programId: program.id } })
+			const workoutTemplates = await axios.get('/api/workout-template', { params: { programId: id } })
 				.then(r => r.data)
 				.catch(err => {
 					throw Error(err)
@@ -156,19 +156,15 @@ export const postExerciseEntries = createAsyncThunk(
 	'exercise/postExerciseEntries',
 	async (_, { getState, rejectWithValue }) => {
 		const { exercise: { entries, workoutEntry } } = getState() as AppState
-
-		if (entries.some(e => e.completed !== true)) {
-			console.log('not all entries are completed')
-			return rejectWithValue({ mes: 'You must complete all entries before submitting', entries })
-		}
-		else {
-			try {
-				const response = await axios.post('/api/exercise-entry', { entries, workoutEntry })
-				return response.data
-			}
-			catch (err) { return rejectWithValue('Error posting entries') }
+		try { 
+			const response = await axios.post('/api/exercise-entry', { entries, workoutEntry })
+			return response.data
+		} catch (err) {
+			console.error(err)
+			return rejectWithValue('unable to post workouts , please try later')
 		}
 	}
+
 )
 
 export const exerciseSlice = createSlice({
@@ -238,7 +234,7 @@ export const exerciseSlice = createSlice({
 				//create the entries for the workout
 				state.entries = action.payload.exercises.map((entry: ExerciseTemplate) => ({
 					...entry,
-					weights: Array(entry.sets).fill(''),
+					weights: Array(entry.sets).fill(0),
 					intensity: '',
 					notes: '',
 					order: '',

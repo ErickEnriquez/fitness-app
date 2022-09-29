@@ -24,7 +24,7 @@ const ExerciseItem = () => {
 	//check if all of the weight entries are completed and if so, mark the exercise as complete
 	const toggleCompleted = () => {
 		//if all entries are not empty and we are false change to true
-		if (!exerciseEntry.completed && exerciseEntry.weights.every(weight => !isNaN(weight))) {
+		if (exerciseEntry.completed === false && exerciseEntry.weights.every(weight => !isNaN(weight) && weight !== 0)) {
 			dispatch(toggleExerciseComplete(exerciseEntry.id))
 		}
 		//if some entries get deleted change the completed to false
@@ -37,7 +37,7 @@ const ExerciseItem = () => {
 		<Layout>
 			<main>
 				{exerciseEntry ?
-					<div>
+					<>
 						<div className='grid grid-cols-5 my-4'>
 							<Link href={`/workout/${exerciseEntry.workoutId}`}>
 								<a>
@@ -91,7 +91,7 @@ const ExerciseItem = () => {
 							/>
 						</div>
 						{previousInfo && <PrevWorkoutList />}
-					</div>
+					</>
 					:
 					(<div>
 						<h1 className='text-white text-3xl text-center'>No exerciseEntry selected</h1>

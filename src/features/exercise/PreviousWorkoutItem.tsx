@@ -21,12 +21,15 @@ const PreviousWorkoutItem = ({ previousWorkout, workoutDate }: props) => {
 					<strong>{previousWorkout.intensity}</strong>
 					<strong>{format(new Date(workoutDate), 'MM/dd/yyyy')}</strong>
 				</div>
-				<div className={`bg-primary-blue text-white rounded-xl grid grid-cols-${previousWorkout.weights.length} my-4`}>
-					{previousWorkout.weights.map((_, i) => (<strong key={i}>{i + 1}</strong>))}
-				</div>
-				<div className={`rounded-xl grid grid-cols-${previousWorkout.weights.length}`}>
-					{previousWorkout.weights.map((w, i) => (<strong key={i}>{w} lbs</strong>))}
-				</div>
+				<strong>Weight (lbs)</strong>
+				<table className='mx-auto w-11/12'>
+					<tr className='text-white rounded-xl my-4 '>
+						{previousWorkout.weights.map((_, i) => <th className=' bg-primary-blue first:rounded-l-xl last:rounded-r-xl' key={i}>{i + 1}</th>)}
+					</tr>
+					<tr>
+						{previousWorkout.weights.map((w, i) => (<td key={i}>{w}</td>))}
+					</tr>
+				</table>
 			</div>
 			{previousWorkout.notes &&
 				<div className='bg-light-gray w-11/12 mx-auto my-8 rounded-xl py-2'>
