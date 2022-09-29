@@ -65,13 +65,13 @@ export const getWorkoutAsync = createAsyncThunk(
 	async (_, { rejectWithValue }) => {
 		try {
 
-			const program = await axios.get('/api/program')
+			const { id } = await axios.get('/api/program')
 				.then(d => d.data)
 				.catch(err => {
 					throw Error(err)
 				}) as Program
 
-			const workoutTemplates = await axios.get('/api/workout-template', { params: { programId: program.id } })
+			const workoutTemplates = await axios.get('/api/workout-template', { params: { programId: id } })
 				.then(r => r.data)
 				.catch(err => {
 					throw Error(err)
@@ -238,7 +238,7 @@ export const exerciseSlice = createSlice({
 				//create the entries for the workout
 				state.entries = action.payload.exercises.map((entry: ExerciseTemplate) => ({
 					...entry,
-					weights: Array(entry.sets).fill(''),
+					weights: Array(entry.sets).fill(0),
 					intensity: '',
 					notes: '',
 					order: '',
