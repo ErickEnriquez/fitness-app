@@ -75,7 +75,7 @@ const PreviousWorkout = () => {
 						dispatch(deleteWorkout())
 					}}
 				>
-					<FaTrash style={{ 'display': 'unset', 'verticalAlign': 'unset' }} />
+					X
 				</span>
 			</div>
 			{workout &&
