@@ -24,7 +24,7 @@ const ExerciseItem = () => {
 	//check if all of the weight entries are completed and if so, mark the exercise as complete
 	const toggleCompleted = () => {
 		//if all entries are not empty and we are false change to true
-		if (exerciseEntry.completed === false && exerciseEntry.weights.every(weight => !isNaN(weight) && weight !== 0)) {
+		if (exerciseEntry.completed === false && exerciseEntry.weights.every(weight => !isNaN(weight) && weight !== null)) {
 			dispatch(toggleExerciseComplete(exerciseEntry.id))
 		}
 		//if some entries get deleted change the completed to false
