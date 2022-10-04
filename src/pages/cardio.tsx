@@ -40,12 +40,10 @@ const Cardio = (): JSX.Element => {
 			successHandler={() => dispatch(clearCardioState())}
 		>
 			<main className="text-center my-4 py-4">
-				<Card title="Enter Cardio Details"
-					style={{ textDecoration: 'underline' }}
-				>
-					<div className='flex flex-col my-2 py-2 w-11/12 mx-auto text-center'>
-						<span className="mt-4 my-6">
-							<label htmlFor="cardio-type" className='text-white text-lg font-bold'>Cardio Type</label>
+				<h1 className="text-white col-span-3 mx-auto text-3xl capitalize font-bold bg-light-gray px-8 py-1 rounded-2xl w-11/12 mx-auto">Enter Cardio Details</h1>
+				<div className='flex flex-col my-2 py-2  text-center'>
+					<Card  title='Cardio Type'>
+						<div className="mt-4 my-6 ">
 							<select
 								name="cardio-type" id="type"
 								onChange={e => dispatch(editCardioType(e.target.value))}
@@ -58,8 +56,11 @@ const Cardio = (): JSX.Element => {
 										value={option}>{option}</option>
 								))}
 							</select>
-						</span>
-						<div className='grid grid-cols-2'>
+						</div>
+					</Card>
+					<br />
+					<Card title='Details'>
+						<div className='grid grid-cols-2 my-4'>
 							<NumberInput
 								title='Intensity'
 								name={'Intensity'}
@@ -73,6 +74,7 @@ const Cardio = (): JSX.Element => {
 								changeHandler={e => dispatch(editCaloriesBurned(Number(e.target.value)))}
 							/>
 						</div>
+					
 						<div className='grid grid-cols-2 my-4'>
 							<NumberInput
 								title='Distance'
@@ -87,7 +89,10 @@ const Cardio = (): JSX.Element => {
 								changeHandler={e => dispatch(editTime(Number(e.target.value)))}
 							/>
 						</div>
-					</div>
+					</Card>
+
+				</div>
+				<Card >
 					<Notes
 						val={notes}
 						changeHandler={e => dispatch(editCardioNotes(e.target.value))}

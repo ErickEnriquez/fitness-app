@@ -234,7 +234,7 @@ export const exerciseSlice = createSlice({
 				//create the entries for the workout
 				state.entries = action.payload.exercises.map((entry: ExerciseTemplate) => ({
 					...entry,
-					weights: Array(entry.sets).fill(0),
+					weights: Array(entry.sets).fill(''),
 					intensity: '',
 					notes: '',
 					order: '',

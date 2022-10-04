@@ -23,12 +23,14 @@ const PreviousWorkoutItem = ({ previousWorkout, workoutDate }: props) => {
 				</div>
 				<strong>Weight (lbs)</strong>
 				<table className='mx-auto w-11/12'>
-					<tr className='text-white rounded-xl my-4 '>
-						{previousWorkout.weights.map((_, i) => <th className=' bg-primary-blue first:rounded-l-xl last:rounded-r-xl' key={i}>{i + 1}</th>)}
-					</tr>
-					<tr>
-						{previousWorkout.weights.map((w, i) => (<td key={i}>{w}</td>))}
-					</tr>
+					<tbody>
+						<tr className='text-white rounded-xl my-4 '>
+							{previousWorkout.weights.map((_, i) => <th className=' bg-primary-blue first:rounded-l-xl last:rounded-r-xl' key={i}>{i + 1}</th>)}
+						</tr>
+						<tr>
+							{previousWorkout.weights.map((w, i) => (<td key={i}>{w}</td>))}
+						</tr>
+					</tbody>
 				</table>
 			</div>
 			{previousWorkout.notes &&
