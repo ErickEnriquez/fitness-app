@@ -1,17 +1,8 @@
 
 import prisma from 'prisma/prisma'
 import { Cardio } from '@prisma/client'
-/**
- * get all of the cardio's for given user between the given dates
- * @param startDate 
- * @param endDate 
- * @param userID 
- */
 
-export interface PreviousCardio extends Omit<Cardio, 'timeCreated'> {
-	timeCreated: string
-}
-
+import { PreviousCardio } from './'
 /** 
  * return a list of all of the cardio entries between 2 given date ranges
  */
