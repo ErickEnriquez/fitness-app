@@ -1,14 +1,11 @@
 import React from 'react'
 import * as cardioSlice from '@features/cardio/CardioSlice'
 import { useAppSelector, useAppDispatch } from '@app/hooks'
-import Layout from '@components/Layout'
 import Button from '@components/util/Button'
 import { useInitialDispatch } from '@hooks/useInitialDispatch'
-import Card from '@components/Card'
 import { format } from 'date-fns'
 import { FaPencilAlt } from 'react-icons/fa'
-import Notes from '@components/Notes'
-import NumberInput from '@components/NumberInput'
+import { NumberInput, Notes, Layout, Card } from '@components/index'
 
 const CardioHistoryPage = () => {
 
