@@ -9,5 +9,4 @@ export async function deleteCardioEntry(id: number): Promise<Cardio> {
 	if (!success) throw Error('Unable to delete cardio')
 
 	return success
-
 }
