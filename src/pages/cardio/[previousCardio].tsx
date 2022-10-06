@@ -6,7 +6,7 @@ import { useInitialDispatch } from '@hooks/useInitialDispatch'
 import { format } from 'date-fns'
 import { FaPencilAlt } from 'react-icons/fa'
 import { NumberInput, Notes, Layout, Card } from '@components/index'
-
+import router from 'next/router'
 const CardioHistoryPage = () => {
 
 	const dispatch = useAppDispatch()
@@ -19,7 +19,7 @@ const CardioHistoryPage = () => {
 		<Layout
 			pageStatus={pageStatus}
 			successHandler={() => { dispatch(cardioSlice.clearStatus()) }}
-			failHandler={() => alert('fail')}
+			failHandler={() => { router.push('/') }}
 		>
 			<main>
 				<section className='grid grid-cols-5 mb-4 items-center'>
