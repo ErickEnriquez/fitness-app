@@ -12,7 +12,7 @@ export interface PreviousCardio extends Omit<Cardio, 'timeCreated'> {
 	timeCreated: string
 }
 
-export async function getPreviousCardio(startDate: string, endDate: string, userId: string): Promise<PreviousCardio[]> {
+export default async function getPreviousCardio(startDate: string, endDate: string, userId: string): Promise<PreviousCardio[]> {
 	try {
 		const cardioList = await prisma.cardio.findMany({
 			where: {

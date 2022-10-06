@@ -1,14 +1,5 @@
-import { deleteCardioEntry } from './deleteCardioEntry'
-import { getCardioData } from './getCardioData'
-import { getPreviousCardio } from './getPreviousCardio'
-import { postCardio } from './postCardio'
-import { updateCardio } from './updateCardio'
-
-
-export {
-	deleteCardioEntry,
-	getCardioData,
-	getPreviousCardio,
-	postCardio,
-	updateCardio
-}
+export { default as deleteCardioEntry } from './deleteCardioEntry'
+export { default as getCardioData } from './getCardioData'
+export { default as getPreviousCardio } from './getPreviousCardio'
+export { default as postCardio } from './postCardio'
+export { default as updateCardio } from './updateCardio'

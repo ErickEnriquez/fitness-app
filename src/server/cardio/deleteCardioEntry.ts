@@ -1,7 +1,10 @@
 import { Cardio } from '@prisma/client'
 import prisma from 'prisma/prisma'
 
-export async function deleteCardioEntry(id: number): Promise<Cardio> {
+/**
+ * given a cardio Id delete the cardio in question and return the record on success
+ */
+export default async function deleteCardioEntry(id: number): Promise<Cardio> {
 	const success = await prisma.cardio.delete({
 		where: { id }
 	})

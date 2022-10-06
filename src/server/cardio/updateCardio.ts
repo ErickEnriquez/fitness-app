@@ -5,7 +5,7 @@ import { CardioType } from '@prisma/client'
 /**
  * update the selected cardio data in the DB and return the updated copy on success
  */
-export async function updateCardio(data: Cardio): Promise<Cardio> {
+export default async function updateCardio(data: Cardio): Promise<Cardio> {
 	const updatedData = await prisma.cardio.update({
 		where: {
 			id: data.id
