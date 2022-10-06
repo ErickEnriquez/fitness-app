@@ -1,6 +1,6 @@
 /* eslint-disable indent */
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getPreviousCardio } from '@server/getPreviousCardio'
+import { getPreviousCardioInRange } from '@server/cardio/index'
 import { unstable_getServerSession } from 'next-auth/next'
 import { authOptions } from '@auth/[...nextauth]'
 
@@ -12,7 +12,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		res.status(401).json({ message: 'unauthorized' })
 		return
 	}
-
 
 	switch (req.method) {
 		case 'GET':
@@ -27,7 +26,7 @@ const getCardioInRange = async (req: NextApiRequest, res: NextApiResponse, userI
 		const startDate = String(req.query.start)
 		const endDate = String(req.query.end)
 
-		const cardio = await getPreviousCardio(startDate, endDate, userID)
+		const cardio = await getPreviousCardioInRange(startDate, endDate, userID)
 		if (!cardio) {
 			res.status(404).json({ message: 'Error finding cardio' })
 			return

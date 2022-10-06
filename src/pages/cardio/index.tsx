@@ -17,8 +17,8 @@ import {
 	editTime,
 	editCardioNotes,
 	submitCardioInfo,
-	clearCardioState,
-	selectStatus
+	selectStatus,
+	resetState
 } from '@features/cardio/CardioSlice'
 
 
@@ -36,13 +36,13 @@ const Cardio = (): JSX.Element => {
 	return (
 		<Layout
 			pageStatus={pageStatus}
-			failHandler={() => dispatch(clearCardioState())}
-			successHandler={() => dispatch(clearCardioState())}
+			failHandler={() => dispatch(resetState())}
+			successHandler={() => dispatch(resetState())}
 		>
 			<main className="text-center my-4 py-4">
-				<h1 className="text-white col-span-3 mx-auto text-3xl capitalize font-bold bg-light-gray px-8 py-1 rounded-2xl w-11/12 mx-auto">Enter Cardio Details</h1>
+				<h1 className="text-white col-span-3 mx-auto text-3xl capitalize font-bold bg-light-gray px-8 py-1 rounded-2xl w-11/12 ">Enter Cardio Details</h1>
 				<div className='flex flex-col my-2 py-2  text-center'>
-					<Card  title='Cardio Type'>
+					<Card title='Cardio Type'>
 						<div className="mt-4 my-6 ">
 							<select
 								name="cardio-type" id="type"
@@ -74,7 +74,7 @@ const Cardio = (): JSX.Element => {
 								changeHandler={e => dispatch(editCaloriesBurned(Number(e.target.value)))}
 							/>
 						</div>
-					
+
 						<div className='grid grid-cols-2 my-4'>
 							<NumberInput
 								title='Distance'
