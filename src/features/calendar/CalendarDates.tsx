@@ -14,7 +14,7 @@ import Link from 'next/link'
 
 import { useAppSelector } from '@app/hooks'
 import { selectActiveDate, selectWorkouts, selectCardioList } from '@features/calendar/CalendarSlice'
-import { PreviousCardio } from '@server/getPreviousCardio'
+import { PreviousCardio } from '@server/cardio/getPreviousCardio'
 import { PreviousWorkoutsEntry } from '@server/getPreviousWorkouts'
 
 

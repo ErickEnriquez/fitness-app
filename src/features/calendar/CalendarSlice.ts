@@ -4,7 +4,7 @@ import axios from 'axios'
 
 import type { AppState } from '@app/store'
 import { Program, Workout } from '@prisma/client'
-import { PreviousCardio } from '@server/getPreviousCardio'
+import { PreviousCardio } from '@server/cardio/getPreviousCardio'
 import { PreviousWorkoutsEntry } from '@server/getPreviousWorkouts'
 
 /**

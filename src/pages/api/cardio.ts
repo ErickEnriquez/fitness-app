@@ -1,12 +1,12 @@
 /* eslint-disable indent */
 import { NextApiRequest, NextApiResponse } from 'next'
 import { CardioState } from '@features/cardio/CardioSlice'
-import { postCardio } from '@server/postCardio'
+import { postCardio } from '@server/cardio/postCardio'
 
 import { unstable_getServerSession } from 'next-auth/next'
 import { authOptions } from '@auth/[...nextauth]'
-import { getCardioData } from '@server/getCardioData'
-import { updateCardio } from '@server/updateCardio'
+import { getCardioData } from '@server/cardio/getCardioData'
+import { updateCardio } from '@server/cardio/updateCardio'
 import { deleteCardioEntry } from '@server/deleteCardioEntry'
 import { Cardio, CardioType } from '@prisma/client'
 

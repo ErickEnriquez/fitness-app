@@ -1,6 +1,6 @@
 /* eslint-disable indent */
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getPreviousCardio } from '@server/getPreviousCardio'
+import { getPreviousCardio } from '@server/cardio/getPreviousCardio'
 import { unstable_getServerSession } from 'next-auth/next'
 import { authOptions } from '@auth/[...nextauth]'
 
