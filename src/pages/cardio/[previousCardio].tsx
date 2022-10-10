@@ -3,7 +3,7 @@ import * as cardioSlice from '@features/cardio/CardioSlice'
 import { useAppSelector, useAppDispatch } from '@app/hooks'
 import Button from '@components/util/Button'
 import { useInitialDispatch } from '@hooks/useInitialDispatch'
-import { format } from 'date-fns'
+import { format, parseISO } from 'date-fns'
 import { FaPencilAlt } from 'react-icons/fa'
 import { NumberInput, Notes, Layout, Card } from '@components/index'
 import router from 'next/router'
@@ -14,6 +14,7 @@ const CardioHistoryPage = () => {
 	const pageStatus = useAppSelector(cardioSlice.selectStatus)
 
 	useInitialDispatch('previousCardio', (cardioId) => dispatch(cardioSlice.getPreviousCardioInfo(Number(cardioId))))
+
 
 	return (
 		<Layout
@@ -28,7 +29,7 @@ const CardioHistoryPage = () => {
 					<Button text='X' color='primary-red' clickHandler={() => dispatch(cardioSlice.toggleEditPreviousCardio())} />
 				</section>
 				<Card>
-					<strong className='text-white'>Completed : {format(new Date(cardioState.timeCreated), 'EEE, LLL dd YYY hh:mm aa')}</strong>
+					<strong className='text-white'>Completed : {format(parseISO(cardioState.timeCreated), 'EEE, LLL dd YYY hh:mm aa')}</strong>
 					<div className='my-6 bg-primary-blue w-11/12 mx-auto text-white font-bold rounded-xl py-1 grid grid-cols-5'>
 						<h3 className='col-start-3'>Notes</h3>
 						<span className='col-start-5'>

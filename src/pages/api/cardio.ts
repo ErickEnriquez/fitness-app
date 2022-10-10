@@ -66,7 +66,7 @@ const updateCardioInfo = async (req: NextApiRequest, res: NextApiResponse) => {
 		const state = req.body
 
 		//need to include timeCreated, and userId even though we aren't changing it since update cardio function is using the cardio type from prisma schema
-		const updatedData: Cardio = {
+		const updates: Cardio = {
 			intensity: Number(state.intensity),
 			id: Number(state.completedCardioId),
 			timeCreated: new Date(),
@@ -78,8 +78,8 @@ const updateCardioInfo = async (req: NextApiRequest, res: NextApiResponse) => {
 			userId: ''
 		}
 
-		const updatedCardio = await updateCardio(updatedData)
-		res.status(200).json({ ...updatedCardio, timeCreated: updatedCardio.timeCreated.toISOString() })
+		const updatedCardio = await updateCardio(updates)
+		res.status(200).json(updatedCardio)
 	}
 	catch (err) {
 		console.error(err)

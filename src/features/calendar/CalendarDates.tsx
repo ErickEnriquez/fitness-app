@@ -14,7 +14,7 @@ import Link from 'next/link'
 
 import { useAppSelector } from '@app/hooks'
 import { selectActiveDate, selectWorkouts, selectCardioList } from '@features/calendar/CalendarSlice'
-import { PreviousCardio } from '@server/cardio/index'
+import { SerializedCardio } from '@server/cardio/index'
 import { PreviousWorkoutsEntry } from '@server/getPreviousWorkouts'
 
 
@@ -35,7 +35,7 @@ const CalendarDates = () => {
 
 	while (currentDate <= endDate) {
 		allWeeks.push(
-			Week(currentDate, activeDate, previousWorkouts, previousCardio as PreviousCardio[])
+			Week(currentDate, activeDate, previousWorkouts, previousCardio as SerializedCardio[])
 		)
 		currentDate = addDays(currentDate, 7)
 	}
@@ -44,7 +44,7 @@ const CalendarDates = () => {
 }
 
 
-const Week = (date: Date, activeDate: Date, previousWorkouts: PreviousWorkoutsEntry[], previousCardio: PreviousCardio[]) => {
+const Week = (date: Date, activeDate: Date, previousWorkouts: PreviousWorkoutsEntry[], previousCardio: SerializedCardio[]) => {
 	let currentDate = date
 	const week = []
 

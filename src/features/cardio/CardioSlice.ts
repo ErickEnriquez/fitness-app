@@ -4,6 +4,7 @@ import axios from 'axios'
 
 import type { AppState } from '@app/store'
 import { Cardio } from '@prisma/client'
+import { SerializedCardio } from '@server/cardio/cardio'
 
 export interface CardioState {
 	status: 'idle' | 'loading' | 'failed' | 'success'
@@ -51,7 +52,7 @@ export const getPreviousCardioInfo = createAsyncThunk(
 	'cardio/getPreviousCardioInfo',
 	async (cardioId: number, { rejectWithValue }) => {
 		try {
-			const data = (await axios.get('/api/cardio', { params: { cardioId } })).data
+			const { data } = await axios.get<SerializedCardio>('/api/cardio', { params: { cardioId } })
 
 			if (!data) return rejectWithValue('Unable to get data')
 
@@ -70,11 +71,10 @@ export const updateCardioInfo = createAsyncThunk(
 			const { cardio } = getState() as AppState
 			const { intensity, time, caloriesBurned, distance, notes, completedCardioId } = cardio
 
-			const req = await axios.put('/api/cardio', { intensity, time, caloriesBurned, distance, notes, completedCardioId })
+			const { data } = await axios.put<SerializedCardio>('/api/cardio', { intensity, time, caloriesBurned, distance, notes, completedCardioId })
+			if (!data) return rejectWithValue('Error updating cardio info')
 
-			if (!req) return rejectWithValue('Error updating cardio info')
-
-			return req.data as Cardio
+			return data
 		}
 		catch (err) {
 			console.error(err)
@@ -179,7 +179,7 @@ export const CardioSlice = createSlice({
 				state.notes = action.payload.notes
 				state.time = action.payload.time
 				state.completedCardioId = action.payload.id
-				state.timeCreated = String(action.payload.timeCreated)
+				state.timeCreated = action.payload.timeCreated
 			})
 			.addCase(deleteCardioEntry.pending, state => { state.status = 'loading' })
 			.addCase(deleteCardioEntry.rejected, state => { state.status = 'failed' })
