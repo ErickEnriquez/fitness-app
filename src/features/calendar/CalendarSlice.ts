@@ -4,7 +4,7 @@ import axios from 'axios'
 
 import type { AppState } from '@app/store'
 import { Program, Workout } from '@prisma/client'
-import { PreviousCardio } from '@server/cardio'
+import { SerializedCardio } from '@server/cardio'
 import { PreviousWorkoutsEntry } from '@server/getPreviousWorkouts'
 
 /**
@@ -15,7 +15,7 @@ import { PreviousWorkoutsEntry } from '@server/getPreviousWorkouts'
 export interface CalendarState {
 	status: 'idle' | 'loading' | 'failed' | 'success'
 	workouts: PreviousWorkoutsEntry[]
-	cardioList: PreviousCardio[]
+	cardioList: SerializedCardio[]
 	activeDate: string
 
 }
@@ -23,7 +23,7 @@ export interface CalendarState {
 const initialState: CalendarState = {
 	status: 'idle',
 	workouts: [] as PreviousWorkoutsEntry[],
-	cardioList: [] as PreviousCardio[],
+	cardioList: [] as SerializedCardio[],
 	activeDate: new Date().toISOString(),
 }
 
@@ -52,7 +52,7 @@ export const getWorkoutsAsync = createAsyncThunk(
 				.then(r => r.map(i => i.data).flat()) as PreviousWorkoutsEntry[]
 
 			previousWorkouts.sort((a, b) => +new Date(a.date) - +new Date(b.date))
-			return { previousWorkouts, cardio: cardio as PreviousCardio[] }
+			return { previousWorkouts, cardio: cardio as SerializedCardio[] }
 		} catch (err) {
 			console.error(err)
 			return rejectWithValue('Unable to get previous workouts')

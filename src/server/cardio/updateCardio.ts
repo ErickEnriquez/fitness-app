@@ -1,11 +1,11 @@
 import prisma from 'prisma/prisma'
-import { Cardio } from '@prisma/client'
-import { CardioType } from '@prisma/client'
+import { SerializedCardio } from './cardio'
+import { CardioType, Cardio } from '@prisma/client'
 
 /**
  * update the selected cardio data in the DB and return the updated copy on success
  */
-export default async function updateCardio(data: Cardio): Promise<Cardio> {
+export default async function updateCardio(data: Cardio): Promise<SerializedCardio> {
 	const updatedData = await prisma.cardio.update({
 		where: {
 			id: data.id
@@ -22,5 +22,6 @@ export default async function updateCardio(data: Cardio): Promise<Cardio> {
 
 	if (!updatedData) throw Error('Error while trying to update cardio')
 
-	return updatedData
+
+	return { ...updatedData, timeCreated: updatedData.timeCreated.toISOString() }
 }

@@ -4,4 +4,4 @@ export { default as getPreviousCardioInRange } from './getPreviousCardioInRange'
 export { default as postCardio } from './postCardio'
 export { default as updateCardio } from './updateCardio'
 
-export type { PreviousCardio } from './cardio'
+export type { SerializedCardio } from './cardio'
