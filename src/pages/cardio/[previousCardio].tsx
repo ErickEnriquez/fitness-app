@@ -7,13 +7,15 @@ import { format, parseISO } from 'date-fns'
 import { FaPencilAlt } from 'react-icons/fa'
 import { NumberInput, Notes, Layout, Card } from '@components/index'
 import router from 'next/router'
+import { getCardio, updateCardio } from '@features/cardio/thunks'
+
 const CardioHistoryPage = () => {
 
 	const dispatch = useAppDispatch()
 	const cardioState = useAppSelector(cardioSlice.selectCardioState)
 	const pageStatus = useAppSelector(cardioSlice.selectStatus)
 
-	useInitialDispatch('previousCardio', (cardioId) => dispatch(cardioSlice.getPreviousCardioInfo(Number(cardioId))))
+	useInitialDispatch('previousCardio', (cardioId) => dispatch(getCardio(Number(cardioId))))
 
 
 	return (
@@ -52,13 +54,13 @@ const CardioHistoryPage = () => {
 						{cardioState.editPreviousCardio ?
 							<>
 								<strong className='my-8'>Intensity :</strong>
-								<NumberInput num={cardioState.intensity} name={'intensity'} changeHandler={e => dispatch(cardioSlice.editCardioIntensity(Number(e.target.value)))} />
+								<NumberInput num={cardioState.intensity} name={'intensity'} changeHandler={e => dispatch(cardioSlice.editNumberInput(e.target))} />
 								<strong className='my-8'>Time (Min) :</strong>
-								<NumberInput num={cardioState.time} name={'time'} changeHandler={e => dispatch(cardioSlice.editTime(Number(e.target.value)))} />
+								<NumberInput num={cardioState.time} name={'time'} changeHandler={e => dispatch(cardioSlice.editNumberInput(e.target))} />
 								<strong className='my-8'>Distance (Mi) :</strong>
-								<NumberInput num={cardioState.distance} name={'distance'} changeHandler={e => dispatch(cardioSlice.editDistance(Number(e.target.value)))} />
+								<NumberInput num={cardioState.distance} name={'distance'} changeHandler={e => dispatch(cardioSlice.editNumberInput(e.target))} />
 								<strong className='my-8'>Calories Burned :</strong>
-								<NumberInput num={cardioState.caloriesBurned} name={'caloriesBurned'} changeHandler={e => dispatch(cardioSlice.editCaloriesBurned(Number(e.target.value)))} />
+								<NumberInput num={cardioState.caloriesBurned} name={'caloriesBurned'} changeHandler={e => dispatch(cardioSlice.editNumberInput(e.target))} />
 							</> :
 							<>
 								<strong className='my-4'>Intensity :</strong>
@@ -77,7 +79,7 @@ const CardioHistoryPage = () => {
 						<Button text='Submit' color='primary-green' clickHandler={() => {
 							const r = window.confirm('Are you sure you want to delete this cardio, THIS CANNOT BE UNDONE')
 							if (!r) return
-							dispatch(cardioSlice.updateCardioInfo())
+							dispatch(updateCardio())
 						}} />}
 				</Card>
 			</main>

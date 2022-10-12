@@ -1,10 +1,10 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-
-import axios from 'axios'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import deleteCardio from './deleteCardio'
+import createNewCardio from './createNewCardio'
+import getCardio from './getCardio'
+import updateCardio from './updateCardio'
 
 import type { AppState } from '@app/store'
-import { Cardio } from '@prisma/client'
-import { SerializedCardio } from '@server/cardio/cardio'
 
 export interface CardioState {
 	status: 'idle' | 'loading' | 'failed' | 'success'
@@ -36,106 +36,16 @@ const initialState: CardioState = {
 	isPreviousWorkoutChanged: false
 }
 
-export const submitCardioInfo = createAsyncThunk(
-	'cardio/submitCardio',
-	async (_, { getState, rejectWithValue }) => {
-		try {
-			const { cardio } = getState() as AppState
-			//remove selected cardio id from object, since we don't want it when submitting a new cardio
-			const { intensity, time, caloriesBurned, distance, notes, cardioType } = cardio
-			await axios.post('/api/cardio', { intensity, time, caloriesBurned, distance, notes, cardioType })
-		} catch (err) { return rejectWithValue(err) }
-	}
-)
-
-export const getPreviousCardioInfo = createAsyncThunk(
-	'cardio/getPreviousCardioInfo',
-	async (cardioId: number, { rejectWithValue }) => {
-		try {
-			const { data } = await axios.get<SerializedCardio>('/api/cardio', { params: { cardioId } })
-
-			if (!data) return rejectWithValue('Unable to get data')
-
-			return data
-		} catch (err) { return rejectWithValue(err) }
-	}
-)
-
-/**
- * send the updated state to the DB and update the cardio info with whatever was changed
- */
-export const updateCardioInfo = createAsyncThunk(
-	'cardio/updatePreviousCardioInfo',
-	async (_, { getState, rejectWithValue }) => {
-		try {
-			const { cardio } = getState() as AppState
-			const { intensity, time, caloriesBurned, distance, notes, completedCardioId } = cardio
-
-			const { data } = await axios.put<SerializedCardio>('/api/cardio', { intensity, time, caloriesBurned, distance, notes, completedCardioId })
-			if (!data) return rejectWithValue('Error updating cardio info')
-
-			return data
-		}
-		catch (err) {
-			console.error(err)
-			return rejectWithValue('Error has occurred, please try again later')
-		}
-	}
-)
-/**
- * send request to server to delete the cardio entry with the given Id
- */
-export const deleteCardioEntry = createAsyncThunk(
-	'cardio/deleteCardioEntry',
-	async (_, { getState, rejectWithValue }) => {
-		try {
-			const { cardio } = getState() as AppState
-			const req = await axios.delete('/api/cardio', { params: { cardioId: cardio.completedCardioId } })
-			if (!req) return rejectWithValue('Error deleting entry')
-
-		} catch (err) {
-			console.error(err)
-			return rejectWithValue('Error has occurred, please try again later')
-		}
-	}
-)
-
 export const CardioSlice = createSlice({
 	name: 'cardio',
 	initialState,
 	reducers: {
 		clearStatus: (state) => { state.status = 'idle' },
-		editCardioIntensity: (state, action: PayloadAction<number>) => {
-			//limit values from 1-10 only
-			if (isNaN(action.payload) || action.payload < 1 || action.payload > 10) {
-				return
-			}
-			state.intensity = action.payload
+		editNumberInput: (state, action: PayloadAction<EventTarget & HTMLInputElement>) => {
+			if (Number.isNaN(action.payload.value)) return
+			const name = action.payload.name
+			state[name] = Number(action.payload.value)
 			state.isPreviousWorkoutChanged = true
-		},
-		editCaloriesBurned: (state, action: PayloadAction<number>) => {
-			if (isNaN(action.payload) || action.payload < 1) {
-				return
-			}
-			state.caloriesBurned = action.payload
-			state.isPreviousWorkoutChanged = true
-
-		},
-		editDistance: (state, action: PayloadAction<number>) => {
-			if (isNaN(action.payload) || action.payload < 0) {
-				return
-			}
-			state.distance = action.payload
-			state.isPreviousWorkoutChanged = true
-
-		},
-		editTime: (state, action: PayloadAction<number>) => {
-			if (isNaN(action.payload) || action.payload < 0) {
-				return
-			}
-			state.time = action.payload
-			state.isPreviousWorkoutChanged = true
-
 		},
 		editCardioType: (state, action: PayloadAction<string>) => {
 			state.cardioType = action.payload
@@ -152,12 +62,12 @@ export const CardioSlice = createSlice({
 	},
 	extraReducers(builder) {
 		builder
-			.addCase(submitCardioInfo.pending, state => { state.status = 'loading' })
-			.addCase(submitCardioInfo.fulfilled, state => { state.status = 'success' })
-			.addCase(submitCardioInfo.rejected, state => { state.status = 'failed' })
-			.addCase(getPreviousCardioInfo.pending, state => { state.status = 'loading' })
-			.addCase(getPreviousCardioInfo.rejected, state => { state.status = 'failed' })
-			.addCase(getPreviousCardioInfo.fulfilled, (state, action) => {
+			.addCase(createNewCardio.pending, state => { state.status = 'loading' })
+			.addCase(createNewCardio.fulfilled, state => { state.status = 'success' })
+			.addCase(createNewCardio.rejected, state => { state.status = 'failed' })
+			.addCase(getCardio.pending, state => { state.status = 'loading' })
+			.addCase(getCardio.rejected, state => { state.status = 'failed' })
+			.addCase(getCardio.fulfilled, (state, action) => {
 				state.status = 'idle'
 				state.cardioType = action.payload.type
 				state.caloriesBurned = action.payload.caloriesBurned
@@ -168,9 +78,9 @@ export const CardioSlice = createSlice({
 				state.completedCardioId = action.payload.id
 				state.timeCreated = action.payload.timeCreated
 			})
-			.addCase(updateCardioInfo.pending, state => { state.status = 'loading' })
-			.addCase(updateCardioInfo.rejected, state => { state.status = 'failed' })
-			.addCase(updateCardioInfo.fulfilled, (state, action) => {
+			.addCase(updateCardio.pending, state => { state.status = 'loading' })
+			.addCase(updateCardio.rejected, state => { state.status = 'failed' })
+			.addCase(updateCardio.fulfilled, (state, action) => {
 				state.status = 'success'
 				state.cardioType = action.payload.type
 				state.caloriesBurned = action.payload.caloriesBurned
@@ -181,19 +91,15 @@ export const CardioSlice = createSlice({
 				state.completedCardioId = action.payload.id
 				state.timeCreated = action.payload.timeCreated
 			})
-			.addCase(deleteCardioEntry.pending, state => { state.status = 'loading' })
-			.addCase(deleteCardioEntry.rejected, state => { state.status = 'failed' })
-			.addCase(deleteCardioEntry.fulfilled, state => { state.status = 'success' })
+			.addCase(deleteCardio.pending, state => { state.status = 'loading' })
+			.addCase(deleteCardio.rejected, state => { state.status = 'failed' })
+			.addCase(deleteCardio.fulfilled, state => { state.status = 'success' })
 	},
 })
 
 export const {
+	editNumberInput,
 	clearStatus,
-	editCardioIntensity,
-	editCaloriesBurned,
-	editCardioType,
-	editDistance,
-	editTime,
 	editCardioNotes,
 	toggleEditPreviousCardio,
 	resetState
