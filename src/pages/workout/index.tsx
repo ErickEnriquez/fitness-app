@@ -8,7 +8,7 @@ import { useSession } from 'next-auth/react'
 
 import { useAppDispatch, useAppSelector } from '@app/hooks'
 import {  selectWorkouts, selectStatus } from '@features/exercise/ExerciseSlice'
-import { getWorkoutAsync, getExerciseTemplates } from '@features/exercise/thunks'
+import { getWorkoutOptionsAsync, getExerciseTemplates } from '@features/exercise/thunks'
 import { useRouter } from 'next/router'
 
 const WorkoutPage: NextPage = () => {
@@ -23,7 +23,7 @@ const WorkoutPage: NextPage = () => {
 	//grab the workout templates from the server on page load
 	useEffect(() => {
 		if (status === 'authenticated' && data) {
-			dispatch(getWorkoutAsync())
+			dispatch(getWorkoutOptionsAsync())
 		}
 	}, [status])
 
