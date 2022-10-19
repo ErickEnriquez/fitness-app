@@ -3,10 +3,10 @@ import { useAppSelector, useAppDispatch } from '@app/hooks'
 import {
 	selectPreviousExerciseEntries,
 	selectActiveEntry,
-	getMorePreviousWorkouts,
 	removePreviousWorkout,
 	selectStatus
 } from '@features/exercise/ExerciseSlice'
+import { getMorePreviousWorkouts } from './thunks'
 
 
 

@@ -4,7 +4,6 @@ import Layout from '@components/Layout'
 import ExerciseList from '@features/exercise/ExerciseList'
 import { useAppSelector, useAppDispatch } from '@app/hooks'
 import {
-	postExerciseEntries,
 	editWorkoutNotes,
 	editWorkoutGrade,
 	editPreWorkout,
@@ -14,6 +13,7 @@ import {
 	selectActiveWorkout,
 	selectEntries
 } from '@features/exercise/ExerciseSlice'
+import { postExerciseEntries } from '@features/exercise/thunks'
 import Notes from '@components/Notes'
 import Card from '@components/Card'
 import NumberInput from '@components/NumberInput'

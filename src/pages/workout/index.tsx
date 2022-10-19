@@ -7,7 +7,8 @@ import Card from '@components/Card'
 import { useSession } from 'next-auth/react'
 
 import { useAppDispatch, useAppSelector } from '@app/hooks'
-import { getWorkoutAsync, selectWorkouts, getExerciseTemplates, selectStatus } from '@features/exercise/ExerciseSlice'
+import {  selectWorkouts, selectStatus } from '@features/exercise/ExerciseSlice'
+import { getWorkoutAsync, getExerciseTemplates } from '@features/exercise/thunks'
 import { useRouter } from 'next/router'
 
 const WorkoutPage: NextPage = () => {
