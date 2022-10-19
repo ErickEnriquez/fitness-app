@@ -1,7 +1,8 @@
 import {  createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { AppState } from '@app/store'
-import { ExerciseEntry, ExerciseTemplate, Workout, WorkoutEntry } from '@prisma/client'
-import {getExerciseTemplates, postExerciseEntries, getMorePreviousWorkouts, getWorkoutAsync} from '@features/exercise/thunks'
+import { ExerciseEntry, ExerciseTemplate, Workout } from '@prisma/client'
+import { getExerciseTemplates, postExerciseEntries, getMorePreviousWorkouts, getWorkoutOptionsAsync } from '@features/exercise/thunks'
+import { SerializedWorkoutEntry } from '@server/WorkoutEntry/workoutEntry'
 
 //this holds the miscellaneous data about the workout that isn't tied to a specific exercise instead the entire workout in general
 export interface activeWorkoutInfo {
@@ -12,11 +13,8 @@ export interface activeWorkoutInfo {
 }
 
 
-//combination of workout templates and workout entries, 
-export interface WorkoutInfo extends Workout, Omit<WorkoutEntry, 'date|id'> {
-	prevDate: string
-	prevWorkoutId: number
-}
+//combination of workout templates and workout entries, used on the workout options page
+export type WorkoutOption = Workout & SerializedWorkoutEntry 
 
 //holds the info that the user inputs about a specific workout like the weights , the intensity, order etc
 interface UserEntry extends ExerciseTemplate {
@@ -32,32 +30,27 @@ type sliceStatus = 'idle' | 'loading' | 'failed' | 'success'
 export interface ExerciseState {
 	status: sliceStatus
 	entries: UserEntry[]
-	workouts: WorkoutInfo[]
+	workoutOptions: WorkoutOption[]
 	activeWorkout: number | null
 	activeEntry: number
 	//get the stats of the last workout of that given type ie push heavy, pull heavy, etc
-	previousWorkout: PreviousWorkout[]
+	previousWorkout: WorkoutEntryWithExercises[]
 	workoutEntry: activeWorkoutInfo,
 }
 
-export interface PreviousWorkout extends Omit<WorkoutEntry, 'date'> {
-	date: string
+export interface WorkoutEntryWithExercises extends SerializedWorkoutEntry {
 	exercises: ExerciseEntry[]
 }
 
 const initialState = {
 	status: 'idle',
 	entries: [] as UserEntry[],
-	workouts: [] as WorkoutInfo[],
+	workoutOptions: [] as WorkoutOption[],
 	activeWorkout: null as number,
 	activeEntry: null as number,
-	previousWorkout: [] as PreviousWorkout[],
+	previousWorkout: [] as WorkoutEntryWithExercises[],
 	workoutEntry: null as activeWorkoutInfo,
 }
-
-
-
-
 
 export const exerciseSlice = createSlice({
 	name: 'exercise',
@@ -111,12 +104,12 @@ export const exerciseSlice = createSlice({
 	extraReducers: (builder) => {
 		builder
 			//================ getting list of the workouts ===========================================
-			.addCase(getWorkoutAsync.pending, (state) => { state.status = 'loading' })
-			.addCase(getWorkoutAsync.fulfilled, (state, action) => {
+			.addCase(getWorkoutOptionsAsync.pending, (state) => { state.status = 'loading' })
+			.addCase(getWorkoutOptionsAsync.rejected, (state) => { state.status = 'failed' })
+			.addCase(getWorkoutOptionsAsync.fulfilled, (state, action) => {
 				state.status = 'idle'
-				state.workouts = action.payload
+				state.workoutOptions = action.payload
 			})
-			.addCase(getWorkoutAsync.rejected, (state) => { state.status = 'failed' })
 			//================ getting the workout template for a workout ============================
 			.addCase(getExerciseTemplates.pending, (state) => { state.status = 'loading' })
 			.addCase(getExerciseTemplates.fulfilled, (state, action) => {
@@ -174,7 +167,7 @@ export const {
 }
 	= exerciseSlice.actions
 
-export const selectWorkouts = (state: AppState) => state.exercise.workouts
+export const selectWorkouts = (state: AppState) => state.exercise.workoutOptions
 export const selectEntries = (state: AppState) => state.exercise.entries
 export const selectStatus = (state: AppState) => state.exercise.status as sliceStatus
 export const selectActiveEntry = (state: AppState) => state.exercise.activeEntry
