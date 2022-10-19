@@ -7,13 +7,10 @@ import { Program } from '@prisma/client'
  * @returns {Promise<Program>} program
  */
 export async function getProgram(userId: string): Promise<Program> {
-	try {
-		const data = await prisma.program.findFirst({
-			where: { userId }
-		})
-		return data
-	} catch (err) {
-		console.error(err)
-		throw Error(err)
-	}
+	const program = await prisma.program.findFirst({
+		where: { userId }
+	})
+	
+	if (!program) throw Error('unable to get program data')
+	return program
 }
