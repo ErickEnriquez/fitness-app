@@ -1,8 +1,7 @@
 import React, { useEffect, useMemo } from 'react'
 import { NextPage } from 'next'
 import Link from 'next/link'
-import Layout from '@components/Layout'
-import Card from '@components/Card'
+import {Layout, Card} from '@components/index'
 
 import { useSession } from 'next-auth/react'
 
@@ -10,7 +9,7 @@ import { useAppDispatch, useAppSelector } from '@app/hooks'
 import {  selectWorkouts, selectStatus } from '@features/exercise/ExerciseSlice'
 import { getWorkoutOptionsAsync, getExerciseTemplates } from '@features/exercise/thunks'
 import { useRouter } from 'next/router'
-import { parseISO, } from 'date-fns'
+import { parseISO } from 'date-fns'
 
 const WorkoutPage: NextPage = () => {
 	const dispatch = useAppDispatch()
