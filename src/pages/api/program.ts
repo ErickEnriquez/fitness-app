@@ -1,7 +1,7 @@
 import { unstable_getServerSession } from 'next-auth/next'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { authOptions } from '@auth/[...nextauth]'
-import { getProgram } from '@server/getProgram'
+import { getProgram } from '@server/Program/getProgram'
 import { Session } from 'next-auth'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -13,9 +13,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 	}
 
 	switch (req.method) {
-		case 'GET': await getProgramData(req, res, session); break
-		default:
-			res.status(405).json({ message: 'Method not allowed' })
+	case 'GET': await getProgramData(req, res, session); break
+	default:
+		res.status(405).json({ message: 'Method not allowed' })
 	}
 }
 
