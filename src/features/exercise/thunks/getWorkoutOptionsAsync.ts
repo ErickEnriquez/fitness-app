@@ -26,8 +26,8 @@ const getWorkoutOptionsAsync = createAsyncThunk(
 			const data:WorkoutOption[] = workoutTemplates.map((item) => {
 				const prevWorkout = prevWorkouts.find(workout => workout.workoutTemplateId === item.id)
 				return {
+					...item,
 					...prevWorkout,
-					...item
 				}
 			}) 
 			return data
