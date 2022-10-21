@@ -46,7 +46,7 @@ const ExerciseItem = () => {
 							</Link>
 							<h2 className='mx-auto1 text-white text-center col-span-3 bg-dark-gray rounded-2xl'>
 								<span className='text-3xl font-bold'>
-									{exerciseEntry.name}
+									{exerciseEntry.movement.name}
 								</span>
 								<br />
 								Sets {exerciseEntry.sets}x{exerciseEntry.reps}
