@@ -2,7 +2,7 @@
 import { unstable_getServerSession } from 'next-auth/next'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { authOptions } from '@auth/[...nextauth]'
-import { getWorkoutEntry } from '@server/WorkoutEntry/getWorkoutEntry'
+import { getWorkoutEntryById } from '@server/WorkoutEntry/getWorkoutEntryById'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 
@@ -28,16 +28,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
  * @param res 
  */
 const getWorkout = async (req: NextApiRequest, res: NextApiResponse) => {
-
-	//if we get a param called workout type that is a number then we call the getWorkoutEntry function with 3 parameters else call the one with only 1 parameter
-	const workout = isNaN(Number(req.query.workoutType)) ?
-		await getWorkoutEntry(Number(req.query.Id)) :
-		await getWorkoutEntry(Number(req.query.workoutType), Number(req.query.skip), true)
-
-	if (!workout) {
-		res.status(404).end()
-		return
+	try {
+		const workout = await getWorkoutEntryById(Number(req.query.workoutEntryId))
+		if (!workout) {
+			res.status(404).end()
+			return
+		}
+		res.status(200).json(workout)
+	} catch (err) {
+		console.error(err)
+		res.status(500).end()
 	}
-
-	res.status(200).json(workout)
 }
