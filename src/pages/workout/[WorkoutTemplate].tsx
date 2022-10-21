@@ -25,7 +25,7 @@ const ExerciseTemplate = () => {
 	const pageStatus = useAppSelector(selectStatus)
 	const workoutID = useAppSelector(selectActiveWorkout)
 
-	const activeWorkout = useAppSelector(state => state.exercise.workouts.find(w => w.id === workoutID))
+	const activeWorkout = useAppSelector(state => state.exercise.workoutOptions.find(w => w.id === workoutID))
 	const workoutEntry = useAppSelector(state => state.exercise.workoutEntry)
 	const entries = useAppSelector(selectEntries)
 	const dispatch = useAppDispatch()

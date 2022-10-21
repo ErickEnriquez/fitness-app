@@ -1,8 +1,9 @@
 import {  createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { AppState } from '@app/store'
-import { ExerciseEntry, ExerciseTemplate, Workout } from '@prisma/client'
+import { ExerciseEntry, Workout } from '@prisma/client'
 import { getExerciseTemplates, postExerciseEntries, getMorePreviousWorkouts, getWorkoutOptionsAsync } from '@features/exercise/thunks'
 import { SerializedWorkoutEntry } from '@server/WorkoutEntry/workoutEntry'
+import { ExerciseTemplateTemplateWithName } from '@server/ExerciseTemplate/exerciseTemplate'
 
 //this holds the miscellaneous data about the workout that isn't tied to a specific exercise instead the entire workout in general
 export interface activeWorkoutInfo {
@@ -12,18 +13,16 @@ export interface activeWorkoutInfo {
 	grade: number,
 }
 
-
 //combination of workout templates and workout entries, used on the workout options page
 export type WorkoutOption = Workout & SerializedWorkoutEntry 
 
 //holds the info that the user inputs about a specific workout like the weights , the intensity, order etc
-interface UserEntry extends ExerciseTemplate {
+interface UserEntry extends ExerciseTemplateTemplateWithName {
 	weights: number[],
 	intensity?: number,
 	notes?: string,
 	order?: number,
 	completed: boolean
-	name: string
 }
 
 type sliceStatus = 'idle' | 'loading' | 'failed' | 'success'
@@ -117,12 +116,12 @@ export const exerciseSlice = createSlice({
 				//mark the type of workout that we are doing
 				state.activeWorkout = action.payload.workoutId
 				//create the entries for the workout
-				state.entries = action.payload.exercises.map((entry: ExerciseTemplate) => ({
+				state.entries = action.payload.exercises.map((entry: ExerciseTemplateTemplateWithName) => ({
 					...entry,
 					weights: Array(entry.sets).fill(''),
-					intensity: '',
+					intensity: 0,
 					notes: '',
-					order: '',
+					order: 0,
 					completed: false,
 				}
 				))
