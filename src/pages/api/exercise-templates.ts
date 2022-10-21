@@ -1,6 +1,5 @@
 import { getExerciseTemplates } from '@server/ExerciseTemplate/getExerciseTemplates'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getMovement } from '@server/getMovement'
 import { unstable_getServerSession } from 'next-auth/next'
 import { authOptions } from '@auth/[...nextauth]'
 
