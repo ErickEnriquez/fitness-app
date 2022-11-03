@@ -17,7 +17,7 @@ export interface activeWorkoutInfo {
 export type WorkoutOption = Workout & SerializedWorkoutEntry 
 
 //holds the info that the user inputs about a specific workout like the weights , the intensity, order etc
-interface UserEntry extends ExerciseTemplateTemplateWithName {
+export interface UserEntry extends ExerciseTemplateTemplateWithName {
 	weights: number[],
 	intensity?: number,
 	notes?: string,
