@@ -1,15 +1,13 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
-import type { AppState } from '@app/store'
 /**
- * get more previous workouts of the same type to show older results
+ * get more previous workouts of the same type\ to show older results
  */
 const getMorePreviousWorkouts = createAsyncThunk(
 	'exercise/getMorePreviousWorkouts',
-	async (skipNum: number, { getState, rejectWithValue }) => {
-		try {
-			const { exercise: { activeWorkout } } = getState() as AppState
-			const workout = await axios.get('/api/workout-entry', { params: { workoutType: activeWorkout, skip: skipNum } })
+	async ({skip, exerciseId}:{skip:number, exerciseId:number}, { rejectWithValue }) => {
+		try {			
+			const workout = await axios.get('/api/workout-entry', { params: { workoutType: exerciseId, skip } })
 			if (!workout.data) return rejectWithValue('no readings found')
 			return workout.data
 		} catch (err) {
