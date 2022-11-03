@@ -44,7 +44,7 @@ const WorkoutPage: NextPage = () => {
 		</Link >
 	)
 	const workoutOptionList =  workoutOptions && workoutOptions.map((item, idx) =>  (
-		<Link href={`/workout/${item.id}`} key={idx}>
+		<Link href={`/workout/${item.workoutTemplateId}`} key={idx}>
 			<li
 				className={`
 					rounded-3xl my-4 py-8  w-11/12 mx-auto text-white bg-primary-blue outline-primary-blue shadow-lg shadow-black/70 
