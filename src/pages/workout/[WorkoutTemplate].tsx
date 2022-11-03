@@ -77,7 +77,7 @@ const ExerciseTemplate = () => {
 							<select
 								id="preWorkout"
 								placeholder='Pre-workout?'
-								className='outline my-4 outline-primary-blue outline-4 rounded-3xl placeholder:text-slate-600 text-center py-3 w-11/12 block mx-auto shadow-lg shadow-black/70'
+								className='ring-4 ring-primary-blue ring-inset rounded-3xl placeholder:text-slate-600 text-center my-4 py-3 w-11/12 block mx-auto shadow-lg shadow-black/70'
 								onChange={e => dispatch(editPreWorkout(e.target.value === 'true'))}
 							>
 								<option value="true">Yes</option>
