@@ -4,6 +4,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { authOptions } from '@auth/[...nextauth]'
 import { getWorkoutEntryByType } from '@server/WorkoutEntry/getWorkoutEntryByType'
 
+
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 
 	const session = await unstable_getServerSession(req, res, authOptions)
@@ -29,6 +30,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
  */
 const getWorkout = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
+		if (!req.query.workoutType || !req.query.skip || Number.isNaN(Number(req.query.workoutType))) {
+			throw Error('Error with params')
+		}
+			
 		const workout = await getWorkoutEntryByType(Number(req.query.workoutType), Number(req.query.skip))
 
 		if (!workout) {
