@@ -55,7 +55,7 @@ const PrevWorkoutsList = () => {
 							<Button
 								color='primary-blue'
 								clickHandler={() => {
-									dispatch(getMorePreviousWorkouts(skipAmount))
+									// dispatch(getMorePreviousWorkouts(skipAmount))
 									setSkipAmount(skipAmount + 1)
 								}}
 								text='More'
