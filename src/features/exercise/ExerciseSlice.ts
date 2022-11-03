@@ -114,7 +114,7 @@ export const exerciseSlice = createSlice({
 			.addCase(getExerciseTemplates.fulfilled, (state, action) => {
 				state.status = 'idle'
 				//mark the type of workout that we are doing
-				state.activeWorkout = action.payload.workoutId
+				state.activeWorkout = action.payload.templateId
 				//create the entries for the workout
 				state.entries = action.payload.exercises.map((entry: ExerciseTemplateTemplateWithName) => ({
 					...entry,
@@ -128,7 +128,7 @@ export const exerciseSlice = createSlice({
 				state.previousWorkout = [action.payload.previousWorkout]
 				//initialize the workout entry with the data that we need
 				state.workoutEntry = {
-					workoutTemplateId: action.payload.workoutId,
+					workoutTemplateId: action.payload.templateId,
 					preWorkout: false,
 					grade: 0,
 					notes: ''

@@ -12,10 +12,10 @@ import { WorkoutEntryWithExercises } from '../ExerciseSlice'
 //given a workoutID get the template of exercises for that given workout
 const getExerciseTemplates = createAsyncThunk(
 	'exercise/getExerciseTemplates',
-	async (templateId: number, { getState, rejectWithValue }) => {
+	async ({templateId, prevWorkoutId}: {templateId:number, prevWorkoutId:number}, { getState, rejectWithValue }) => {
 		try {
 			const { exercise: { workoutOptions } } = getState() as AppState
-			const prevWorkoutEntry = workoutOptions.find(workout => workout.id === templateId)
+			const prevWorkoutEntry = workoutOptions.find(workout => workout.id === prevWorkoutId)
 
 
 			const queries = await Promise.all([
@@ -29,11 +29,13 @@ const getExerciseTemplates = createAsyncThunk(
 			const prevMeta = queries[1] as SerializedWorkoutEntry
 			const prevExercises = queries[2] as ExerciseEntry[]
 			
-			const previousWorkout: WorkoutEntryWithExercises = templateId && { ...prevMeta, exercises: prevExercises }
+			const previousWorkout: WorkoutEntryWithExercises = prevWorkoutId && { ...prevMeta, exercises: prevExercises }
+
 			return {
 				exercises,
-				workoutId: templateId,
-				previousWorkout
+				prevWorkoutId,
+				previousWorkout,
+				templateId
 			}
 		} catch (err) {
 			console.error(err)

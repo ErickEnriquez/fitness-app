@@ -43,7 +43,6 @@ const WorkoutPage: NextPage = () => {
 			</div>
 		</Link >
 	)
-
 	const workoutOptionList =  workoutOptions && workoutOptions.map((item, idx) =>  (
 		<Link href={`/workout/${item.id}`} key={idx}>
 			<li
@@ -51,7 +50,7 @@ const WorkoutPage: NextPage = () => {
 					rounded-3xl my-4 py-8  w-11/12 mx-auto text-white bg-primary-blue outline-primary-blue shadow-lg shadow-black/70 
 					hover:bg-white hover:outline hover:text-primary-blue hover:cursor-pointer`
 				}
-				onClick={() => dispatch(getExerciseTemplates(item.id))}
+				onClick={() => dispatch(getExerciseTemplates({prevWorkoutId:item.id, templateId:item.workoutTemplateId}))}
 			>
 				<strong className="capitalize underline">{item.name}</strong>
 			</li>
