@@ -13,7 +13,7 @@ import {
 	selectActiveWorkout,
 	selectEntries
 } from '@features/exercise/ExerciseSlice'
-import { postExerciseEntries } from '@features/exercise/thunks'
+import { createNewWorkout } from '@features/exercise/thunks'
 import Notes from '@components/Notes'
 import Card from '@components/Card'
 import NumberInput from '@components/NumberInput'
@@ -95,7 +95,7 @@ const ExerciseTemplate = () => {
 									if (!r) return
 								}
 
-								dispatch(postExerciseEntries())
+								dispatch(createNewWorkout())
 							}}
 						/>
 					</div>

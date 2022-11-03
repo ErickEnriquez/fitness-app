@@ -1,7 +1,7 @@
 import {  createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { AppState } from '@app/store'
 import { ExerciseEntry, Workout } from '@prisma/client'
-import { getExerciseTemplates, postExerciseEntries, getMorePreviousWorkouts, getWorkoutOptionsAsync } from '@features/exercise/thunks'
+import { getExerciseTemplates, createNewWorkout, getMorePreviousWorkouts, getWorkoutOptionsAsync } from '@features/exercise/thunks'
 import { SerializedWorkoutEntry } from '@server/WorkoutEntry/workoutEntry'
 import { ExerciseTemplateTemplateWithName } from '@server/ExerciseTemplate/exerciseTemplate'
 
@@ -136,9 +136,9 @@ export const exerciseSlice = createSlice({
 			})
 			.addCase(getExerciseTemplates.rejected, (state) => { state.status = 'failed' })
 			//================= posting the exercise entries =====================================
-			.addCase(postExerciseEntries.pending, (state) => { state.status = 'loading' })
-			.addCase(postExerciseEntries.fulfilled, (state) => { state.status = 'success' })
-			.addCase(postExerciseEntries.rejected, (state,) => { state.status = 'failed' })
+			.addCase(createNewWorkout.pending, (state) => { state.status = 'loading' })
+			.addCase(createNewWorkout.fulfilled, (state) => { state.status = 'success' })
+			.addCase(createNewWorkout.rejected, (state) => { state.status = 'failed' })
 			//================= getting more previous workouts =====================================
 			.addCase(getMorePreviousWorkouts.pending, (state) => { state.status = 'loading' })
 			.addCase(getMorePreviousWorkouts.rejected, (state) => { state.status = 'failed' })
