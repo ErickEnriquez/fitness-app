@@ -54,7 +54,7 @@ const ExerciseTemplate = () => {
 							}}
 						/>
 						<h1 className='text-white col-span-3 mx-auto text-3xl capitalize font-bold bg-dark-gray px-8 py-1 rounded-2xl'>
-							{activeWorkout && activeWorkout.name}
+							{activeWorkout?.name || null}
 						</h1>
 						<br />
 					</div>
