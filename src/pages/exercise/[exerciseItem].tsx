@@ -9,6 +9,7 @@ import Link from 'next/link'
 import { useAppDispatch, useAppSelector } from '@app/hooks'
 import PrevWorkoutList from '@features/exercise/PrevWorkoutList'
 import { editWeight, editNotes, editIntensity, editOrder, selectActiveEntry, toggleExerciseComplete } from '@features/exercise/ExerciseSlice'
+import Card from '@components/Card'
 
 
 const ExerciseItem = () => {
@@ -46,16 +47,14 @@ const ExerciseItem = () => {
 							</Link>
 							<h2 className='mx-auto1 text-white text-center col-span-3 bg-dark-gray rounded-2xl'>
 								<span className='text-3xl font-bold'>
-									{exerciseEntry.name}
+									{exerciseEntry.movement.name}
 								</span>
 								<br />
 								Sets {exerciseEntry.sets}x{exerciseEntry.reps}
 							</h2>
 						</div>
-						<br />
-						<div className="bg-dark-gray rounded-3xl content-center w-11/12 mx-auto">
-							<h3 className='text-center text-white text-xl font-bold'>Weight (lbs)</h3>
-							<div className='grid grid-cols-2 py-4  md:grid-cols-2 lg:grid-cols-5 '>
+						<Card title={'Weight (lbs)'}>
+							<div className='grid grid-cols-2 py-4  md:grid-cols-2 lg:grid-cols-5 mx-auto w-11/12'>
 								{exerciseEntry.weights.map((weight, i: number) => (
 									<NumberInput
 										key={i}
@@ -65,10 +64,10 @@ const ExerciseItem = () => {
 									/>
 								))}
 							</div>
-						</div>
-						<div className="bg-dark-gray rounded-3xl py-4 my-4 w-11/12 mx-auto">
-							<h3 className='text-center text-white text-xl mb-4 font-bold'>Intensity & Order</h3>
-							<div className="grid grid-cols-2 content-center ">
+						</Card>
+						<br />
+						<Card title='Intensity & Order'>
+							<div className="grid grid-cols-2 content-center mx-auto w-11/12 ">
 								<NumberInput
 									name='Order' num={exerciseEntry.order}
 									changeHandler={(e) => dispatch(editOrder({ movementID: exerciseEntry.movementID, value: Number(e.target.value) }))}
@@ -78,19 +77,20 @@ const ExerciseItem = () => {
 									changeHandler={(e) => dispatch(editIntensity({ movementID: exerciseEntry.movementID, value: Number(e.target.value) }))}
 								/>
 							</div>
-						</div>
-						<div className='bg-dark-gray rounded-3xl w-11/12 mx-auto align-center flex flex-col py-4'>
+						</Card>
+						<br />
+						<Card >
 							<Notes
 								val={exerciseEntry.notes}
 								changeHandler={(e) => dispatch(editNotes({ movementID: exerciseEntry.movementID, value: e.target.value }))}
 							/>
-						</div>
-						<div className='my-4'>
+						</Card>						
+						{/* <div className='my-4'>
 							<Button color="primary-blue" text='Show Previous Workout'
 								clickHandler={() => setPreviousInfo(prev => !prev)}
 							/>
 						</div>
-						{previousInfo && <PrevWorkoutList />}
+						{previousInfo && <PrevWorkoutList />} */}
 					</>
 					:
 					(<div>

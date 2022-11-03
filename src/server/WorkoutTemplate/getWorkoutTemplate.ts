@@ -7,16 +7,11 @@ import { Workout } from '@prisma/client'
  * @returns 
  */
 export async function getWorkoutTemplate(programId: number): Promise<Workout[]> {
-	try {
-		const workoutArray = await prisma.workout.findMany({
-			where: {
-				programID: programId
-			}
-		})
-		return workoutArray
-	}
-	catch (err) {
-		console.error(err)
-		throw Error('Unable to get workout templates')
-	}
+	const workouts = await prisma.workout.findMany({
+		where: {
+			programID: programId
+		}
+	})
+	if (!workouts) throw Error('Unable to get workout templates')
+	return workouts
 }

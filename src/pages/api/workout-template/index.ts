@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { unstable_getServerSession } from 'next-auth/next'
 import { authOptions } from '@auth/[...nextauth]'
 
-import { getWorkoutTemplate } from '@server/getWorkoutTemplate'
+import { getWorkoutTemplate } from '@server/WorkoutTemplate/getWorkoutTemplate'
 
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -13,17 +13,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		return
 	}
 	switch (req.method) {
-		case 'GET': await returnWorkoutTemplates(req, res)
-			break
-		default:
-			res.status(405).json({ message: 'Method not allowed' })
+	case 'GET': await returnWorkoutTemplatesForProgram(req, res)
+		break
+	default:
+		res.status(405).json({ message: 'Method not allowed' })
 	}
-
 }
 
-const returnWorkoutTemplates = async (req: NextApiRequest, res: NextApiResponse) => {
+const returnWorkoutTemplatesForProgram = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
-		const programId = Number(req.query.programId)
+		const programId = Number(req?.query?.programId)
 		const workoutTemplates = await getWorkoutTemplate(programId)
 		if (!workoutTemplates) {
 			res.status(404).end()

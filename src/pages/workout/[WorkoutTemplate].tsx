@@ -4,7 +4,6 @@ import Layout from '@components/Layout'
 import ExerciseList from '@features/exercise/ExerciseList'
 import { useAppSelector, useAppDispatch } from '@app/hooks'
 import {
-	postExerciseEntries,
 	editWorkoutNotes,
 	editWorkoutGrade,
 	editPreWorkout,
@@ -14,6 +13,7 @@ import {
 	selectActiveWorkout,
 	selectEntries
 } from '@features/exercise/ExerciseSlice'
+import { createNewWorkout } from '@features/exercise/thunks'
 import Notes from '@components/Notes'
 import Card from '@components/Card'
 import NumberInput from '@components/NumberInput'
@@ -25,7 +25,7 @@ const ExerciseTemplate = () => {
 	const pageStatus = useAppSelector(selectStatus)
 	const workoutID = useAppSelector(selectActiveWorkout)
 
-	const activeWorkout = useAppSelector(state => state.exercise.workouts.find(w => w.id === workoutID))
+	const activeWorkout = useAppSelector(state => state.exercise.workoutOptions.find(w => w.id === workoutID))
 	const workoutEntry = useAppSelector(state => state.exercise.workoutEntry)
 	const entries = useAppSelector(selectEntries)
 	const dispatch = useAppDispatch()
@@ -54,7 +54,7 @@ const ExerciseTemplate = () => {
 							}}
 						/>
 						<h1 className='text-white col-span-3 mx-auto text-3xl capitalize font-bold bg-dark-gray px-8 py-1 rounded-2xl'>
-							{activeWorkout && activeWorkout.name}
+							{activeWorkout?.name || null}
 						</h1>
 						<br />
 					</div>
@@ -77,7 +77,7 @@ const ExerciseTemplate = () => {
 							<select
 								id="preWorkout"
 								placeholder='Pre-workout?'
-								className='outline my-4 outline-primary-blue outline-4 rounded-3xl placeholder:text-slate-600 text-center py-3 w-11/12 block mx-auto shadow-lg shadow-black/70'
+								className='ring-4 ring-primary-blue ring-inset rounded-3xl placeholder:text-slate-600 text-center my-4 py-3 w-11/12 block mx-auto shadow-lg shadow-black/70'
 								onChange={e => dispatch(editPreWorkout(e.target.value === 'true'))}
 							>
 								<option value="true">Yes</option>
@@ -95,7 +95,7 @@ const ExerciseTemplate = () => {
 									if (!r) return
 								}
 
-								dispatch(postExerciseEntries())
+								dispatch(createNewWorkout())
 							}}
 						/>
 					</div>

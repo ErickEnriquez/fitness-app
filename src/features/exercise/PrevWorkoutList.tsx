@@ -3,10 +3,10 @@ import { useAppSelector, useAppDispatch } from '@app/hooks'
 import {
 	selectPreviousExerciseEntries,
 	selectActiveEntry,
-	getMorePreviousWorkouts,
 	removePreviousWorkout,
 	selectStatus
 } from '@features/exercise/ExerciseSlice'
+import { getMorePreviousWorkouts } from './thunks'
 
 
 
@@ -55,7 +55,7 @@ const PrevWorkoutsList = () => {
 							<Button
 								color='primary-blue'
 								clickHandler={() => {
-									dispatch(getMorePreviousWorkouts(skipAmount))
+									// dispatch(getMorePreviousWorkouts(skipAmount))
 									setSkipAmount(skipAmount + 1)
 								}}
 								text='More'

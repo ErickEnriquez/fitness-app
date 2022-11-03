@@ -15,12 +15,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		return
 	}
 	switch (req.method) {
-		case 'GET': await getTemplate(req, res)
-			break
-		case 'PUT': await updateExercises(req, res)
-			break
-		default:
-			res.status(405).json({ message: 'Method not allowed' })
+	case 'GET': await getTemplate(req, res)
+		break
+	case 'PUT': await updateExercises(req, res)
+		break
+	default:
+		res.status(405).json({ message: 'Method not allowed' })
 
 	}
 }

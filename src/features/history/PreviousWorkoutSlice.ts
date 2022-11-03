@@ -40,7 +40,7 @@ export const getWorkoutDataAsync = createAsyncThunk(
 		try {
 			const response = await Promise.all([
 				//get the previousWorkout
-				axios.get('/api/workout-entry', { params: { Id: workoutId } }),
+				axios.get(`/api/workout-entry/${workoutId}`),
 				// get the exercise for the workout
 				axios.get('/api/exercise-entry', { params: { workoutId } })
 			])

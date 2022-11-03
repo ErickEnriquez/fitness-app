@@ -33,7 +33,7 @@ const ExerciseList = () => {
 								}
 								onClick={() => { dispatch(setActiveEntry(item.id)) }}
 							>
-								<strong className='text-l w-11/12 mx-auto'>{item.name}</strong>
+								<strong className='text-l w-11/12 mx-auto'>{item.movement.name}</strong>
 								<br /> {item.sets} sets x {item.reps} reps
 							</li>
 						</Link>
