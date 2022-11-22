@@ -47,8 +47,8 @@ const WorkoutPage: NextPage = () => {
 		<Link href={`/workout/${item.workoutTemplateId}`} key={idx}>
 			<li
 				className={`
-					rounded-3xl my-4 py-8  w-11/12 mx-auto text-white bg-primary-blue outline-primary-blue shadow-lg shadow-black/70 
-					hover:bg-white hover:outline hover:text-primary-blue hover:cursor-pointer`
+					rounded-3xl my-4 py-8  w-11/12 mx-auto text-white bg-primary-blue  shadow-lg shadow-black/70 
+					hover:bg-white hover:ring-4 hover:ring-primary-blue hover:text-primary-blue hover:cursor-pointer`
 				}
 				onClick={() => dispatch(getExerciseTemplates({prevWorkoutId:item.id, templateId:item.workoutTemplateId}))}
 			>
