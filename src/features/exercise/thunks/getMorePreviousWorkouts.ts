@@ -1,13 +1,14 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
+import type { WorkoutEntryWithExercises } from '@server/WorkoutEntry/workoutEntry'
 /**
- * get more previous workouts of the same type\ to show older results
+ * get more previous workouts of the same workoutTemplateType to show older results
  */
-const getMorePreviousWorkouts = createAsyncThunk(
+const getMorePreviousWorkout = createAsyncThunk(
 	'exercise/getMorePreviousWorkouts',
-	async ({skip, exerciseId}:{skip:number, exerciseId:number}, { rejectWithValue }) => {
+	async ({ skip, workoutTemplateId }:{skip:number, workoutTemplateId:number}, { rejectWithValue }) => {
 		try {			
-			const workout = await axios.get('/api/workout-entry', { params: { workoutType: exerciseId, skip } })
+			const workout = await axios.get<WorkoutEntryWithExercises>('/api/workout-entry', { params: { workoutType: workoutTemplateId, skip } })
 			if (!workout.data) return rejectWithValue('no readings found')
 			return workout.data
 		} catch (err) {
@@ -17,4 +18,4 @@ const getMorePreviousWorkouts = createAsyncThunk(
 	}
 )
 
-export default getMorePreviousWorkouts
+export default getMorePreviousWorkout

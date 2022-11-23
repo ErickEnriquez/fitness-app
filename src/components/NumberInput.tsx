@@ -16,7 +16,7 @@ const NumberInput = ({  changeHandler, num, name, title }: NumberInputProps) => 
 				placeholder={name}
 				value={num}
 				onChange={changeHandler}
-				className={`ring-4 ring-primary-blue ring-inset 
+				className={`ring-4 ring-primary-blue 
 				rounded-3xl placeholder:text-slate-600 text-center my-4 py-4 w-11/12 block mx-auto
 				shadow-lg shadow-black/70 text-black`}
 			/>

@@ -85,12 +85,12 @@ const ExerciseItem = () => {
 								changeHandler={(e) => dispatch(editNotes({ movementID: exerciseEntry.movementID, value: e.target.value }))}
 							/>
 						</Card>						
-						{/* <div className='my-4'>
+						<div className='my-4'>
 							<Button color="primary-blue" text='Show Previous Workout'
 								clickHandler={() => setPreviousInfo(prev => !prev)}
 							/>
 						</div>
-						{previousInfo && <PrevWorkoutList />} */}
+						{previousInfo && <PrevWorkoutList />}
 					</>
 					:
 					(<div>

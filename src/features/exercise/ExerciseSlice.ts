@@ -172,4 +172,5 @@ export const selectStatus = (state: AppState) => state.exercise.status as sliceS
 export const selectActiveEntry = (state: AppState) => state.exercise.activeEntry
 export const selectActiveWorkout = (state: AppState) => state.exercise.activeWorkout
 export const selectPreviousExerciseEntries = (state: AppState) => state.exercise.previousWorkout
+export const selectWorkoutTemplateId = (state: AppState) => state.exercise.workoutEntry.workoutTemplateId
 export default exerciseSlice.reducer
