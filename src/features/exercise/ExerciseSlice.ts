@@ -30,7 +30,8 @@ export interface ExerciseState {
 	status: sliceStatus
 	entries: UserEntry[]
 	workoutOptions: WorkoutOption[]
-	activeWorkout: number | null
+	activeWorkout: number
+	activeWorkoutName:string
 	activeEntry: number
 	//get the stats of the last workout of that given type ie push heavy, pull heavy, etc
 	previousWorkout: WorkoutEntryWithExercises[]
@@ -41,12 +42,13 @@ export interface WorkoutEntryWithExercises extends SerializedWorkoutEntry {
 	exercises: ExerciseEntry[]
 }
 
-const initialState = {
+const initialState:ExerciseState = {
 	status: 'idle',
 	entries: [] as UserEntry[],
 	workoutOptions: [] as WorkoutOption[],
 	activeWorkout: null as number,
 	activeEntry: null as number,
+	activeWorkoutName:null,
 	previousWorkout: [] as WorkoutEntryWithExercises[],
 	workoutEntry: null as activeWorkoutInfo,
 }
@@ -126,6 +128,7 @@ export const exerciseSlice = createSlice({
 				}
 				))
 				state.previousWorkout = [action.payload.previousWorkout]
+				state.activeWorkoutName = action.payload.workoutName
 				//initialize the workout entry with the data that we need
 				state.workoutEntry = {
 					workoutTemplateId: action.payload.templateId,
@@ -171,6 +174,7 @@ export const selectEntries = (state: AppState) => state.exercise.entries
 export const selectStatus = (state: AppState) => state.exercise.status as sliceStatus
 export const selectActiveEntry = (state: AppState) => state.exercise.activeEntry
 export const selectActiveWorkout = (state: AppState) => state.exercise.activeWorkout
+export const selectActiveWorkoutName = (state:AppState) => state.exercise.activeWorkoutName
 export const selectPreviousExerciseEntries = (state: AppState) => state.exercise.previousWorkout
 export const selectWorkoutTemplateId = (state: AppState) => state.exercise.workoutEntry.workoutTemplateId
 export default exerciseSlice.reducer
