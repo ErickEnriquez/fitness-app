@@ -10,8 +10,8 @@ import {
 	resetState,
 	clearStatus,
 	selectStatus,
-	selectActiveWorkout,
-	selectEntries
+	selectEntries,
+	selectActiveWorkoutName
 } from '@features/exercise/ExerciseSlice'
 import { createNewWorkout } from '@features/exercise/thunks'
 import Notes from '@components/Notes'
@@ -23,9 +23,8 @@ import Button from '@components/util/Button'
 const ExerciseTemplate = () => {
 
 	const pageStatus = useAppSelector(selectStatus)
-	const workoutID = useAppSelector(selectActiveWorkout)
 
-	const activeWorkout = useAppSelector(state => state.exercise.workoutOptions.find(w => w.id === workoutID))
+	const workoutName = useAppSelector(selectActiveWorkoutName)
 	const workoutEntry = useAppSelector(state => state.exercise.workoutEntry)
 	const entries = useAppSelector(selectEntries)
 	const dispatch = useAppDispatch()
@@ -54,7 +53,7 @@ const ExerciseTemplate = () => {
 							}}
 						/>
 						<h1 className='text-white col-span-3 mx-auto text-3xl capitalize font-bold bg-dark-gray px-8 py-1 rounded-2xl'>
-							{activeWorkout?.name || null}
+							{workoutName ?? ''}
 						</h1>
 						<br />
 					</div>

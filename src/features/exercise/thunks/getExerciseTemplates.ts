@@ -35,7 +35,8 @@ const getExerciseTemplates = createAsyncThunk(
 				exercises,
 				prevWorkoutId,
 				previousWorkout,
-				templateId
+				templateId,
+				workoutName:workoutOptions.find(option => option.workoutTemplateId === templateId).name
 			}
 		} catch (err) {
 			console.error(err)
