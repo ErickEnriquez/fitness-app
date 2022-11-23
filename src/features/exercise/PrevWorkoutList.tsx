@@ -65,15 +65,16 @@ const PreviousWorkoutsEntriesList = () => {
 	return (
 		<>
 			{	previousWorkouts.map((workout, i) => {
-				const previousWorkout = workout
-					? workout?.exercises?.find(item => item.exerciseID === exerciseId)
-					: null
+				const previousWorkout =  workout?.exercises?.find(item => item.exerciseID === exerciseId)
 				return (
 					<React.Fragment key={i}>
-						<PreviousWorkoutItem
-							previousWorkout={{ ...previousWorkout, weights: previousWorkout.weights.map(w => w) as Prisma.Decimal[] }}
-							workoutDate={workout.date}
-						/>
+						{previousWorkout ?
+							<PreviousWorkoutItem
+								previousWorkout={{ ...previousWorkout, weights: previousWorkout.weights.map(w => w) as Prisma.Decimal[] }}
+								workoutDate={workout.date}
+							/> : null
+						}
+						
 					</React.Fragment>
 				)
 			})}
