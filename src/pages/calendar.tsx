@@ -29,14 +29,13 @@ const Calendar = () => {
 	}, [])
 	//grab the workout templates from the server on page load
 
-
+	const router = useRouter()
 
 	return (
 		<Layout
 			pageStatus={pageStatus}
 			failHandler={() => {
-				const router = useRouter()
-				router.push('/')
+				router.back()
 			}}
 		>
 			<Card title='Calendar' style={{ textAlign: 'center' }}>

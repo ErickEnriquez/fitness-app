@@ -9,6 +9,7 @@ import {
 	isSameDay,
 	parseISO
 } from 'date-fns'
+import Modal from '@components/Modal'
 
 import Link from 'next/link'
 
@@ -62,11 +63,7 @@ const Week = (date: Date, activeDate: Date, previousWorkouts: PreviousWorkoutsEn
 						<span className={`${workoutThisDay ? 'bg-primary-green' : 'opacity-100'} h-4`}></span>
 						<span className={`${cardioThisDay ? 'bg-primary-purple' : 'opacity-100'} h-4`}></span>
 					</span>
-					<Link href={`${workoutThisDay ? `/history/${workoutThisDay?.id}` : ''}`}>
-						<span className={`${isSameDay(currentDate, new Date()) ? 'bg-primary-blue w-1/2 mx-auto rounded-lg' : ''}`}>
-							{format(currentDate, 'dd')}
-						</span>
-					</Link>
+					{<Modal workoutId={workoutThisDay?.id} cardioId={cardioThisDay?.id}/>}
 				</div>
 			</td>
 		)
