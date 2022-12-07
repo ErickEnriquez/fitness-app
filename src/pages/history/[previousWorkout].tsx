@@ -59,9 +59,7 @@ const PreviousWorkout = () => {
 			successHandler={() => router.push('/')}
 		>
 			<div className='grid grid-cols-5 my-4'>
-				<Link href={'/calendar'}>
-					<a> <Button text='Back' color='primary-blue' /></a>
-				</Link>
+				<Button text='Back' color='primary-blue' clickHandler={() => router.back()} />
 				<span className='col-start-4'>
 					<Button text='Edit' color='light-gray' clickHandler={() => dispatch(toggleEditWorkout())}></Button>
 				</span>
