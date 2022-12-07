@@ -20,16 +20,16 @@ const CardioHistoryPage = () => {
 		<Layout
 			pageStatus={pageStatus}
 			successHandler={() => { dispatch(cardioSlice.clearStatus()) }}
-			failHandler={() => { router.push('/') }}
+			failHandler={() => { router.back() }}
 		>
 			<main>
 				<section className='grid grid-cols-5 mb-4 items-center'>
-					<Button text='Back' color='primary-blue' />
+					<Button text='Back' color='primary-blue' clickHandler={() => {router.back()}} />
 					<h1 className="text-white col-span-3 mx-auto text-3xl capitalize font-bold bg-dark-gray px-8 py-1 rounded-2xl w-11/12 text-center">Type: <br />{cardioState.cardioType}</h1>
 					<Button text='X' color='primary-red' clickHandler={() => dispatch(cardioSlice.toggleEditPreviousCardio())} />
 				</section>
 				<Card>
-					<strong className='text-white'>Completed : {format(parseISO(cardioState.timeCreated), 'EEE, LLL dd YYY hh:mm aa')}</strong>
+					<strong className='text-white'>Completed : {format(parseISO(cardioState.timeCreated), 'EEE, LLL dd YYY hh:mm aa') ?? 'N/A'}</strong>
 					<div className='my-6 bg-primary-blue w-11/12 mx-auto text-white font-bold rounded-xl py-1 grid grid-cols-5'>
 						<h3 className='col-start-3'>Notes</h3>
 						<span className='col-start-5'>
