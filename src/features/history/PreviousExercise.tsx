@@ -2,8 +2,8 @@ import React from 'react'
 import { FaPencilAlt } from 'react-icons/fa'
 import { useAppDispatch } from '@app/hooks'
 import { toggleEditable, PreviousExercise, editExerciseWeight, editExerciseIntensity, editExerciseOrder, editExerciseNotes } from '@features/history/PreviousWorkoutSlice'
-import NumberInput from '../../components/NumberInput'
-import Notes from '../../components/Notes'
+import NumberInput from '@components/NumberInput'
+import Notes from '@components/Notes'
 
 
 const PreviousExercise = ({ exercise, idx }: { exercise: PreviousExercise, idx: number }) => {
@@ -38,7 +38,7 @@ const PreviousExercise = ({ exercise, idx }: { exercise: PreviousExercise, idx: 
 				{exercise.weights.map((weight, i) => (
 					<React.Fragment key={i}>
 
-						<li className='text-primary-blue bg-white w-1/4 mx-auto rounded-xl pb-2 my-2 font-medium'>{i + 1}</li>
+						<li className='text-primary-blue bg-white w-1/4 mx-auto rounded-xl my-2 font-medium'>{i + 1}</li>
 
 						{exercise.editable ?
 							<li className='col-span-2 text-primary-blue'>
@@ -76,10 +76,15 @@ const PreviousExercise = ({ exercise, idx }: { exercise: PreviousExercise, idx: 
 					:
 					exercise.notes &&
 					<>
-						{exercise.editable ? <Notes val={exercise.notes} changeHandler={e => dispatch(editExerciseNotes({ idx, text: e.target.value }))} /> : <div className='w-5/6 mx-auto'>
-							<strong className='text-white'>Notes</strong>
-							<p className='text-white'>{exercise.notes}</p>
-						</div>}
+						{exercise.editable ?
+							<Notes
+								val={exercise.notes}
+								changeHandler={e => dispatch(editExerciseNotes({ idx, text: e.target.value }))}
+							/> :
+							<div className='w-5/6 mx-auto'>
+								<h4 className='text-white bg-primary-blue px-8 rounded-xl'>Notes</h4>
+								<p className='text-primary-blue font-medium bg-white my-2 rounded-xl py-2'>{exercise.notes}</p>
+							</div>}
 					</>
 			}
 		</div >
