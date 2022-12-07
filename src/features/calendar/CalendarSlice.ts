@@ -16,8 +16,10 @@ export interface CalendarState {
 	status: 'idle' | 'loading' | 'failed' | 'success'
 	workouts: PreviousWorkoutsEntry[]
 	cardioList: SerializedCardio[]
-	activeDate: string
-
+	activeDate: string,
+	workoutId: number
+	cardioId: number,
+	isModalVisible: boolean
 }
 
 const initialState: CalendarState = {
@@ -25,6 +27,9 @@ const initialState: CalendarState = {
 	workouts: [] as PreviousWorkoutsEntry[],
 	cardioList: [] as SerializedCardio[],
 	activeDate: new Date().toISOString(),
+	workoutId: null,
+	cardioId: null,
+	isModalVisible: false
 }
 
 /**
@@ -70,6 +75,15 @@ export const CalendarSlice = createSlice({
 		editActiveDate: (state, action: PayloadAction<string>) => {
 			state.activeDate = action.payload
 		},
+		editWorkoutId: (state, action: PayloadAction<number>) => { 
+			state.workoutId = action.payload
+		},
+		editCardioId: (state, action: PayloadAction<number>) => { 
+			state.cardioId = action.payload
+		},
+		toggleModal: (state) => {		
+			state.isModalVisible = !state.isModalVisible
+		},
 		resetState: () => initialState
 	},
 	extraReducers: (builder) => {
@@ -92,12 +106,18 @@ export const CalendarSlice = createSlice({
 export const {
 	clearStatus,
 	editActiveDate,
-	resetState
+	resetState,
+	editWorkoutId,
+	editCardioId,
+	toggleModal
 } = CalendarSlice.actions
 
 export const selectStatus = (state: AppState) => state.calendar.status
 export const selectWorkouts = (state: AppState) => state.calendar.workouts
 export const selectActiveDate = (state: AppState) => state.calendar.activeDate
 export const selectCardioList = (state: AppState) => state.calendar.cardioList
+export const selectWorkoutId = (state: AppState) => state.calendar.workoutId
+export const selectCardioId = (state: AppState) => state.calendar.cardioId
+export const selectIsModalVisible = (state: AppState) => state.calendar.isModalVisible
 
 export default CalendarSlice.reducer

@@ -1,47 +1,46 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Link from 'next/link'
+import { useAppSelector, useAppDispatch } from '@app/hooks'
+import {
+	selectCardioId, selectWorkoutId,
+	selectIsModalVisible, toggleModal
+} from '@features/calendar/CalendarSlice'
 
 // Modal component that darkens the background and includes two buttons
-function Modal({cardioId, workoutId}: {cardioId:number, workoutId:number}) {
-	// state to track whether the modal is open or closed
-	const [isOpen, setIsOpen] = useState(false)
-
-	// toggle the modal open or closed
-	const toggle = () => setIsOpen(!isOpen)
-
-	// handle clicks on the "Workouts" button
-	const handleWorkoutsClick = () => {
-		// close the modal
-		toggle()
-	}
-
-	// handle clicks on the "Cardio" button
-	const handleCardioClick = () => {
-		// close the modal
-		toggle()
-	}
-
+function Modal() {
+	const isOpen = useAppSelector(selectIsModalVisible)
+	const cardioId = useAppSelector(selectCardioId)
+	const workoutId = useAppSelector(selectWorkoutId)
+	const dispatch = useAppDispatch()
+	const toggle = () => dispatch(
+		toggleModal()
+	)
 	return (
 		<>
-			{/* button to open the modal */}
-			<button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" onClick={toggle}>
-				Open Modal
-			</button>
-
 			{/* modal component with dark background and two buttons */}
 			{isOpen && (
 				<div className="modal-overlay bg-gray-900">
 					<div className="modal-content p-8">
-						<Link href={`/history/${workoutId}`}>
-							<button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" onClick={handleWorkoutsClick}>
-								Workouts
-							</button>
-						</Link>
-						<Link href={`/cardio/${cardioId}`}>
-							<button className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded" onClick={handleCardioClick}>
-								Cardio
-							</button>
-						</Link>
+						{/* show if we have a workout to display */}
+						{
+							workoutId && (
+								<Link href={`/history/${workoutId}`}>
+									<button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" onClick={toggle}>
+										Workouts
+									</button>
+								</Link>
+							)
+						}
+						{/* only show button if we have a previous cardio session to display */}
+						{
+							cardioId && (
+								<Link href={`/cardio/${cardioId}`}>
+									<button className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded" onClick={toggle}>
+										Cardio
+									</button>
+								</Link>
+							)
+						}
 					</div>
 				</div>
 			)}

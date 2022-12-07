@@ -1,5 +1,4 @@
 import {
-	format,
 	startOfWeek,
 	addDays,
 	startOfMonth,
@@ -7,14 +6,12 @@ import {
 	endOfWeek,
 	isSameMonth,
 	isSameDay,
-	parseISO
+	parseISO,
+	format
 } from 'date-fns'
-import Modal from '@components/Modal'
 
-import Link from 'next/link'
-
-import { useAppSelector } from '@app/hooks'
-import { selectActiveDate, selectWorkouts, selectCardioList } from '@features/calendar/CalendarSlice'
+import { useAppSelector , useAppDispatch} from '@app/hooks'
+import { selectActiveDate, selectWorkouts, selectCardioList, editCardioId, editWorkoutId, toggleModal } from '@features/calendar/CalendarSlice'
 import { SerializedCardio } from '@server/cardio/index'
 import { PreviousWorkoutsEntry } from '@server/getPreviousWorkouts'
 
@@ -48,6 +45,7 @@ const CalendarDates = () => {
 const Week = (date: Date, activeDate: Date, previousWorkouts: PreviousWorkoutsEntry[], previousCardio: SerializedCardio[]) => {
 	let currentDate = date
 	const week = []
+	const dispatch = useAppDispatch()
 
 	for (let day = 0; day < 7; day++) {
 
@@ -58,12 +56,21 @@ const Week = (date: Date, activeDate: Date, previousWorkouts: PreviousWorkoutsEn
 				className={`${isSameMonth(activeDate, currentDate) ? 'text-white bg-light-gray' : 'text-light-gray'} 
 			text-center pb-6 outline outline-white outline-1 text-l font-heavy rounded-sm`}
 			>
-				<div className='grid grid-rows-2'>
+				<div className='grid grid-rows-2'
+				>
 					<span className='flex flex-col'>
 						<span className={`${workoutThisDay ? 'bg-primary-green' : 'opacity-100'} h-4`}></span>
 						<span className={`${cardioThisDay ? 'bg-primary-purple' : 'opacity-100'} h-4`}></span>
 					</span>
-					{<Modal workoutId={workoutThisDay?.id} cardioId={cardioThisDay?.id}/>}
+					<span
+						onClick={() => {
+							if(workoutThisDay || cardioThisDay) dispatch(toggleModal())
+							if (workoutThisDay) dispatch(editWorkoutId(workoutThisDay.id))
+							if (cardioThisDay) dispatch(editCardioId(cardioThisDay.id))
+						}}
+						className={`${isSameDay(currentDate, new Date()) ? 'bg-primary-blue w-1/2 mx-auto rounded-lg' : ''}`}>
+						{format(currentDate, 'dd')}
+					</span>
 				</div>
 			</td>
 		)

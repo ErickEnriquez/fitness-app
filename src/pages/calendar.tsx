@@ -1,6 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useEffect , useState} from 'react'
 
-import { selectStatus, selectActiveDate, getWorkoutsAsync } from '@features/calendar/CalendarSlice'
+import {
+	selectStatus, selectActiveDate, getWorkoutsAsync,
+	selectCardioId, selectWorkoutId
+} from '@features/calendar/CalendarSlice'
 
 import CalendarHeader from '@features/calendar/Header'
 import CalendarWeekDays from '@features/calendar/Weekdays'
@@ -8,6 +11,7 @@ import CalendarDates from '@features/calendar/CalendarDates'
 import CalendarKey from '@features/calendar/CalendarKey'
 import Layout from '@components/Layout'
 import Card from '@components/Card'
+import Modal from '@components/Modal'
 
 import { useRouter } from 'next/router'
 
@@ -46,6 +50,7 @@ const Calendar = () => {
 				</table>
 				<CalendarKey />
 			</Card>
+			<Modal />
 		</Layout>
 	)
 }
