@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 import type { AppState } from '@app/store'
-import { ExerciseEntry, ExerciseTemplate, Program, Workout, WorkoutEntry } from '@prisma/client'
+import { ExerciseEntry, ExerciseTemplate, Program, WorkoutTemplate, WorkoutEntry } from '@prisma/client'
 import { LastWorkoutEntry } from '@server/getLastWorkoutOfType'
 
 //this holds the miscellaneous data about the workout that isn't tied to a specific exercise instead the entire workout in general
@@ -16,9 +16,9 @@ export interface activeWorkoutInfo {
 
 
 //combination of workout templates and workout entries, 
-interface WorkoutInfo extends Workout, Omit<WorkoutEntry, 'date|id'> {
+interface WorkoutInfo extends WorkoutTemplate, Omit<WorkoutEntry, 'date|id'> {
 	prevDate: string
-	prevWorkoutId: number
+	prevWorkoutId: string
 }
 
 //holds the info that the user inputs about a specific workout like the weights , the intensity, order etc
@@ -75,16 +75,16 @@ export const getWorkoutAsync = createAsyncThunk(
 				.then(r => r.data)
 				.catch(err => {
 					throw Error(err)
-				}) as Workout[]
+				}) as WorkoutTemplate[]
 
 			const prevWorkouts = await Promise.all(workoutTemplates.map(workout => axios.get('/api/workout-entry', { params: { workoutType: workout.id, skip: 0 } })))
 				.then(list => list.map(item => item.data))
 				.catch(err => {
-					throw Error(err)
+					console.error(err)
 				}) as WorkoutEntry[]
 
 			const data = workoutTemplates.map((item) => {
-				const prevWorkout = prevWorkouts.find(workout => workout.workoutTemplateId === item.id)
+				const prevWorkout = prevWorkouts && prevWorkouts.find(workout => workout.workoutTemplateId === item.id)
 				return {
 					...prevWorkout,
 					...item,
