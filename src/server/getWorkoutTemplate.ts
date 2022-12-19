@@ -1,16 +1,16 @@
 import prisma from 'prisma/prisma'
-import { Workout } from '@prisma/client'
+import { WorkoutTemplate } from '@prisma/client'
 
 /**
  * Given a programID return all of the workouts that belong to that workout
  * @param programId 
  * @returns 
  */
-export async function getWorkoutTemplate(programId: number): Promise<Workout[]> {
+export async function getWorkoutTemplate(programId: string): Promise<WorkoutTemplate[]> {
 	try {
-		const workoutArray = await prisma.workout.findMany({
+		const workoutArray = await prisma.workoutTemplate.findMany({
 			where: {
-				programID: programId
+				programId: programId
 			}
 		})
 		return workoutArray

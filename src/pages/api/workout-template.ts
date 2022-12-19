@@ -13,18 +13,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		return
 	}
 	switch (req.method) {
-		case 'GET': await returnWorkoutTemplates(req, res)
-			break
-		default:
-			res.status(405).json({ message: 'Method not allowed' })
+	case 'GET': await returnWorkoutTemplates(req, res)
+		break
+	default:
+		res.status(405).json({ message: 'Method not allowed' })
 	}
 
 }
 
 const returnWorkoutTemplates = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
-		const programId = Number(req.query.programId)
-		const workoutTemplates = await getWorkoutTemplate(programId)
+		const workoutTemplates = await getWorkoutTemplate(req.query.programId as string)
 		if (!workoutTemplates) {
 			res.status(404).end()
 			return
