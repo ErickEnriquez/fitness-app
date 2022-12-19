@@ -37,7 +37,7 @@ export interface ExerciseState {
 	entries: UserEntry[]
 	workouts: WorkoutInfo[]
 	activeWorkout: number | null
-	activeEntry: number
+	activeEntry: string
 	//get the stats of the last workout of that given type ie push heavy, pull heavy, etc
 	previousWorkout: PreviousWorkout[]
 	workoutEntry: activeWorkoutInfo,
@@ -53,7 +53,7 @@ const initialState = {
 	entries: [] as UserEntry[],
 	workouts: [] as WorkoutInfo[],
 	activeWorkout: null as number,
-	activeEntry: null as number,
+	activeEntry: null,
 	previousWorkout: [] as PreviousWorkout[],
 	workoutEntry: null as activeWorkoutInfo,
 }
@@ -105,7 +105,7 @@ export const getWorkoutAsync = createAsyncThunk(
 //given a workoutID get the template of exercises for that given workout
 export const getExerciseTemplates = createAsyncThunk(
 	'exercise/getExerciseTemplates',
-	async (id: number, { getState, rejectWithValue }) => {
+	async (id: string, { getState, rejectWithValue }) => {
 		try {
 			const { exercise: { workouts } } = getState() as AppState
 			const prevWorkoutID = workouts.find(workout => workout.id === id)?.prevWorkoutId
@@ -156,7 +156,7 @@ export const postExerciseEntries = createAsyncThunk(
 	'exercise/postExerciseEntries',
 	async (_, { getState, rejectWithValue }) => {
 		const { exercise: { entries, workoutEntry } } = getState() as AppState
-		try { 
+		try {
 			const response = await axios.post('/api/exercise-entry', { entries, workoutEntry })
 			return response.data
 		} catch (err) {
@@ -174,28 +174,26 @@ export const exerciseSlice = createSlice({
 		clearEntries: (state) => {
 			state.entries = []
 		},
-		editWeight: (state, action: PayloadAction<{ movementID: number, value: number, setNumber: number }>) => {
+		editWeight: (state, action: PayloadAction<{ movementId: string, value: number, setNumber: number }>) => {
 			if (isNaN(action.payload.value)) return
-			state.entries.find(entry => entry.movementID === action.payload.movementID).weights[action.payload.setNumber] = action.payload.value
+			state.entries.find(entry => entry.movementId === action.payload.movementId).weights[action.payload.setNumber] = action.payload.value
 		},
-		editOrder: (state, action: PayloadAction<{ movementID: number, value: number }>) => {
+		editOrder: (state, action: PayloadAction<{ movementId: string, value: number }>) => {
 			if (isNaN(action.payload.value)) return
-			state.entries.find(entry => entry.movementID === action.payload.movementID).order = action.payload.value
+			state.entries.find(entry => entry.movementId === action.payload.movementId).order = action.payload.value
 		},
-		editNotes: (state, action: PayloadAction<{ movementID: number, value: string }>) => {
-			state.entries.find(entry => entry.movementID === action.payload.movementID).notes = action.payload.value
+		editNotes: (state, action: PayloadAction<{ movementId: string, value: string }>) => {
+			state.entries.find(entry => entry.movementId === action.payload.movementId).notes = action.payload.value
 		},
-		editIntensity: (state, action: PayloadAction<{ movementID: number, value: number }>) => {
+		editIntensity: (state, action: PayloadAction<{ movementId: string, value: number }>) => {
 			if (isNaN(action.payload.value) || action.payload.value > 10 || action.payload.value < 1) return
-			state.entries.find(entry => entry.movementID === action.payload.movementID).intensity = action.payload.value
+			state.entries.find(entry => entry.movementId === action.payload.movementId).intensity = action.payload.value
 		},
 		//set the active entry we are working on when given an ID
-		setActiveEntry(state, action: PayloadAction<number>) {
-			if (isNaN(action.payload)) return
+		setActiveEntry(state, action: PayloadAction<string>) {
 			state.activeEntry = state.entries.find(entry => entry.id === action.payload).id
 		},
-		toggleExerciseComplete(state, action: PayloadAction<number>) {
-			if (isNaN(action.payload)) return
+		toggleExerciseComplete(state, action: PayloadAction<string>) {
 			state.entries.find(entry => entry.id === action.payload).completed = !state.entries.find(entry => entry.id === action.payload).completed
 		},
 		editWorkoutNotes: (state, action: PayloadAction<string>) => {
