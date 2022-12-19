@@ -6,40 +6,40 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "cockroachdb"
   url      = env("DATABASE_URL")
 }
 
 //basic building block of an exercise, include a name as well as an ID,
 //this is its own table beacause we may do barbell bench press with different rep or set ranges but the basic movement is the same
 model Movement {
-  id               Int                @id @default(autoincrement())
+  id               String             @id @default(cuid())
   name             String
   ExerciseTemplate ExerciseTemplate[]
 }
 
 //template for an exercise it inherets from the movement model and will be used the the ExerciseEntry Table to track weights
 model ExerciseTemplate {
-  id         Int             @id @default(autoincrement())
+  id         String          @id @default(cuid())
   reps       Int
   sets       Int
-  movementID Int
-  movement   Movement        @relation(fields: [movementID], references: [id]) // an exercise references a single movement while a movement can be referenced by multiple exercises (ie 5x5 bench or 3 sets of 10 on bench)
+  movementId String
+  movement   Movement        @relation(fields: [movementId], references: [id]) // an exercise references a single movement while a movement can be referenced by multiple exercises (ie 5x5 bench or 3 sets of 10 on bench)
   entries    ExerciseEntry[]
-  workoutId  Int
-  workout    Workout         @relation(fields: [workoutId], references: [id])
+  workoutId  String
+  workout    WorkoutTemplate @relation(fields: [workoutId], references: [id])
 }
 
 //this is the user input section that we will be adding to whenever we create a new exercise entry
 model ExerciseEntry {
-  id         Int              @id @default(autoincrement())
+  id         String           @id @default(cuid())
   notes      String?
   intensity  Int?
   weights    Decimal[]
-  exerciseID Int
-  exercise   ExerciseTemplate @relation(fields: [exerciseID], references: [id])
-  workoutID  Int
-  workout    WorkoutEntry     @relation(fields: [workoutID], references: [id], onDelete: Cascade)
+  exerciseId String
+  exercise   ExerciseTemplate @relation(fields: [exerciseId], references: [id])
+  workoutId  String
+  workout    WorkoutEntry     @relation(fields: [workoutId], references: [id], onDelete: Cascade)
   order      Int?
 }
 
@@ -54,24 +54,24 @@ enum WorkoutType {
 }
 
 //workout model is the a collection of exercises , a workout type , an overall grade, notes ,and a date created
-model Workout {
-  id                Int                @id @default(autoincrement())
+model WorkoutTemplate {
+  id                String             @id @default(cuid())
   type              WorkoutType
   name              String
-  programID         Int
-  program           Program            @relation(fields: [programID], references: [id])
+  programId         String
+  program           Program            @relation(fields: [programId], references: [id])
   workoutEntry      WorkoutEntry[]
   exerciseTemplates ExerciseTemplate[]
 }
 
 model WorkoutEntry {
-  id                Int             @id @default(autoincrement())
+  id                String          @id @default(cuid())
   notes             String?
   date              DateTime        @default(now())
   grade             Int?
   preWorkout        Boolean?        @default(false)
-  workoutTemplateId Int
-  workoutTemplate   Workout         @relation(fields: [workoutTemplateId], references: [id])
+  workoutTemplateId String
+  workoutTemplate   WorkoutTemplate @relation(fields: [workoutTemplateId], references: [id])
   exercises         ExerciseEntry[] //array of n number of exercises
 }
 
@@ -92,7 +92,7 @@ enum CardioType {
 
 //cardio model is a collection of a cardio type, distance, time, notes, and calories burned, and timeCreated, and intensity
 model Cardio {
-  id             Int        @id @default(autoincrement())
+  id             String     @id @default(cuid())
   timeCreated    DateTime   @default(now())
   type           CardioType
   distance       Decimal
@@ -106,9 +106,9 @@ model Cardio {
 
 //a program is a collection of workouts, a name and an ID
 model Program {
-  id       Int       @id @default(autoincrement())
+  id       String            @id @default(cuid())
   name     String
-  workouts Workout[]
+  workouts WorkoutTemplate[]
   //like a program a user
   userId   String
 
@@ -123,12 +123,12 @@ model Account {
   type                     String
   provider                 String
   providerAccountId        String
-  refresh_token            String? @db.Text
-  access_token             String? @db.Text
+  refresh_token            String? @db.String
+  access_token             String? @db.String
   expires_at               Int?
   token_type               String?
   scope                    String?
-  id_token                 String? @db.Text
+  id_token                 String? @db.String
   session_state            String?
   refresh_token_expires_in Int?
 
