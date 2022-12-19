@@ -9,7 +9,7 @@ import { LastWorkoutEntry } from '@server/getLastWorkoutOfType'
 //this holds the miscellaneous data about the workout that isn't tied to a specific exercise instead the entire workout in general
 export interface activeWorkoutInfo {
 	notes?: string,
-	workoutTemplateId: number,
+	workoutTemplateId: string,
 	preWorkout: boolean,
 	grade: number,
 }
@@ -36,7 +36,7 @@ export interface ExerciseState {
 	status: sliceStatus
 	entries: UserEntry[]
 	workouts: WorkoutInfo[]
-	activeWorkout: number | null
+	activeWorkout: string
 	activeEntry: string
 	//get the stats of the last workout of that given type ie push heavy, pull heavy, etc
 	previousWorkout: PreviousWorkout[]
@@ -52,7 +52,7 @@ const initialState = {
 	status: 'idle',
 	entries: [] as UserEntry[],
 	workouts: [] as WorkoutInfo[],
-	activeWorkout: null as number,
+	activeWorkout: null,
 	activeEntry: null,
 	previousWorkout: [] as PreviousWorkout[],
 	workoutEntry: null as activeWorkoutInfo,
@@ -110,17 +110,20 @@ export const getExerciseTemplates = createAsyncThunk(
 			const { exercise: { workouts } } = getState() as AppState
 			const prevWorkoutID = workouts.find(workout => workout.id === id)?.prevWorkoutId
 
-			const [exercisesList, prevMeta, prevExercises] = await Promise.all([
+			const prevMeta = await axios.get<LastWorkoutEntry>('/api/workout-entry', { params: { Id: prevWorkoutID } })
+				.then(r => r.data)
+				.catch(err => console.error(err)
+				)
+
+			const [exercisesList, prevExercises] = await Promise.all([
 				axios.get('/api/exercise-templates', { params: { workoutId: id } }),
-				axios.get('/api/workout-entry', { params: { Id: prevWorkoutID } }),
-				axios.get('/api/exercise-entry', { params: { workoutId: prevWorkoutID } })
+				axios.get<ExerciseEntry>('/api/exercise-entry', { params: { workoutId: prevWorkoutID } })
 			]).then(list => ([
 				list[0].data,
-				list[1].data as LastWorkoutEntry,
-				list[2].data as ExerciseEntry
+				list[1].data as ExerciseEntry
 			]))
 
-			const previousWorkout: PreviousWorkout = prevWorkoutID && { ...prevMeta, date: prevMeta.date, exercises: prevExercises }
+			const previousWorkout: PreviousWorkout = prevWorkoutID && prevMeta && { ...prevMeta, date: prevMeta.date, exercises: prevExercises }
 
 			return {
 				exercises: exercisesList,

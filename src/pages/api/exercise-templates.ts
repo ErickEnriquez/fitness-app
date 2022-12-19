@@ -23,11 +23,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 }
 
 const getExerciseTemplates = async (req: NextApiRequest, res: NextApiResponse) => {
-	const id = Number(req.query.workoutId)
-	const exercises = await getExercises(id)
+
+	const exercises = await getExercises(String(req.query.workoutId))
 	//grab the name of the movements
 	const data = await Promise.all(exercises.map(async (item) => {
-		const movement = await getMovement(item.movementID)
+		const movement = await getMovement(item.movementId)
 		return { ...item, ['name']: movement.name }
 	}))
 	if (!exercises) {

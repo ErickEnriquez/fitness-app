@@ -17,12 +17,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 	}
 
 	switch (req.method) {
-		case 'POST':
-			await postEntries(req, res); break
-		case 'GET':
-			await getWorkoutEntries(req, res); break
-		default:
-			res.status(405).json({ message: 'Method not allowed' })
+	case 'POST':
+		await postEntries(req, res); break
+	case 'GET':
+		await getWorkoutEntries(req, res); break
+	default:
+		res.status(405).json({ message: 'Method not allowed' })
 	}
 }
 
@@ -48,8 +48,7 @@ async function postEntries(req: NextApiRequest, res: NextApiResponse) {
 
 async function getWorkoutEntries(req: NextApiRequest, res: NextApiResponse) {
 	//grab the data, which should be an array of user entries and a workoutId
-	const id = Number(req.query.workoutId)
-	const data = await getExerciseEntries(id)
+	const data = await getExerciseEntries(String(req.query.workoutId))
 	data ?
 		res.status(200).json(data) :
 		res.status(200).json({ data: null })

@@ -61,7 +61,7 @@ const ExerciseItem = () => {
 										key={i}
 										name='weight'
 										num={weight}
-										changeHandler={(e) => dispatch(editWeight({ movementID: exerciseEntry.movementID, value: Number(e.target.value), setNumber: i }))}
+										changeHandler={(e) => dispatch(editWeight({ movementId: exerciseEntry.movementID, value: Number(e.target.value), setNumber: i }))}
 									/>
 								))}
 							</div>
