@@ -61,7 +61,7 @@ const ExerciseItem = () => {
 										key={i}
 										name='weight'
 										num={weight}
-										changeHandler={(e) => dispatch(editWeight({ movementId: exerciseEntry.movementID, value: Number(e.target.value), setNumber: i }))}
+										changeHandler={(e) => dispatch(editWeight({ movementId: exerciseEntry.movementId, value: Number(e.target.value), setNumber: i }))}
 									/>
 								))}
 							</div>
@@ -71,18 +71,18 @@ const ExerciseItem = () => {
 							<div className="grid grid-cols-2 content-center ">
 								<NumberInput
 									name='Order' num={exerciseEntry.order}
-									changeHandler={(e) => dispatch(editOrder({ movementID: exerciseEntry.movementID, value: Number(e.target.value) }))}
+									changeHandler={(e) => dispatch(editOrder({ movementId: exerciseEntry.movementId, value: Number(e.target.value) }))}
 								/>
 								<NumberInput
 									name='Intensity' num={exerciseEntry.intensity}
-									changeHandler={(e) => dispatch(editIntensity({ movementID: exerciseEntry.movementID, value: Number(e.target.value) }))}
+									changeHandler={(e) => dispatch(editIntensity({ movementId: exerciseEntry.movementId, value: Number(e.target.value) }))}
 								/>
 							</div>
 						</div>
 						<div className='bg-dark-gray rounded-3xl w-11/12 mx-auto align-center flex flex-col py-4'>
 							<Notes
 								val={exerciseEntry.notes}
-								changeHandler={(e) => dispatch(editNotes({ movementID: exerciseEntry.movementID, value: e.target.value }))}
+								changeHandler={(e) => dispatch(editNotes({ movementId: exerciseEntry.movementId, value: e.target.value }))}
 							/>
 						</div>
 						<div className='my-4'>
