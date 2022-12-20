@@ -30,7 +30,7 @@ const PrevWorkoutsList = () => {
 	const prevWorkoutsList = previousWorkouts ?
 		previousWorkouts.map((workout, i) => {
 			const previousWorkout = workout
-				? workout.exercises.find(item => item.exerciseID === exerciseId)
+				? workout.exercises.find(item => item.exerciseId === exerciseId)
 				: null
 			return (
 				<React.Fragment key={i}>
@@ -51,12 +51,11 @@ const PrevWorkoutsList = () => {
 					{prevWorkoutsList}
 					{status === 'loading' ? <Loading /> : (
 						<div className='grid grid-cols-2 w-11/12 mx-auto mt-4'>
-
 							<Button
 								color='primary-blue'
 								clickHandler={() => {
 									dispatch(getMorePreviousWorkouts(skipAmount))
-									setSkipAmount(skipAmount + 1)
+									setSkipAmount( prevAmount => prevAmount + 1)
 								}}
 								text='More'
 							/>
@@ -67,7 +66,7 @@ const PrevWorkoutsList = () => {
 									if (skipAmount <= 0) {
 										return
 									}
-									setSkipAmount(skipAmount - 1)
+									setSkipAmount(prevAmount => prevAmount - 1)
 								}}
 								text='Less'
 							/>
