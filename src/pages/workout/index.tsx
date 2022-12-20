@@ -39,8 +39,8 @@ const WorkoutPage: NextPage = () => {
 		<Link key={i} href={`/history/${workout.prevWorkoutId}`}>
 			<div className='w-11/12 mx-auto grid grid-cols-3 text-white my-2'>
 				<strong>{workout.name}</strong>
-				<strong>{new Date(workout.date).toLocaleDateString()}</strong>
-				<strong>{workout.grade}</strong>
+				<strong>{workout.date ? new Date(workout.date).toLocaleDateString() : 'N/A'}</strong>
+				<strong>{workout.grade ?? 'N/A'}</strong>
 			</div>
 		</Link >
 	)
