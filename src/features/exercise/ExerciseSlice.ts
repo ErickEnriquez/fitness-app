@@ -22,7 +22,7 @@ interface WorkoutInfo extends WorkoutTemplate, Omit<WorkoutEntry, 'date|id'> {
 }
 
 //holds the info that the user inputs about a specific workout like the weights , the intensity, order etc
-interface UserEntry extends ExerciseTemplate {
+export interface UserEntry extends ExerciseTemplate {
 	weights: number[],
 	intensity?: number,
 	notes?: string,
@@ -164,7 +164,7 @@ export const postExerciseEntries = createAsyncThunk(
 			return response.data
 		} catch (err) {
 			console.error(err)
-			return rejectWithValue('unable to post workouts , please try later')
+			return rejectWithValue('unable to post workout data , please try later')
 		}
 	}
 

@@ -1,8 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { postExerciseEntries } from '@server/postExerciseEntries'
-import { createWorkoutEntry } from '@server/createWorkoutEntry'
 import { getExerciseEntries } from '@server/getExerciseEntries'
-import { activeWorkoutInfo } from '@features/exercise/ExerciseSlice'
+import { activeWorkoutInfo, UserEntry } from '@features/exercise/ExerciseSlice'
+import prisma from 'prisma/prisma'
+
 
 import { unstable_getServerSession } from 'next-auth/next'
 import { authOptions } from '@auth/[...nextauth]'
@@ -28,21 +28,48 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
 
 async function postEntries(req: NextApiRequest, res: NextApiResponse) {
-	//grab the data, which should be an array of user entries and a workoutId
-	const data = req.body
+	try {
+		//grab the data, which should be an array of user entries and a workoutId
+		const data = req.body
 
-	const activeWorkout = data.workoutEntry as activeWorkoutInfo
-	//create the workout entry in the db first
-	const workoutEntry = await createWorkoutEntry(activeWorkout)
-	if (!workoutEntry) {
-		res.status(500).json({ message: 'Failed to create workout' })
+		const activeWorkout = data.workoutEntry as activeWorkoutInfo
+		const entries = data.exerciseEntries as UserEntry[]
+		//create the workout entry in the db and attach all of the exercise entries to it
+
+		const newWorkout = await prisma.workoutEntry.create({
+			data: {
+				workoutTemplateId: activeWorkout.workoutTemplateId,
+				notes: activeWorkout.notes || undefined,
+				grade: activeWorkout.grade || undefined,
+				preWorkout: activeWorkout.preWorkout || false,
+				date: new Date(),
+				exercises: {
+					createMany:
+					{
+						data: entries.map(e => (
+							{
+								notes: e.notes || undefined,
+								intensity: e.intensity || undefined,
+								order: e.order || undefined,
+								weights: e.weights.map(w => w || undefined),
+								exerciseId: e.id || undefined,
+							}
+						))
+					}
+				}
+			}
+		})
+
+		if (!newWorkout) {
+			res.status(500).json({ message: 'Failed to create workout' })
+			return
+		}
+
+		res.status(200).end()
+	} catch (err) { 
+		console.error(err)
+		res.status(500).json({ message: 'Server error, failed to create workout' })
 	}
-	//then create the exercise entries in the db and link them to a workout
-	const response = await postExerciseEntries(data.entries, workoutEntry as number)
-
-	response ?
-		res.status(200).json({ message: 'Success' })
-		: res.status(500).json({ message: 'Error' })
 }
 
 
