@@ -1,8 +1,9 @@
 /* eslint-disable indent */
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getPreviousCardioInRange } from '@server/cardio/index'
 import { unstable_getServerSession } from 'next-auth/next'
 import { authOptions } from '@auth/[...nextauth]'
+import prisma from 'prisma/prisma'
+import { SerializedCardio } from '@server/cardio'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 
@@ -21,17 +22,37 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 	}
 }
 
+/** given a start and end date in the request query field, return all of the cardio sessions that are from the user that fit that time frame. 
+ * the return will be a list of the cardio sessions with the timeCreated field serialized to a string
+ */
 const getCardioInRange = async (req: NextApiRequest, res: NextApiResponse, userID = '') => {
 	try {
 		const startDate = String(req.query.start)
 		const endDate = String(req.query.end)
 
-		const cardio = await getPreviousCardioInRange(startDate, endDate, userID)
+		const cardio = await prisma.cardio.findMany({
+			where: {
+				AND: [
+					{ userId:userID },
+					{
+						timeCreated: {
+							gte: startDate,
+							lte: endDate
+						}
+					}
+				]
+			}
+		})
+
 		if (!cardio) {
 			res.status(404).json({ message: 'Error finding cardio' })
 			return
 		}
-		res.status(200).json(cardio)
+
+		//convert the timeCreated field from a date to a string to send back to the front end
+		const serializedCardio:SerializedCardio[] = cardio.map(cardio => ({ ...cardio, timeCreated: cardio.timeCreated.toISOString() }))
+		
+		res.status(200).json(serializedCardio)
 	}
 	catch (err) {
 		console.error(err)
