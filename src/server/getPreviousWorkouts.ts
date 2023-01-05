@@ -15,7 +15,7 @@ export interface PreviousWorkoutsEntry extends Omit<WorkoutEntry, 'date'> {
  * @param startDate the beginning date of the range we want to search
  * @param endDate the ending date of the range we want to search
  */
-export async function getPreviousWorkouts(startDate: Date, endDate: Date, templateId: number): Promise<PreviousWorkoutsEntry[]> {
+export async function getPreviousWorkouts(startDate: Date, endDate: Date, templateId: string): Promise<PreviousWorkoutsEntry[]> {
 	try {
 
 		const data = await prisma.workoutEntry.findMany({

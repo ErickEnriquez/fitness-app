@@ -17,8 +17,8 @@ export interface CalendarState {
 	workouts: PreviousWorkoutsEntry[]
 	cardioList: SerializedCardio[]
 	activeDate: string,
-	workoutId: number
-	cardioId: number,
+	workoutId: string
+	cardioId: string,
 	isModalVisible: boolean
 }
 
@@ -75,10 +75,10 @@ export const CalendarSlice = createSlice({
 		editActiveDate: (state, action: PayloadAction<string>) => {
 			state.activeDate = action.payload
 		},
-		editWorkoutId: (state, action: PayloadAction<number>) => { 
+		editWorkoutId: (state, action: PayloadAction<string>) => { 
 			state.workoutId = action.payload
 		},
-		editCardioId: (state, action: PayloadAction<number>) => { 
+		editCardioId: (state, action: PayloadAction<string>) => { 
 			state.cardioId = action.payload
 		},
 		toggleModal: (state) => {		

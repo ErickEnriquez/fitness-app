@@ -7,7 +7,7 @@ import { LastWorkoutEntry } from './getLastWorkoutOfType'
  * @param ID this is either the id of the workout or the workout type that we will use to get the last workout of that type
  * @returns 
  */
-export async function getWorkoutEntry(ID: number, skip?: number, workoutType = false): Promise<LastWorkoutEntry | LastWorkoutEntry & { exercises: ExerciseEntry[] }> {
+export async function getWorkoutEntry(ID: string, skip?: number, workoutType = false): Promise<LastWorkoutEntry | LastWorkoutEntry & { exercises: ExerciseEntry[] }> {
 	try {
 		const workout = workoutType ?
 			await getWorkoutUsingType(ID, skip) :
@@ -28,7 +28,7 @@ export async function getWorkoutEntry(ID: number, skip?: number, workoutType = f
  * @param workoutType 
  * @param skip 
  */
-const getWorkoutUsingType = async (workoutType: number, skipAmount?: number): Promise<WorkoutEntry & { exercises: ExerciseEntry[] }> => {
+const getWorkoutUsingType = async (workoutType: string, skipAmount?: number): Promise<WorkoutEntry & { exercises: ExerciseEntry[] }> => {
 	const workout = await prisma.workoutEntry.findFirst({
 		where: {
 			workoutTemplateId: workoutType
@@ -47,7 +47,7 @@ const getWorkoutUsingType = async (workoutType: number, skipAmount?: number): Pr
  * @param workoutID the id of the workout we want to get
  * @returns 
  */
-const getWorkoutUsingID = async (workoutID: number): Promise<WorkoutEntry> => {
+const getWorkoutUsingID = async (workoutID: string): Promise<WorkoutEntry> => {
 	const workout = await prisma.workoutEntry.findFirst({
 		where: {
 			id: workoutID

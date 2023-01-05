@@ -49,11 +49,11 @@ export const getWorkoutDataAsync = createAsyncThunk(
 			const prevWorkout = response[0].data as WorkoutEntry
 
 			const templates = await Promise.all(exercises
-				.map(exercise => axios.get('/api/exerciseEntry', { params: { exerciseId: exercise.exerciseID } }))
+				.map(exercise => axios.get('/api/exerciseEntry', { params: { exerciseId: exercise.exerciseId } }))
 			).then(r => r.map(t => t.data)) as ExerciseTemplate[]
 
 			const movements = await Promise.all(templates.map(template => {
-				return axios.get('/api/movement', { params: { movementId: template.movementID } })
+				return axios.get('/api/movement', { params: { movementId: template.movementId } })
 			})).then(r => r.map(m => m.data)) as Movement[]
 
 			const data = exercises.map((e, idx) => ({

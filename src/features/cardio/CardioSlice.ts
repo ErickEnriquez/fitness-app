@@ -15,7 +15,7 @@ export interface CardioState {
 	notes: string
 	intensity: number
 	//use this when we are working on a previous cardio section
-	completedCardioId: number
+	completedCardioId: string
 	timeCreated: string
 	editPreviousCardio: boolean
 	isPreviousWorkoutChanged: boolean

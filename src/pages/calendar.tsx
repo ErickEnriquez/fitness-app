@@ -1,8 +1,7 @@
-import React, { useEffect , useState} from 'react'
+import React, { useEffect} from 'react'
 
 import {
 	selectStatus, selectActiveDate, getWorkoutsAsync,
-	selectCardioId, selectWorkoutId
 } from '@features/calendar/CalendarSlice'
 
 import CalendarHeader from '@features/calendar/Header'

@@ -21,8 +21,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 }
 
 const getTemplate = async (req: NextApiRequest, res: NextApiResponse) => {
-	const id = Number(req.query.movementId)
-	const movement = await getMovement(id)
+	// const id = Number(req.query.movementId)
+	const movement = await getMovement(req.query.movementId as string)
 	if (!movement) {
 		res.status(404).json({ message: 'Error finding movement' })
 		return
