@@ -3,12 +3,10 @@ import { useAppSelector, useAppDispatch } from '@app/hooks'
 import {
 	selectPreviousExerciseEntries,
 	selectActiveEntry,
-	getMorePreviousWorkouts,
 	removePreviousWorkout,
-	selectStatus
+	selectStatus,
 } from '@features/exercise/ExerciseSlice'
-
-
+import { getMorePreviousWorkouts } from './thunks'
 
 import Card from '@components/Card'
 import Button from '@components/util/Button'
@@ -17,10 +15,6 @@ import { Prisma } from '@prisma/client'
 import Loading from '@components/Loading'
 
 const PrevWorkoutsList = () => {
-	//get the list of all of the exercises of the previous workout
-	const previousWorkouts = useAppSelector(selectPreviousExerciseEntries)
-	//get the id of the active exercise entry that we are on
-	const exerciseId = useAppSelector(selectActiveEntry)
 
 	const status = useAppSelector(selectStatus)
 	const dispatch = useAppDispatch()
@@ -46,21 +40,23 @@ const PrevWorkoutsList = () => {
 
 	return (
 		<div className='text-white text-center my-4'>
-			{previousWorkouts ?
-				<Card title='Previous Workouts'>
-					{prevWorkoutsList}
-					{status === 'loading' ? <Loading /> : (
+			<Card title='Previous Workouts'>
+				<PreviousWorkoutsEntriesList />
+				{status === 'loading' ?
+					<Loading /> :
+					(
 						<div className='grid grid-cols-2 w-11/12 mx-auto mt-4'>
 							<Button
 								color='primary-blue'
+								text='More'
 								clickHandler={() => {
 									dispatch(getMorePreviousWorkouts(skipAmount))
 									setSkipAmount( prevAmount => prevAmount + 1)
 								}}
-								text='More'
 							/>
 							<Button
 								color='primary-blue'
+								text='Less'
 								clickHandler={() => {
 									dispatch(removePreviousWorkout())
 									if (skipAmount <= 0) {
@@ -68,18 +64,36 @@ const PrevWorkoutsList = () => {
 									}
 									setSkipAmount(prevAmount => prevAmount - 1)
 								}}
-								text='Less'
 							/>
 						</div>
-					)}
-				</Card>
-				: (
-					<h3 className='text-2xl'>
-						No Previous Data
-					</h3>
-				)
-			}
+					)
+				}
+			</Card>
 		</div>
+	)
+}
+
+const PreviousWorkoutsEntriesList = () => {
+
+	const previousWorkouts = useAppSelector(selectPreviousExerciseEntries)
+	const exerciseId = useAppSelector(selectActiveEntry)
+	return (
+		<>
+			{	previousWorkouts.map((workout, i) => {
+				const previousWorkout =  workout?.exercises?.find(item => item.exerciseId === exerciseId)
+				return (
+					<React.Fragment key={i}>
+						{previousWorkout ?
+							<PreviousWorkoutItem
+								previousWorkout={{ ...previousWorkout, weights: previousWorkout.weights.map(w => w) as Prisma.Decimal[] }}
+								workoutDate={workout.date}
+							/> : null
+						}
+						
+					</React.Fragment>
+				)
+			})}
+		</>
 	)
 }
 

@@ -12,10 +12,8 @@ import { persistStore } from 'redux-persist'
 
 const persistor = persistStore(store)
 
-export default function MyApp({
-	Component,
-	pageProps: { ...pageProps } }
-	: AppProps<{ session: Session }>) {
+
+export default function MyApp({ Component, pageProps }: AppProps<{ session: Session }>) {
 	return (
 		<SessionProvider session={pageProps.session}>
 			<Provider store={store}>

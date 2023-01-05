@@ -1,11 +1,12 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-
+import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
-
 import type { AppState } from '@app/store'
 import { ExerciseEntry, ExerciseTemplate, Program, WorkoutTemplate, WorkoutEntry } from '@prisma/client'
 import { LastWorkoutEntry } from '@server/getLastWorkoutOfType'
-
+import getWorkoutOptionsAsync from './thunks/getWorkoutOptionsAsync'
+import { ExerciseTemplateTemplateWithName } from '@server/ExerciseTemplate/exerciseTemplate'
+import { SerializedWorkoutEntry } from '@server/WorkoutEntry/workoutEntry'
+import { createNewWorkout } from './thunks'
 //this holds the miscellaneous data about the workout that isn't tied to a specific exercise instead the entire workout in general
 export interface activeWorkoutInfo {
 	notes?: string,
@@ -28,7 +29,6 @@ export interface UserEntry extends ExerciseTemplate {
 	notes?: string,
 	order?: number,
 	completed: boolean
-	name: string
 }
 
 type sliceStatus = 'idle' | 'loading' | 'failed' | 'success'
@@ -39,16 +39,15 @@ export interface ExerciseState {
 	activeWorkout: string
 	activeEntry: string
 	//get the stats of the last workout of that given type ie push heavy, pull heavy, etc
-	previousWorkout: PreviousWorkout[]
+	previousWorkout: WorkoutEntryWithExercises[]
 	workoutEntry: activeWorkoutInfo,
 }
 
-export interface PreviousWorkout extends Omit<WorkoutEntry, 'date'> {
-	date: string
+export interface WorkoutEntryWithExercises extends SerializedWorkoutEntry {
 	exercises: ExerciseEntry[]
 }
 
-const initialState = {
+const initialState:ExerciseState = {
 	status: 'idle',
 	entries: [] as UserEntry[],
 	workouts: [] as WorkoutInfo[],
@@ -220,32 +219,33 @@ export const exerciseSlice = createSlice({
 	extraReducers: (builder) => {
 		builder
 			//================ getting list of the workouts ===========================================
-			.addCase(getWorkoutAsync.pending, (state) => { state.status = 'loading' })
-			.addCase(getWorkoutAsync.fulfilled, (state, action) => {
+			.addCase(getWorkoutOptionsAsync.pending, (state) => { state.status = 'loading' })
+			.addCase(getWorkoutOptionsAsync.rejected, (state) => { state.status = 'failed' })
+			.addCase(getWorkoutOptionsAsync.fulfilled, (state, action) => {
 				state.status = 'idle'
-				state.workouts = action.payload
+				state.workoutOptions = action.payload
 			})
-			.addCase(getWorkoutAsync.rejected, (state) => { state.status = 'failed' })
 			//================ getting the workout template for a workout ============================
 			.addCase(getExerciseTemplates.pending, (state) => { state.status = 'loading' })
 			.addCase(getExerciseTemplates.fulfilled, (state, action) => {
 				state.status = 'idle'
 				//mark the type of workout that we are doing
-				state.activeWorkout = action.payload.workoutId
+				state.activeWorkout = action.payload.templateId
 				//create the entries for the workout
-				state.entries = action.payload.exercises.map((entry: ExerciseTemplate) => ({
+				state.entries = action.payload.exercises.map((entry: ExerciseTemplateTemplateWithName) => ({
 					...entry,
 					weights: Array(entry.sets).fill(''),
-					intensity: '',
+					intensity: 0,
 					notes: '',
-					order: '',
+					order: 0,
 					completed: false,
 				}
 				))
 				state.previousWorkout = [action.payload.previousWorkout]
+				state.activeWorkoutName = action.payload.workoutName
 				//initialize the workout entry with the data that we need
 				state.workoutEntry = {
-					workoutTemplateId: action.payload.workoutId,
+					workoutTemplateId: action.payload.templateId,
 					preWorkout: false,
 					grade: 0,
 					notes: ''
@@ -253,9 +253,9 @@ export const exerciseSlice = createSlice({
 			})
 			.addCase(getExerciseTemplates.rejected, (state) => { state.status = 'failed' })
 			//================= posting the exercise entries =====================================
-			.addCase(postExerciseEntries.pending, (state) => { state.status = 'loading' })
-			.addCase(postExerciseEntries.fulfilled, (state) => { state.status = 'success' })
-			.addCase(postExerciseEntries.rejected, (state,) => { state.status = 'failed' })
+			.addCase(createNewWorkout.pending, (state) => { state.status = 'loading' })
+			.addCase(createNewWorkout.fulfilled, (state) => { state.status = 'success' })
+			.addCase(createNewWorkout.rejected, (state) => { state.status = 'failed' })
 			//================= getting more previous workouts =====================================
 			.addCase(getMorePreviousWorkouts.pending, (state) => { state.status = 'loading' })
 			.addCase(getMorePreviousWorkouts.rejected, (state) => { state.status = 'failed' })
@@ -283,10 +283,12 @@ export const {
 }
 	= exerciseSlice.actions
 
-export const selectWorkouts = (state: AppState) => state.exercise.workouts
+export const selectWorkouts = (state: AppState) => state.exercise.workoutOptions
 export const selectEntries = (state: AppState) => state.exercise.entries
 export const selectStatus = (state: AppState) => state.exercise.status as sliceStatus
 export const selectActiveEntry = (state: AppState) => state.exercise.activeEntry
 export const selectActiveWorkout = (state: AppState) => state.exercise.activeWorkout
+export const selectActiveWorkoutName = (state:AppState) => state.exercise.activeWorkoutName
 export const selectPreviousExerciseEntries = (state: AppState) => state.exercise.previousWorkout
+export const selectWorkoutTemplateId = (state: AppState) => state.exercise.workoutEntry.workoutTemplateId
 export default exerciseSlice.reducer
