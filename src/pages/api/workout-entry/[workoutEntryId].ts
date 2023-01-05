@@ -1,10 +1,11 @@
+/* eslint-disable indent */
 import { unstable_getServerSession } from 'next-auth/next'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { authOptions } from '@auth/[...nextauth]'
-import { getProgram } from '@server/Program/getProgram'
-import { Session } from 'next-auth'
+import { getWorkoutEntryById } from '@server/WorkoutEntry/getWorkoutEntryById'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
+
 	const session = await unstable_getServerSession(req, res, authOptions)
 
 	if (!session) {
@@ -13,27 +14,29 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 	}
 
 	switch (req.method) {
-	case 'GET': await getProgramData(req, res, session); break
-	default:
-		res.status(405).json({ message: 'Method not allowed' })
+		case 'GET': await getWorkout(req, res)
+			break
+
+		default:
+			res.status(405).json({ message: 'Method not allowed' })
 	}
 }
 
 /**
- * get the data for a program given a userId 
+ * get the last workout given a workoutID
  * @param req 
  * @param res 
- * @returns 
  */
-const getProgramData = async (_: NextApiRequest, res: NextApiResponse, session: Session) => {
+const getWorkout = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
-		const program = await getProgram(session.user.id)
-		if (!program) {
+		const workout = await getWorkoutEntryById(Number(req.query.workoutEntryId))
+		if (!workout) {
 			res.status(404).end()
 			return
 		}
-		res.status(200).json(program)
+		res.status(200).json(workout)
 	} catch (err) {
+		console.error(err)
 		res.status(500).end()
 	}
 }

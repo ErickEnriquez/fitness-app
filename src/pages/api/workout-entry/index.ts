@@ -2,7 +2,12 @@
 import { unstable_getServerSession } from 'next-auth/next'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { authOptions } from '@auth/[...nextauth]'
+<<<<<<< HEAD:src/pages/api/workout-entry.ts
 import prisma from 'prisma/prisma'
+=======
+import { getWorkoutEntryByType } from '@server/WorkoutEntry/getWorkoutEntryByType'
+
+>>>>>>> 6c59c7039e58ac1cfe512608630b842e54ec550c:src/pages/api/workout-entry/index.ts
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 
@@ -29,6 +34,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
  */
 const getWorkout = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
+<<<<<<< HEAD:src/pages/api/workout-entry.ts
 		//if we get a param called workout type that is a number then we call the getWorkoutEntry function with 3 parameters else call the one with only 1 parameter
 		if (req.query.workoutType && req.query.skip) {
 			const workoutUsingType = await prisma.workoutEntry.findFirst({
@@ -72,5 +78,21 @@ const getWorkout = async (req: NextApiRequest, res: NextApiResponse) => {
 	} catch (err) {
 		console.error(err)
 		res.status(500).json({ message: 'Error Finding Exercises' })
+=======
+		if (!req.query.workoutType || !req.query.skip || Number.isNaN(Number(req.query.workoutType))) {
+			throw Error('Error with params')
+		}
+			
+		const workout = await getWorkoutEntryByType(Number(req.query.workoutType), Number(req.query.skip))
+
+		if (!workout) {
+			res.status(404).end()
+			return
+		}
+		res.status(200).json(workout)
+	} catch (err) {
+		console.error(err)
+		res.status(500).end()
+>>>>>>> 6c59c7039e58ac1cfe512608630b842e54ec550c:src/pages/api/workout-entry/index.ts
 	}
 }
