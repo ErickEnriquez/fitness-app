@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 import type { AppState } from '@app/store'
-import { Program, Workout } from '@prisma/client'
+import { Program, WorkoutEntry } from '@prisma/client'
 import { SerializedCardio } from '@server/cardio'
 import { PreviousWorkoutsEntry } from '@server/getPreviousWorkouts'
 
@@ -49,7 +49,7 @@ export const getWorkoutsAsync = createAsyncThunk(
 			]).then(list => [list[0].data, list[1].data])
 
 			const workoutTemplates = await axios.get('/api/workout-template', { params: { programId: p.id as Program } })
-				.then(r => r.data) as Workout[]
+				.then(r => r.data) as WorkoutEntry[]
 
 			const previousWorkouts = await Promise.all(
 				workoutTemplates.map(item =>
