@@ -88,7 +88,7 @@ async function main() {
 
 	const legsHeavy = prisma.workoutTemplate.create({
 		data: {
-			name: 'Pull Heavy', type: 'pullHeavy', programId: program.id, exerciseTemplates: {
+			name: 'Legs Heavy', type: 'legsHeavy', programId: program.id, exerciseTemplates: {
 				create: [
 					{ sets: 5, reps: 5, movement: { create: { name: 'Back Squat' } } },
 					{ sets: 5, reps: 5, movement: { create: { name: 'Leg Press' } } },
@@ -104,7 +104,7 @@ async function main() {
 
 	const legsLight = prisma.workoutTemplate.create({
 		data: {
-			name: 'Pull Light', type: 'pullLight', programId: program.id, exerciseTemplates: {
+			name: 'Legs Light', type: 'legsLight', programId: program.id, exerciseTemplates: {
 				create: [
 					{ sets: 4, reps: 12, movement: { create: { name: 'Front Squat' } } },
 					{ sets: 4, reps: 10, movement: { create: { name: '1 Legged Press' } } },
