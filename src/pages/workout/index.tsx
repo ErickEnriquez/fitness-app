@@ -6,14 +6,13 @@ import {Layout, Card} from '@components/index'
 import { useSession } from 'next-auth/react'
 
 import { useAppDispatch, useAppSelector } from '@app/hooks'
-import {  selectWorkouts, selectStatus } from '@features/exercise/ExerciseSlice'
+import { selectWorkoutOptions, selectStatus } from '@features/exercise/ExerciseSlice'
 import { getWorkoutOptionsAsync, getExerciseTemplates } from '@features/exercise/thunks'
 import { useRouter } from 'next/router'
-import { parseISO } from 'date-fns'
 
 const WorkoutPage: NextPage = () => {
 	const dispatch = useAppDispatch()
-	const workoutOptions = useAppSelector(selectWorkouts)
+	const workoutOptions = useAppSelector(selectWorkoutOptions)
 	const pageStatus = useAppSelector(selectStatus)
 	const router = useRouter()
 
@@ -43,14 +42,14 @@ const WorkoutPage: NextPage = () => {
 			</div>
 		</Link >
 	)
-	const workoutOptionList =  workoutOptions && workoutOptions.map((item, idx) =>  (
-		<Link href={`/workout/${item.workoutTemplateId}`} key={idx}>
+	const workoutOptionList =  workoutOptions && workoutOptions.map(item =>  (
+		<Link href={`/workout/${item.id}`} key={item.id}>
 			<li
 				className={`
 					rounded-3xl my-4 py-8  w-11/12 mx-auto text-white bg-primary-blue  shadow-lg shadow-black/70 
 					hover:bg-white hover:ring-4 hover:ring-primary-blue hover:text-primary-blue hover:cursor-pointer`
 				}
-				onClick={() => dispatch(getExerciseTemplates({prevWorkoutId:item.id, templateId:item.workoutTemplateId}))}
+				onClick={() => dispatch(getExerciseTemplates({templateId:item.id}))}
 			>
 				<strong className="capitalize underline">{item.name}</strong>
 			</li>
