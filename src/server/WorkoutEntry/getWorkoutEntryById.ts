@@ -6,11 +6,16 @@ import {  SerializedWorkoutEntry } from './workoutEntry'
  * @param workoutID the id of the workout we want to get
  * @returns 
  */
-export const getWorkoutEntryById = async (workoutID: number): Promise<SerializedWorkoutEntry> => {
+export const getWorkoutEntryById = async (workoutID: string): Promise<SerializedWorkoutEntry> => {
 	const workout = await prisma.workoutEntry.findFirst({
 		where: {
 			id: workoutID
 		},
 	})
+	
+	if (!workout) {
+		throw Error('No Previous workout found')
+	}
+
 	return {...workout, date:workout.date.toISOString()}
 }
