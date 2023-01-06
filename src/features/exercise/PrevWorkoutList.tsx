@@ -21,21 +21,6 @@ const PrevWorkoutsList = () => {
 	const [skipAmount, setSkipAmount] = useState(1)
 
 
-	const prevWorkoutsList = previousWorkouts ?
-		previousWorkouts.map((workout, i) => {
-			const previousWorkout = workout
-				? workout.exercises.find(item => item.exerciseId === exerciseId)
-				: null
-			return (
-				<React.Fragment key={i}>
-					<PreviousWorkoutItem
-						previousWorkout={{ ...previousWorkout, weights: previousWorkout.weights.map(w => w) as Prisma.Decimal[] }}
-						workoutDate={workout.date}
-					/>
-				</React.Fragment>
-			)
-		})
-		: null
 
 
 	return (
