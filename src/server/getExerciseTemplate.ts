@@ -3,7 +3,7 @@ import prisma from 'prisma/prisma'
  * given an exerciseId, return the exercise template info
  * @param exerciseId 
  */
-export async function getExerciseTemplate(exerciseId: number) {
+export async function getExerciseTemplate(exerciseId: string) {
 	try {
 		const data = await prisma.exerciseTemplate.findFirst({
 			where: {

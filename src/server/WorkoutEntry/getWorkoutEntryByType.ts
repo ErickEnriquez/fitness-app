@@ -6,7 +6,7 @@ import { WorkoutEntryWithExercises } from './workoutEntry'
  * @param workoutType 
  * @param skipAmount 
  */
-export const getWorkoutEntryByType = async (workoutType: number, skipAmount?: number): Promise<WorkoutEntryWithExercises> => {
+export const getWorkoutEntryByType = async (workoutType: string, skipAmount?: number): Promise<WorkoutEntryWithExercises> => {
 	const workout = await prisma.workoutEntry.findFirst({
 		where: {
 			workoutTemplateId: workoutType

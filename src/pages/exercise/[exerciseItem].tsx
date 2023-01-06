@@ -47,7 +47,7 @@ const ExerciseItem = () => {
 							</Link>
 							<h2 className='mx-auto1 text-white text-center col-span-3 bg-dark-gray rounded-2xl'>
 								<span className='text-3xl font-bold'>
-									{exerciseEntry.movement.name}
+									{exerciseEntry.name}
 								</span>
 								<br />
 								Sets {exerciseEntry.sets}x{exerciseEntry.reps}
@@ -60,7 +60,7 @@ const ExerciseItem = () => {
 										key={i}
 										name='weight'
 										num={weight}
-										changeHandler={(e) => dispatch(editWeight({ movementID: exerciseEntry.movementID, value: Number(e.target.value), setNumber: i }))}
+										changeHandler={(e) => dispatch(editWeight({ movementId: exerciseEntry.movementId, value: Number(e.target.value), setNumber: i }))}
 									/>
 								))}
 							</div>
@@ -70,11 +70,11 @@ const ExerciseItem = () => {
 							<div className="grid grid-cols-2 content-center mx-auto w-11/12 ">
 								<NumberInput
 									name='Order' num={exerciseEntry.order}
-									changeHandler={(e) => dispatch(editOrder({ movementID: exerciseEntry.movementID, value: Number(e.target.value) }))}
+									changeHandler={(e) => dispatch(editOrder({ movementId: exerciseEntry.movementId, value: Number(e.target.value) }))}
 								/>
 								<NumberInput
 									name='Intensity' num={exerciseEntry.intensity}
-									changeHandler={(e) => dispatch(editIntensity({ movementID: exerciseEntry.movementID, value: Number(e.target.value) }))}
+									changeHandler={(e) => dispatch(editIntensity({ movementId: exerciseEntry.movementId, value: Number(e.target.value) }))}
 								/>
 							</div>
 						</Card>
@@ -82,7 +82,7 @@ const ExerciseItem = () => {
 						<Card >
 							<Notes
 								val={exerciseEntry.notes}
-								changeHandler={(e) => dispatch(editNotes({ movementID: exerciseEntry.movementID, value: e.target.value }))}
+								changeHandler={(e) => dispatch(editNotes({ movementId: exerciseEntry.movementId, value: e.target.value }))}
 							/>
 						</Card>						
 						<div className='my-4'>

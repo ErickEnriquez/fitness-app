@@ -45,7 +45,7 @@ const submitCardio = async (req: NextApiRequest, res: NextApiResponse, userId = 
  */
 const getCardioInfo = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
-		const id = Number(req.query.cardioId)
+		const id = String(req.query.cardioId)
 		const cardioInfo = await getCardioData(id)
 		if (!cardioInfo) {
 			res.status(400).end()
@@ -68,7 +68,7 @@ const updateCardioInfo = async (req: NextApiRequest, res: NextApiResponse) => {
 		//need to include timeCreated, and userId even though we aren't changing it since update cardio function is using the cardio type from prisma schema
 		const updates: Cardio = {
 			intensity: Number(state.intensity),
-			id: Number(state.completedCardioId),
+			id: state.completedCardioId,
 			timeCreated: new Date(),
 			type: CardioType[state.type],
 			caloriesBurned: Number(state.caloriesBurned),
@@ -89,7 +89,7 @@ const updateCardioInfo = async (req: NextApiRequest, res: NextApiResponse) => {
 
 const deleteCardio = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
-		const cardioId = Number(req.query.cardioId)
+		const cardioId = String(req.query.cardioId)
 		const status = await deleteCardioEntry(cardioId)
 		if (!status) {
 			res.status(404).end()

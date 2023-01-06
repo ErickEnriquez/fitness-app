@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 import type { AppState } from '@app/store'
-import { Program, Workout } from '@prisma/client'
+import { Program, WorkoutEntry } from '@prisma/client'
 import { SerializedCardio } from '@server/cardio'
 import { PreviousWorkoutsEntry } from '@server/getPreviousWorkouts'
 
@@ -16,8 +16,10 @@ export interface CalendarState {
 	status: 'idle' | 'loading' | 'failed' | 'success'
 	workouts: PreviousWorkoutsEntry[]
 	cardioList: SerializedCardio[]
-	activeDate: string
-
+	activeDate: string,
+	workoutId: string
+	cardioId: string,
+	isModalVisible: boolean
 }
 
 const initialState: CalendarState = {
@@ -25,6 +27,9 @@ const initialState: CalendarState = {
 	workouts: [] as PreviousWorkoutsEntry[],
 	cardioList: [] as SerializedCardio[],
 	activeDate: new Date().toISOString(),
+	workoutId: null,
+	cardioId: null,
+	isModalVisible: false
 }
 
 /**
@@ -44,7 +49,7 @@ export const getWorkoutsAsync = createAsyncThunk(
 			]).then(list => [list[0].data, list[1].data])
 
 			const workoutTemplates = await axios.get('/api/workout-template', { params: { programId: p.id as Program } })
-				.then(r => r.data) as Workout[]
+				.then(r => r.data) as WorkoutEntry[]
 
 			const previousWorkouts = await Promise.all(
 				workoutTemplates.map(item =>
@@ -70,6 +75,15 @@ export const CalendarSlice = createSlice({
 		editActiveDate: (state, action: PayloadAction<string>) => {
 			state.activeDate = action.payload
 		},
+		editWorkoutId: (state, action: PayloadAction<string>) => { 
+			state.workoutId = action.payload
+		},
+		editCardioId: (state, action: PayloadAction<string>) => { 
+			state.cardioId = action.payload
+		},
+		toggleModal: (state) => {		
+			state.isModalVisible = !state.isModalVisible
+		},
 		resetState: () => initialState
 	},
 	extraReducers: (builder) => {
@@ -92,12 +106,18 @@ export const CalendarSlice = createSlice({
 export const {
 	clearStatus,
 	editActiveDate,
-	resetState
+	resetState,
+	editWorkoutId,
+	editCardioId,
+	toggleModal
 } = CalendarSlice.actions
 
 export const selectStatus = (state: AppState) => state.calendar.status
 export const selectWorkouts = (state: AppState) => state.calendar.workouts
 export const selectActiveDate = (state: AppState) => state.calendar.activeDate
 export const selectCardioList = (state: AppState) => state.calendar.cardioList
+export const selectWorkoutId = (state: AppState) => state.calendar.workoutId
+export const selectCardioId = (state: AppState) => state.calendar.cardioId
+export const selectIsModalVisible = (state: AppState) => state.calendar.isModalVisible
 
 export default CalendarSlice.reducer

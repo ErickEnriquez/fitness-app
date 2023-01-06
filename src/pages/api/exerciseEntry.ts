@@ -26,7 +26,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 }
 
 const getTemplate = async (req: NextApiRequest, res: NextApiResponse) => {
-	const id = Number(req.query.exerciseId)
+	const id = String(req.query.exerciseId)
 	const template = await getExerciseTemplate(id)
 	if (!template) {
 		res.status(404).json({ message: 'Error finding exercises' })

@@ -5,7 +5,7 @@ import prisma from 'prisma/prisma'
  * call prisma to delete the Workout Entry with the given workoutId 
  * @param workoutId 
  */
-export async function deleteWorkoutEntry(workoutId: number) {
+export async function deleteWorkoutEntry(workoutId: string) {
 	try {
 		await prisma.workoutEntry.delete({
 			where: {

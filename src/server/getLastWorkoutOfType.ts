@@ -5,7 +5,7 @@ export interface LastWorkoutEntry extends Omit<WorkoutEntry, 'date'> {
 	date: string
 }
 
-export async function getLastWorkoutOfType(templateID: number): Promise<LastWorkoutEntry> {
+export async function getLastWorkoutOfType(templateID: string): Promise<LastWorkoutEntry> {
 	try {
 		const data = await prisma.workoutEntry.findFirst({
 			where: {

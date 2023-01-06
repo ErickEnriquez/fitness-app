@@ -5,11 +5,8 @@ import {
 	selectActiveEntry,
 	removePreviousWorkout,
 	selectStatus,
-	selectWorkoutTemplateId
 } from '@features/exercise/ExerciseSlice'
 import { getMorePreviousWorkouts } from './thunks'
-
-
 
 import Card from '@components/Card'
 import Button from '@components/util/Button'
@@ -22,7 +19,10 @@ const PrevWorkoutsList = () => {
 	const status = useAppSelector(selectStatus)
 	const dispatch = useAppDispatch()
 	const [skipAmount, setSkipAmount] = useState(1)
-	const workoutTemplateId = useAppSelector(selectWorkoutTemplateId)
+
+
+
+
 	return (
 		<div className='text-white text-center my-4'>
 			<Card title='Previous Workouts'>
@@ -35,8 +35,8 @@ const PrevWorkoutsList = () => {
 								color='primary-blue'
 								text='More'
 								clickHandler={() => {
-									dispatch(getMorePreviousWorkouts({ skip: skipAmount, workoutTemplateId }))
-									setSkipAmount(skipAmount + 1)
+									dispatch(getMorePreviousWorkouts(skipAmount))
+									setSkipAmount( prevAmount => prevAmount + 1)
 								}}
 							/>
 							<Button
@@ -47,7 +47,7 @@ const PrevWorkoutsList = () => {
 									if (skipAmount <= 0) {
 										return
 									}
-									setSkipAmount(skipAmount - 1)
+									setSkipAmount(prevAmount => prevAmount - 1)
 								}}
 							/>
 						</div>
@@ -65,7 +65,7 @@ const PreviousWorkoutsEntriesList = () => {
 	return (
 		<>
 			{	previousWorkouts.map((workout, i) => {
-				const previousWorkout =  workout?.exercises?.find(item => item.exerciseID === exerciseId)
+				const previousWorkout =  workout?.exercises?.find(item => item.exerciseId === exerciseId)
 				return (
 					<React.Fragment key={i}>
 						{previousWorkout ?

@@ -35,7 +35,7 @@ const getCalendarWorkouts = async (req: NextApiRequest, res: NextApiResponse) =>
 	try {
 		const startDate = new Date(req.query.start as string)
 		const endDate = new Date(req.query.end as string)
-		const templateId = Number(req.query.templateId)
+		const templateId = String(req.query.templateId)
 
 		const data = await getPreviousWorkouts(startDate, endDate, templateId)
 
@@ -47,7 +47,7 @@ const getCalendarWorkouts = async (req: NextApiRequest, res: NextApiResponse) =>
 
 const deleteWorkout = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
-		const workoutId = Number(req.query.workoutId)
+		const workoutId = String(req.query.workoutId)
 		await deleteWorkoutEntry(workoutId)
 		res.status(200).end()
 	}

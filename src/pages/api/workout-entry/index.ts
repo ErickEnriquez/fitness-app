@@ -2,8 +2,7 @@
 import { unstable_getServerSession } from 'next-auth/next'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { authOptions } from '@auth/[...nextauth]'
-import { getWorkoutEntryByType } from '@server/WorkoutEntry/getWorkoutEntryByType'
-
+import prisma from 'prisma/prisma'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 
@@ -30,19 +29,48 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
  */
 const getWorkout = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
-		if (!req.query.workoutType || !req.query.skip || Number.isNaN(Number(req.query.workoutType))) {
-			throw Error('Error with params')
-		}
-			
-		const workout = await getWorkoutEntryByType(Number(req.query.workoutType), Number(req.query.skip))
-
-		if (!workout) {
-			res.status(404).end()
+		//if we get a param called workout type that is a number then we call the getWorkoutEntry function with 3 parameters else call the one with only 1 parameter
+		if (req.query.workoutType && req.query.skip) {
+			const workoutUsingType = await prisma.workoutEntry.findFirst({
+				where: {
+					workoutTemplateId: String(req.query.workoutType)
+				},
+				orderBy: { date: 'desc' },
+				skip: Number(req.query.skip),
+				include: {
+					exercises: true
+				}
+			})
+			if (!workoutUsingType) {
+				console.warn('no workout found')
+				res.status(400).end()
+				return
+			}
+			res.status(200).json({
+				...workoutUsingType,
+				date: workoutUsingType.date.toISOString()
+			})
 			return
 		}
-		res.status(200).json(workout)
+
+		const workoutUsingId = await prisma.workoutEntry.findFirst({
+			where: {
+				id: String(req.query.Id)
+			}
+		})
+			
+		if (!workoutUsingId) {
+			res.status(400).end()
+			return
+		}
+
+		res.status(200).json({
+			...workoutUsingId,
+			date: workoutUsingId.date.toISOString()
+		})
+
 	} catch (err) {
 		console.error(err)
-		res.status(500).end()
+		res.status(500).json({ message: 'Error Finding Exercises' })
 	}
 }

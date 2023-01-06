@@ -5,7 +5,7 @@ import { SerializedCardio } from './cardio'
  * @param cardioId 
  * @returns 
  */
-export default async function getCardioData(cardioId: number): Promise<SerializedCardio> {
+export default async function getCardioData(cardioId: string): Promise<SerializedCardio> {
 	const data = await prisma.cardio.findFirst({
 		where: {
 			id: cardioId

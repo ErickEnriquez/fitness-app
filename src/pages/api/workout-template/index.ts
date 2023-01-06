@@ -22,8 +22,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
 const returnWorkoutTemplatesForProgram = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
-		const programId = Number(req?.query?.programId)
-		const workoutTemplates = await getWorkoutTemplate(programId)
+		const workoutTemplates = await getWorkoutTemplate(req.query.programId as string)
 		if (!workoutTemplates) {
 			res.status(404).end()
 			return

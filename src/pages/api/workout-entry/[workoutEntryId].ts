@@ -29,8 +29,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
  */
 const getWorkout = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
-		const workout = await getWorkoutEntryById(Number(req.query.workoutEntryId))
+		const workout = await getWorkoutEntryById(String(req.query.workoutEntryId))
 		if (!workout) {
+			console.warn('no workout entry found for given Id' + String(req.query.workoutEntryId))
 			res.status(404).end()
 			return
 		}

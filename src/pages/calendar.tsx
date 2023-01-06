@@ -1,6 +1,8 @@
-import React, { useEffect } from 'react'
+import React, { useEffect} from 'react'
 
-import { selectStatus, selectActiveDate, getWorkoutsAsync } from '@features/calendar/CalendarSlice'
+import {
+	selectStatus, selectActiveDate, getWorkoutsAsync,
+} from '@features/calendar/CalendarSlice'
 
 import CalendarHeader from '@features/calendar/Header'
 import CalendarWeekDays from '@features/calendar/Weekdays'
@@ -8,6 +10,7 @@ import CalendarDates from '@features/calendar/CalendarDates'
 import CalendarKey from '@features/calendar/CalendarKey'
 import Layout from '@components/Layout'
 import Card from '@components/Card'
+import Modal from '@components/Modal'
 
 import { useRouter } from 'next/router'
 
@@ -29,14 +32,13 @@ const Calendar = () => {
 	}, [])
 	//grab the workout templates from the server on page load
 
-
+	const router = useRouter()
 
 	return (
 		<Layout
 			pageStatus={pageStatus}
 			failHandler={() => {
-				const router = useRouter()
-				router.push('/')
+				router.back()
 			}}
 		>
 			<Card title='Calendar' style={{ textAlign: 'center' }}>
@@ -47,6 +49,7 @@ const Calendar = () => {
 				</table>
 				<CalendarKey />
 			</Card>
+			<Modal />
 		</Layout>
 	)
 }
