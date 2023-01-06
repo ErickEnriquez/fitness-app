@@ -12,31 +12,31 @@ import { WorkoutEntryWithExercises } from '../ExerciseSlice'
 //given a workoutID get the template of exercises for that given workout
 const getExerciseTemplates = createAsyncThunk(
 	'exercise/getExerciseTemplates',
-	async ({templateId, prevWorkoutId}: {templateId:number, prevWorkoutId:number}, { getState, rejectWithValue }) => {
+	async ({templateId}: {templateId:string}, { getState, rejectWithValue }) => {
 		try {
+
 			const { exercise: { workoutOptions } } = getState() as AppState
-			const prevWorkoutEntry = workoutOptions.find(workout => workout.id === prevWorkoutId)
+			const prevWorkoutEntry = workoutOptions.find(workout => workout.id === templateId)
 
 
-			const queries = await Promise.all([
-				axios.get<ExerciseTemplateTemplateWithName[]>('/api/exercise-templates', { params: { workoutId: prevWorkoutEntry.workoutTemplateId } }),
+			const queries = await Promise.allSettled([
+				axios.get<ExerciseTemplateTemplateWithName[]>('/api/exercise-templates', { params: { workoutId: templateId } }),
 				axios.get<SerializedWorkoutEntry>(`/api/workout-entry/${prevWorkoutEntry.id}`),
 				axios.get<ExerciseEntry[]>('/api/exercise-entry', { params: { workoutId: prevWorkoutEntry.id } })
-			]).then(l => l.map(r => r.data))		
-
+			])
 			
-			const exercises = queries[0] as ExerciseTemplateTemplateWithName[]
-			const prevMeta = queries[1] as SerializedWorkoutEntry
-			const prevExercises = queries[2] as ExerciseEntry[]
+			// grab the data from the queries, if they have been rejected, set the variable to null
+			const exercises = queries[0].status === 'fulfilled' ? queries[0].value.data as ExerciseTemplateTemplateWithName[] : null
+			const prevMeta = queries[1].status ==='fulfilled' ? queries[1].value.data as SerializedWorkoutEntry : null
+			const prevExercises = queries[2].status === 'fulfilled' ?  queries[2].value.data as ExerciseEntry[] : null
 			
-			const previousWorkout: WorkoutEntryWithExercises = prevWorkoutId && { ...prevMeta, exercises: prevExercises }
+			const previousWorkout: WorkoutEntryWithExercises = templateId && { ...prevMeta, exercises: prevExercises }
 
 			return {
 				exercises,
-				prevWorkoutId,
 				previousWorkout,
 				templateId,
-				workoutName:workoutOptions.find(option => option.workoutTemplateId === templateId).name
+				workoutName:workoutOptions.find(option => option.id === templateId).name
 			}
 		} catch (err) {
 			console.error(err)

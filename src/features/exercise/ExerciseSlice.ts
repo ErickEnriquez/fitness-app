@@ -1,12 +1,10 @@
-import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
-import axios from 'axios'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { AppState } from '@app/store'
-import { ExerciseEntry, ExerciseTemplate, Program, WorkoutTemplate, WorkoutEntry } from '@prisma/client'
-import { LastWorkoutEntry } from '@server/getLastWorkoutOfType'
-import getWorkoutOptionsAsync from './thunks/getWorkoutOptionsAsync'
+import { ExerciseEntry, ExerciseTemplate, WorkoutTemplate, WorkoutEntry, Movement } from '@prisma/client'
+// import { LastWorkoutEntry } from '@server/getLastWorkoutOfType'
 import { ExerciseTemplateTemplateWithName } from '@server/ExerciseTemplate/exerciseTemplate'
 import { SerializedWorkoutEntry } from '@server/WorkoutEntry/workoutEntry'
-import { createNewWorkout } from './thunks'
+import { createNewWorkout, getMorePreviousWorkouts, getExerciseTemplates, getWorkoutOptionsAsync } from './thunks'
 //this holds the miscellaneous data about the workout that isn't tied to a specific exercise instead the entire workout in general
 export interface activeWorkoutInfo {
 	notes?: string,
@@ -17,13 +15,13 @@ export interface activeWorkoutInfo {
 
 
 //combination of workout templates and workout entries, 
-interface WorkoutInfo extends WorkoutTemplate, Omit<WorkoutEntry, 'date|id'> {
+export interface WorkoutInfo extends WorkoutTemplate, Omit<WorkoutEntry, 'date|id'> {
 	prevDate: string
 	prevWorkoutId: string
 }
 
 //holds the info that the user inputs about a specific workout like the weights , the intensity, order etc
-export interface UserEntry extends ExerciseTemplate {
+export interface UserEntry extends ExerciseTemplate, Omit<Movement,'id'> {
 	weights: number[],
 	intensity?: number,
 	notes?: string,
@@ -41,6 +39,7 @@ export interface ExerciseState {
 	//get the stats of the last workout of that given type ie push heavy, pull heavy, etc
 	previousWorkout: WorkoutEntryWithExercises[]
 	workoutEntry: activeWorkoutInfo,
+    workoutOptions:WorkoutInfo[]
 }
 
 export interface WorkoutEntryWithExercises extends SerializedWorkoutEntry {
@@ -53,121 +52,10 @@ const initialState:ExerciseState = {
 	workouts: [] as WorkoutInfo[],
 	activeWorkout: null,
 	activeEntry: null,
-	previousWorkout: [] as PreviousWorkout[],
+	previousWorkout: [] as WorkoutEntryWithExercises[],
 	workoutEntry: null as activeWorkoutInfo,
+	workoutOptions:null
 }
-
-//get the list of workouts when we initialize the page , 
-//ie pull heavy, legs light etc and combine with the last workout of that type that was done
-export const getWorkoutAsync = createAsyncThunk(
-	'exercise/getWorkout',
-	async (_, { rejectWithValue }) => {
-		try {
-
-			const { id } = await axios.get('/api/program')
-				.then(d => d.data)
-				.catch(err => {
-					throw Error(err)
-				}) as Program
-
-			const workoutTemplates = await axios.get('/api/workout-template', { params: { programId: id } })
-				.then(r => r.data)
-				.catch(err => {
-					throw Error(err)
-				}) as WorkoutTemplate[]
-
-			const prevWorkouts = await Promise.all(workoutTemplates.map(workout => axios.get('/api/workout-entry', { params: { workoutType: workout.id, skip: 0 } })))
-				.then(list => list.map(item => item.data))
-				.catch(err => {
-					console.error(err)
-				}) as WorkoutEntry[]
-
-			const data = workoutTemplates.map((item) => {
-				const prevWorkout = prevWorkouts && prevWorkouts.find(workout => workout.workoutTemplateId === item.id)
-				return {
-					...prevWorkout,
-					...item,
-					//label the workoutEntry id key as prevWorkoutId to avoid conflict with the workoutTemplate id key
-					prevWorkoutId: prevWorkout ? prevWorkout.id : null,
-				}
-			}) as WorkoutInfo[]
-
-			return data
-		}
-		catch (err) {
-			console.error(err)
-			return rejectWithValue('Unable to get workout async')
-		}
-	}
-)
-
-//given a workoutID get the template of exercises for that given workout
-export const getExerciseTemplates = createAsyncThunk(
-	'exercise/getExerciseTemplates',
-	async (id: string, { getState, rejectWithValue }) => {
-		try {
-			const { exercise: { workouts } } = getState() as AppState
-			const prevWorkoutID = workouts.find(workout => workout.id === id)?.prevWorkoutId
-
-			const prevMeta = await axios.get<LastWorkoutEntry>('/api/workout-entry', { params: { Id: prevWorkoutID } })
-				.then(r => r.data)
-				.catch(err => console.error(err)
-				)
-
-			const [exercisesList, prevExercises] = await Promise.all([
-				axios.get('/api/exercise-templates', { params: { workoutId: id } }),
-				axios.get<ExerciseEntry>('/api/exercise-entry', { params: { workoutId: prevWorkoutID } })
-			]).then(list => ([
-				list[0].data,
-				list[1].data as ExerciseEntry
-			]))
-
-			const previousWorkout: PreviousWorkout = prevWorkoutID && prevMeta && { ...prevMeta, date: prevMeta.date, exercises: prevExercises }
-
-			return {
-				exercises: exercisesList,
-				workoutId: id,
-				previousWorkout
-			}
-		} catch (err) {
-			console.error(err)
-			return rejectWithValue('Unable to get exercises')
-		}
-	}
-)
-
-/**
- * get more previous workouts of the same type to show older results
- */
-export const getMorePreviousWorkouts = createAsyncThunk(
-	'exercise/getMorePreviousWorkouts',
-	async (skipNum: number, { getState, rejectWithValue }) => {
-		try {
-			const { exercise: { activeWorkout } } = getState() as AppState
-			const workout = await axios.get('/api/workout-entry', { params: { workoutType: activeWorkout, skip: skipNum } })
-			if (!workout.data) return rejectWithValue('no readings found')
-			return workout.data
-		} catch (err) {
-			console.error('No Readings Found')
-			return rejectWithValue('No Readings Found')
-		}
-	}
-)
-
-export const postExerciseEntries = createAsyncThunk(
-	'exercise/postExerciseEntries',
-	async (_, { getState, rejectWithValue }) => {
-		const { exercise: { entries, workoutEntry } } = getState() as AppState
-		try {
-			const response = await axios.post('/api/exercise-entry', { entries, workoutEntry })
-			return response.data
-		} catch (err) {
-			console.error(err)
-			return rejectWithValue('unable to post workout data , please try later')
-		}
-	}
-
-)
 
 export const exerciseSlice = createSlice({
 	name: 'exercise',
@@ -239,10 +127,11 @@ export const exerciseSlice = createSlice({
 					notes: '',
 					order: 0,
 					completed: false,
+					name:entry.movement.name
 				}
 				))
 				state.previousWorkout = [action.payload.previousWorkout]
-				state.activeWorkoutName = action.payload.workoutName
+				state.activeWorkout = action.payload.workoutName
 				//initialize the workout entry with the data that we need
 				state.workoutEntry = {
 					workoutTemplateId: action.payload.templateId,
@@ -283,12 +172,13 @@ export const {
 }
 	= exerciseSlice.actions
 
-export const selectWorkouts = (state: AppState) => state.exercise.workoutOptions
+// export const selectWorkouts = (state: AppState) => state.exercise.workoutOptions
 export const selectEntries = (state: AppState) => state.exercise.entries
 export const selectStatus = (state: AppState) => state.exercise.status as sliceStatus
 export const selectActiveEntry = (state: AppState) => state.exercise.activeEntry
 export const selectActiveWorkout = (state: AppState) => state.exercise.activeWorkout
-export const selectActiveWorkoutName = (state:AppState) => state.exercise.activeWorkoutName
+export const selectActiveWorkoutName = (state:AppState) => state.exercise.activeWorkout
 export const selectPreviousExerciseEntries = (state: AppState) => state.exercise.previousWorkout
 export const selectWorkoutTemplateId = (state: AppState) => state.exercise.workoutEntry.workoutTemplateId
+export const selectWorkoutOptions = (state:AppState) => state.exercise.workoutOptions
 export default exerciseSlice.reducer
