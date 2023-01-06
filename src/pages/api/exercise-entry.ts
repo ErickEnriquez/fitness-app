@@ -33,7 +33,7 @@ async function postEntries(req: NextApiRequest, res: NextApiResponse) {
 		const data = req.body
 
 		const activeWorkout = data.workoutEntry as activeWorkoutInfo
-		const entries = data.exerciseEntries as UserEntry[]
+		const entries = data.entries as UserEntry[]
 		//create the workout entry in the db and attach all of the exercise entries to it
 
 		const newWorkout = await prisma.workoutEntry.create({
@@ -71,7 +71,6 @@ async function postEntries(req: NextApiRequest, res: NextApiResponse) {
 		res.status(500).json({ message: 'Server error, failed to create workout' })
 	}
 }
-
 
 async function getWorkoutEntries(req: NextApiRequest, res: NextApiResponse) {
 	//grab the data, which should be an array of user entries and a workoutId
