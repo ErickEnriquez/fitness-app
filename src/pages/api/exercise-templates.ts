@@ -23,7 +23,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
 const queryExerciseTemplates = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
-		const exercises = await getExerciseTemplates(Number(req.query.workoutId))
+		const exercises = await getExerciseTemplates(String(req.query.workoutId))
 
 		if (!exercises) {
 			res.status(404).json({ message: 'Error finding exercises' })
