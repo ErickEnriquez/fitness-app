@@ -17,14 +17,14 @@ export const authOptions: NextAuthOptions = {
 			session.user.id = user.id
 			return session
 		},
-		async signIn({ user }) {
-			//check if userId is already in the system, if not reject sign-in attempt
-			const u = await prisma.user.findFirst({ where: { id: user.id } })
-			if (!u) {
-				return false
-			}
-			return true
-		}
+		// async signIn({ user }) {
+		// 	//check if userId is already in the system, if not reject sign-in attempt
+		// 	const u = await prisma.user.findFirst({ where: { id: user.id } })
+		// 	if (!u) {
+		// 		return false
+		// 	}
+		// 	return true
+		// }
 	},
 	secret: process.env.SECRET,
 	events: {
