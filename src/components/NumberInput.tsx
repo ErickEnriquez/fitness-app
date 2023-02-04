@@ -2,7 +2,7 @@ import React from 'react'
 
 interface NumberInputProps {
 	changeHandler: (e: React.ChangeEvent<HTMLInputElement>) => void
-	num: number
+	num: number | string
 	name: string
 	title?: string
 }
