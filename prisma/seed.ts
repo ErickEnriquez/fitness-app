@@ -4,6 +4,11 @@ const prisma = new PrismaClient()
 
 async function main() {
 	//write you seed data here
+	await erickData()
+	await addyData()
+}
+
+const erickData = async () => {
 	const user = await prisma.user.findFirst({
 		where: {
 			email: 'erick.enriquez10.95@gmail.com'
@@ -125,6 +130,80 @@ async function main() {
 		pullLight,
 		legsHeavy,
 		legsLight
+	])
+}
+
+const addyData = async () => {
+	const user = await prisma.user.findFirst({
+		where: {
+			email: 'ambwork23@gmail.com'
+		}
+	})
+
+	await prisma.program.create({
+		data: {
+			name: 'Addy Workouts', userId: user.id,
+		}
+	})
+
+	const program = await prisma.program.findFirst({
+		where: {
+			userId: user.id
+		}
+	})
+
+	const pushHeavy = prisma.workoutTemplate.create({
+		data: {
+			name: 'Push Heavy', type: 'pushHeavy', programId: program.id, exerciseTemplates: {
+				create: [
+					{ sets: 5, reps: 5, movement: { create: { name: 'Bench Press' } } },
+					{ sets: 5, reps: 10, movement: { create: { name: 'Skull Crusher' } } },
+					{ sets: 4, reps: 8, movement: { create: { name: 'Chest Flys' } } },
+					{ sets: 5, reps: 6, movement: { create: { name: 'Shoulder Press' } } },
+					{ sets: 4, reps: 8, movement: { create: { name: 'Side Raises' } } },
+					{ sets: 5, reps: 10, movement: { create: { name: 'Tricep Push downs' } } },
+					{ sets: 3, reps: 8, movement: { create: { name: 'Dips' } } },
+				]
+			}
+		}
+	})
+
+	const pullHeavy = prisma.workoutTemplate.create({
+		data: {
+			name: 'Pull Heavy', type: 'pullHeavy', programId: program.id, exerciseTemplates: {
+				create: [
+					{ sets: 5, reps: 5, movement: { create: { name: 'Deadlifts' } } },
+					{ sets: 5, reps: 6, movement: { create: { name: 'Pull-ups' } } },
+					{ sets: 4, reps: 8, movement: { create: { name: 'Bicep Curls' } } },
+					{ sets: 5, reps: 8, movement: { create: { name: 'Standing Shrugs' } } },
+					{ sets: 4, reps: 10, movement: { create: { name: 'Machine High Rows' } } },
+					{ sets: 5, reps: 10, movement: { create: { name: 'Seated Rows' } } },
+					{ sets: 3, reps: 8, movement: { create: { name: 'Front Raises' } } },
+				]
+			}
+		}
+	})
+
+	const legsHeavy = prisma.workoutTemplate.create({
+		data: {
+			name: 'Legs Heavy', type: 'legsHeavy', programId: program.id, exerciseTemplates: {
+				create: [
+					{ sets: 5, reps: 5, movement: { create: { name: 'Back Squat' } } },
+					{ sets: 5, reps: 8, movement: { create: { name: 'Leg Press' } } },
+					{ sets: 4, reps: 8, movement: { create: { name: 'Hip thrust' } } },
+					{ sets: 5, reps: 8, movement: { create: { name: 'Hip Abductor' } } },
+					{ sets: 5, reps: 8, movement: { create: { name: 'Hip Adductor' } } },
+					{ sets: 4, reps: 6, movement: { create: { name: 'Leg Extension' } } },
+					{ sets: 3, reps: 10, movement: { create: { name: 'Calf Raises' } } },
+				]
+			}
+		}
+	})
+
+	await prisma.$transaction([
+		pushHeavy,
+		pullHeavy,
+		legsHeavy,
 	])
 }
 
