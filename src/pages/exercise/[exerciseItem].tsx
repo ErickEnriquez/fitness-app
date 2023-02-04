@@ -69,11 +69,13 @@ const ExerciseItem = () => {
 						<Card title='Intensity & Order'>
 							<div className="grid grid-cols-2 content-center mx-auto w-11/12 ">
 								<NumberInput
-									name='Order' num={exerciseEntry.order}
+									name='Order'
+									num={exerciseEntry.order}
 									changeHandler={(e) => dispatch(editOrder({ movementId: exerciseEntry.movementId, value: Number(e.target.value) }))}
 								/>
 								<NumberInput
-									name='Intensity' num={exerciseEntry.intensity}
+									name='Intensity'
+									num={exerciseEntry.intensity}
 									changeHandler={(e) => dispatch(editIntensity({ movementId: exerciseEntry.movementId, value: Number(e.target.value) }))}
 								/>
 							</div>

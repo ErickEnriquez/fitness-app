@@ -23,9 +23,9 @@ export interface WorkoutInfo extends WorkoutTemplate, Omit<WorkoutEntry, 'date|i
 //holds the info that the user inputs about a specific workout like the weights , the intensity, order etc
 export interface UserEntry extends ExerciseTemplate, Omit<Movement,'id'> {
 	weights: number[],
-	intensity?: number,
+	intensity?: number | string,
 	notes?: string,
-	order?: number,
+	order?: number | string,
 	completed: boolean
 }
 
@@ -123,9 +123,9 @@ export const exerciseSlice = createSlice({
 				state.entries = action.payload.exercises.map((entry: ExerciseTemplateTemplateWithName) => ({
 					...entry,
 					weights: Array(entry.sets).fill(''),
-					intensity: 0,
+					intensity: '',
 					notes: '',
-					order: 0,
+					order: '',
 					completed: false,
 					name:entry.movement.name
 				}

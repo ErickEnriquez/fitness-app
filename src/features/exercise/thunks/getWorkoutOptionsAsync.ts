@@ -10,26 +10,31 @@ const getWorkoutOptionsAsync = createAsyncThunk(
 	async (_, { rejectWithValue }) => {
 		try {
 
-			const { id } = await axios.get('/api/program')
+			const { id } = await axios.get<Program>('/api/program')
 				.then(d => d.data)
 				.catch(err => {
 					throw Error(err)
-				}) as Program
+				})
 
-			const workoutTemplates = await axios.get('/api/workout-template', { params: { programId: id } })
+			const workoutTemplates = await axios.get<WorkoutTemplate[]>('/api/workout-template', { params: { programId: id } })
 				.then(r => {
 					return r.data
 				})
 				.catch(err => {
 					throw Error(err)
-				}) as WorkoutTemplate[]
+				})
 
-			const prevWorkouts = await Promise.all(workoutTemplates.map(workout => axios.get('/api/workout-entry', { params: { workoutType: workout.id, skip: 0 } })))
-				.then(list => list.map(item => item.data))
+			const prevWorkouts = await Promise.allSettled(
+				workoutTemplates
+					.map(workout => axios.get<WorkoutEntry>('/api/workout-entry', { params: { workoutType: workout.id, skip: 0 } }))
+			)
+				.then(list => list
+					.map(item => item.status === 'fulfilled' ? item.value.data : null)
+					.filter(item => item !== null))
 				.catch(err => {
 					console.error(err)
-				}) as WorkoutEntry[]
-
+				})
+	
 			const data = workoutTemplates.map((item) => {
 				const prevWorkout = prevWorkouts && prevWorkouts.find(workout => workout.workoutTemplateId === item.id)
 				return {

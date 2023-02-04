@@ -49,8 +49,8 @@ async function postEntries(req: NextApiRequest, res: NextApiResponse) {
 						data: entries.map(e => (
 							{
 								notes: e.notes || undefined,
-								intensity: e.intensity || undefined,
-								order: e.order || undefined,
+								intensity: Number(e.intensity) || undefined,
+								order: Number(e.order) || undefined,
 								weights: e.weights.map(w => w || undefined),
 								exerciseId: e.id || undefined,
 							}
