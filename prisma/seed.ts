@@ -74,13 +74,13 @@ async function main() {
 		data: {
 			name: 'Pull Light', type: 'pullLight', programId: program.id, exerciseTemplates: {
 				create: [
-					{ sets: 4, reps: 12, movement: { create: { name: 'Dumbbell Press' } } },
-					{ sets: 4, reps: 10, movement: { create: { name: 'Military Press' } } },
-					{ sets: 4, reps: 10, movement: { create: { name: 'Skull Crusher' } } },
-					{ sets: 3, reps: 12, movement: { create: { name: 'Narrow Grip Bench' } } },
-					{ sets: 4, reps: 10, movement: { create: { name: 'Side Raises' } } },
-					{ sets: 3, reps: 12, movement: { create: { name: 'Tricep Push downs, 1 Arm' } } },
-					{ sets: 3, reps: 15, movement: { create: { name: 'Seated Dips' } } },
+					{ sets: 4, reps: 12, movement: { create: { name: 'Wide Deadlifts' } } },
+					{ sets: 4, reps: 10, movement: { create: { name: 'Lat Pulldown' } } },
+					{ sets: 4, reps: 10, movement: { create: { name: 'Bent-over BB Rows' } } },
+					{ sets: 3, reps: 12, movement: { create: { name: 'Face Pulls' } } },
+					{ sets: 4, reps: 10, movement: { create: { name: 'Preacher Curls' } } },
+					{ sets: 3, reps: 12, movement: { create: { name: 'Rack Pulls' } } },
+					{ sets: 3, reps: 15, movement: { create: { name: 'Hammer Curls' } } },
 				]
 			}
 		}
