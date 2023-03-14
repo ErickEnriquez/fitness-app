@@ -19,6 +19,7 @@ import Card from '@components/Card'
 import NumberInput from '@components/NumberInput'
 import Button from '@components/util/Button'
 
+import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai'
 
 const ExerciseTemplate = () => {
 
@@ -28,6 +29,8 @@ const ExerciseTemplate = () => {
 	const workoutEntry = useAppSelector(state => state.exercise.workoutEntry)
 	const entries = useAppSelector(selectEntries)
 	const dispatch = useAppDispatch()
+
+	const [showNotes, setShowNotes] = React.useState(false)
 
 	const router = useRouter()
 
@@ -59,11 +62,30 @@ const ExerciseTemplate = () => {
 					</div>
 					<ExerciseList />
 					<br />
-					<Card>
-						<Notes
-							val={workoutEntry.notes}
-							changeHandler={e => dispatch(editWorkoutNotes(e.target.value))}
-						/>
+					<Card title='Notes'>
+						{showNotes && (
+							<>
+								<Notes
+									val={workoutEntry.notes}
+									changeHandler={e => dispatch(editWorkoutNotes(e.target.value))}
+								/>
+								<span className='grid grid-cols-1 justify-items-center content-center mx-auto w-11/12 mt-8'>
+									<AiOutlineMinus
+										color='white'
+										onClick={() => setShowNotes(state => !state)}
+									/>
+								</span>
+							</>
+						)
+						}
+						{!showNotes && (
+							<span className='grid grid-cols-1 justify-items-center content-center mx-auto w-11/12 mt-4'>
+								<AiOutlinePlus
+									color='white'
+									onClick={() => setShowNotes(state => !state)}
+								/>
+							</span>
+						)}
 					</Card>
 					<br />
 					<Card title={'Grade & Pre Workout'}>

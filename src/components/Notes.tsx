@@ -9,7 +9,6 @@ interface NotesProps {
 const Notes = ({ val, changeHandler, placeholder }: NotesProps) => {
 	return (
 		<>
-			<label htmlFor="cardio-notes" className='text-white text-lg font-bold text-center'>Notes</label>
 			<textarea name="cardio-notes"
 				id="" rows={6}
 				value={val}
