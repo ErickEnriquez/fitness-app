@@ -20,9 +20,6 @@ const PrevWorkoutsList = () => {
 	const dispatch = useAppDispatch()
 	const [skipAmount, setSkipAmount] = useState(1)
 
-
-
-
 	return (
 		<div className='text-white text-center my-4'>
 			<Card title='Previous Workouts'>
@@ -74,7 +71,6 @@ const PreviousWorkoutsEntriesList = () => {
 								workoutDate={workout.date}
 							/> : null
 						}
-						
 					</React.Fragment>
 				)
 			})}
