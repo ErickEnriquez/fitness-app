@@ -94,7 +94,7 @@ const ExerciseItem = () => {
 										val={exerciseEntry.notes}
 										changeHandler={(e) => dispatch(editNotes({ movementId: exerciseEntry.movementId, value: e.target.value }))}
 									/>
-									<span className='grid grid-cols-1 justify-items-center content-center mx-auto w-11/12 mt-4'>
+									<span className='grid grid-cols-1 justify-items-center content-center mx-auto w-11/12 mt-8'>
 										<AiOutlineMinus
 											color='white'
 											onClick={() => setShowNotesInput(state => !state)}
