@@ -18,11 +18,10 @@ const getExerciseTemplates = createAsyncThunk(
 			const { exercise: { workoutOptions } } = getState() as AppState
 			const prevWorkoutEntry = workoutOptions.find(workout => workout.id === templateId)
 
-
 			const queries = await Promise.allSettled([
 				axios.get<ExerciseTemplateTemplateWithName[]>('/api/exercise-templates', { params: { workoutId: templateId } }),
-				axios.get<SerializedWorkoutEntry>(`/api/workout-entry/${prevWorkoutEntry.id}`),
-				axios.get<ExerciseEntry[]>('/api/exercise-entry', { params: { workoutId: prevWorkoutEntry.id } })
+				axios.get<SerializedWorkoutEntry>(`/api/workout-entry/${prevWorkoutEntry.prevWorkoutId}`),
+				axios.get<ExerciseEntry[]>('/api/exercise-entry', { params: { workoutId: prevWorkoutEntry.prevWorkoutId } })
 			])
 			
 			// grab the data from the queries, if they have been rejected, set the variable to null

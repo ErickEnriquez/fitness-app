@@ -93,7 +93,6 @@ const ExerciseTemplate = () => {
 									const r = window.confirm('You have exercises that are not complete, are you sure you want to submit?')
 									if (!r) return
 								}
-
 								dispatch(createNewWorkout())
 							}}
 						/>
