@@ -18,10 +18,9 @@ const getExerciseTemplates = createAsyncThunk(
 			const { exercise: { workoutOptions } } = getState() as AppState
 			const prevWorkoutEntry = workoutOptions.find(workout => workout.id === templateId)
 
-
 			const queries = await Promise.allSettled([
 				axios.get<ExerciseTemplateTemplateWithName[]>('/api/exercise-templates', { params: { workoutId: templateId } }),
-				axios.get<SerializedWorkoutEntry>(`/api/workout-entry/${prevWorkoutEntry.id}`),
+				axios.get<SerializedWorkoutEntry>(`/api/workout-entry/${prevWorkoutEntry.prevWorkoutId}`),// not working correctly currently
 				axios.get<ExerciseEntry[]>('/api/exercise-entry', { params: { workoutId: prevWorkoutEntry.id } })
 			])
 			
