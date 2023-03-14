@@ -11,6 +11,7 @@ import PrevWorkoutList from '@features/exercise/PrevWorkoutList'
 import { editWeight, editNotes, editIntensity, editOrder, selectActiveEntry, toggleExerciseComplete } from '@features/exercise/ExerciseSlice'
 import Card from '@components/Card'
 
+import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai'
 
 const ExerciseItem = () => {
 
@@ -21,6 +22,7 @@ const ExerciseItem = () => {
 	const exerciseEntry = useAppSelector(state => state.exercise.entries.find(elem => elem.id === activeExerciseId))
 
 	const [previousInfo, setPreviousInfo] = useState(false)
+	const [showNotesInput, setShowNotesInput] = useState(false)
 
 	//check if all of the weight entries are completed and if so, mark the exercise as complete
 	const toggleCompleted = () => {
@@ -85,11 +87,30 @@ const ExerciseItem = () => {
 							</div>
 						</Card>
 						<br />
-						<Card >
-							<Notes
-								val={exerciseEntry.notes}
-								changeHandler={(e) => dispatch(editNotes({ movementId: exerciseEntry.movementId, value: e.target.value }))}
-							/>
+						<Card title='Notes' >
+							{showNotesInput && (
+								<>
+									<Notes
+										val={exerciseEntry.notes}
+										changeHandler={(e) => dispatch(editNotes({ movementId: exerciseEntry.movementId, value: e.target.value }))}
+									/>
+									<span className='grid grid-cols-1 justify-items-center content-center mx-auto w-11/12 mt-4'>
+										<AiOutlineMinus
+											color='white'
+											onClick={() => setShowNotesInput(state => !state)}
+										/>
+									</span>
+								</>
+							)
+							}
+							{!showNotesInput && (
+								<span className='grid grid-cols-1 justify-items-center content-center mx-auto w-11/12 mt-4'>
+									<AiOutlinePlus
+										color='white'
+										onClick={() => setShowNotesInput(state => !state)}
+									/>
+								</span>
+							)}
 						</Card>						
 						<div className='my-4'>
 							<Button color="primary-blue" text='Show Previous Workout'
