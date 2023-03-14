@@ -59,7 +59,7 @@ const ExerciseTemplate = () => {
 					</div>
 					<ExerciseList />
 					<br />
-					<Card>
+					<Card title='Notes'>
 						<Notes
 							val={workoutEntry.notes}
 							changeHandler={e => dispatch(editWorkoutNotes(e.target.value))}
