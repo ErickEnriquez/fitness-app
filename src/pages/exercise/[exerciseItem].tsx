@@ -22,7 +22,7 @@ const ExerciseItem = () => {
 	const exerciseEntry = useAppSelector(state => state.exercise.entries.find(elem => elem.id === activeExerciseId))
 
 	const [previousInfo, setPreviousInfo] = useState(false)
-	const [showNotesInput, setShowNotesInput] = useState(false)	
+	const [showNotesInput, setShowNotesInput] = useState(false)
 
 	//check if all of the weight entries are completed and if so, mark the exercise as complete
 	const toggleCompleted = () => {
