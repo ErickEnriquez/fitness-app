@@ -22,9 +22,7 @@ const ExerciseItem = () => {
 	const exerciseEntry = useAppSelector(state => state.exercise.entries.find(elem => elem.id === activeExerciseId))
 
 	const [previousInfo, setPreviousInfo] = useState(false)
-	const [showNotesInput, setShowNotesInput] = useState(false)
-	
-	const [orderSelected, setOrderSelected] = useState(exerciseEntry.order)
+	const [showNotesInput, setShowNotesInput] = useState(false)	
 
 	//check if all of the weight entries are completed and if so, mark the exercise as complete
 	const toggleCompleted = () => {
@@ -49,7 +47,7 @@ const ExerciseItem = () => {
 									<Button
 										color='primary-blue'
 										text='Back'
-										clickHandler={toggleCompleted}
+										// clickHandler={toggleCompleted}
 									/>
 								</a>
 							</Link>
@@ -69,6 +67,7 @@ const ExerciseItem = () => {
 										name='weight'
 										num={weight}
 										changeHandler={(e) => dispatch(editWeight({ movementId: exerciseEntry.movementId, value: Number(e.target.value), setNumber: i }))}
+										blurHandler={toggleCompleted}
 									/>
 								))}
 							</div>
