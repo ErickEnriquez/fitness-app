@@ -90,17 +90,36 @@ const ExerciseTemplate = () => {
 					<br />
 					<Card title={'Grade & Pre Workout'}>
 						<div className='grid grid-cols-2 mt-4'>
-							<NumberInput
-								name='Grade'
-								num={workoutEntry.grade}
-								changeHandler={e => dispatch(editWorkoutGrade(Number(e.target.value)))}
-							/>
+							<select
+								name="order"
+								id=""
+								className={`ring-4 ring-primary-blue 
+										rounded-3xl placeholder:text-slate-600 text-center my-4 py-4 w-11/12 block mx-auto
+										shadow-lg shadow-black/70 text-black`}
+								onChange={e => dispatch(editWorkoutGrade(Number(e.target.value)))}
+								value={workoutEntry.grade}
+							>
+								<option value="">
+									Grade
+								</option>
+								{Array.from({ length: 10 }).map((_, idx) => (
+									<option
+										className='ring-4 ring-primary-blue ring-inset rounded-3xl placeholder:text-slate-600 text-center my-4 py-3 w-11/12 block mx-auto shadow-lg shadow-black/70'
+										key={idx + 1}
+										value={idx + 1}
+									>
+										{idx + 1}
+									</option>
+								))}
+							</select>
 							<select
 								id="preWorkout"
 								placeholder='Pre-workout?'
 								className='ring-4 ring-primary-blue ring-inset rounded-3xl placeholder:text-slate-600 text-center my-4 py-3 w-11/12 block mx-auto shadow-lg shadow-black/70'
 								onChange={e => dispatch(editPreWorkout(e.target.value === 'true'))}
+								value={workoutEntry.preWorkout ? 'true' : 'false'}
 							>
+								<option value="">Pre-workout?</option>
 								<option value="true">Yes</option>
 								<option value="false">No</option>
 							</select>
