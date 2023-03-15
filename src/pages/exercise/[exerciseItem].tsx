@@ -17,12 +17,14 @@ const ExerciseItem = () => {
 
 	const dispatch = useAppDispatch()
 	const activeExerciseId = useAppSelector(selectActiveEntry)
-
+	const exerciseEntryLength = useAppSelector(state => state.exercise.entries)
 	//grab the active exercise exerciseEntry from the store
 	const exerciseEntry = useAppSelector(state => state.exercise.entries.find(elem => elem.id === activeExerciseId))
 
 	const [previousInfo, setPreviousInfo] = useState(false)
 	const [showNotesInput, setShowNotesInput] = useState(false)
+	
+	const [orderSelected, setOrderSelected] = useState(exerciseEntry.order)
 
 	//check if all of the weight entries are completed and if so, mark the exercise as complete
 	const toggleCompleted = () => {
@@ -72,18 +74,53 @@ const ExerciseItem = () => {
 							</div>
 						</Card>
 						<br />
-						<Card title='Intensity & Order'>
+						<Card title='Order & Intensity'>
 							<div className="grid grid-cols-2 content-center mx-auto w-11/12 ">
-								<NumberInput
-									name='Order'
-									num={exerciseEntry.order}
-									changeHandler={(e) => dispatch(editOrder({ movementId: exerciseEntry.movementId, value: Number(e.target.value) }))}
-								/>
-								<NumberInput
-									name='Intensity'
-									num={exerciseEntry.intensity}
-									changeHandler={(e) => dispatch(editIntensity({ movementId: exerciseEntry.movementId, value: Number(e.target.value) }))}
-								/>
+								<select
+									name="order"
+									id=""
+									className={`ring-4 ring-primary-blue 
+										rounded-3xl placeholder:text-slate-600 text-center my-4 py-4 w-11/12 block mx-auto
+										shadow-lg shadow-black/70 text-black`}
+									onChange={(e) => dispatch(editOrder({ movementId: exerciseEntry.movementId, value: Number(e.target.value) }))}
+									value={exerciseEntry.order}
+								>
+									<option value="">
+										Order
+									</option>
+									{exerciseEntryLength.map((_, idx) => (
+										<option
+											className='ring-4 ring-primary-blue ring-inset rounded-3xl placeholder:text-slate-600 text-center my-4 py-3 w-11/12 block mx-auto shadow-lg shadow-black/70'
+											key={idx + 1}
+											value={idx + 1}
+											
+										>
+											{idx + 1}
+										</option>
+									))}
+								</select>
+								<select
+									name="order"
+									id=""
+									className={`ring-4 ring-primary-blue 
+										rounded-3xl placeholder:text-slate-600 text-center my-4 py-4 w-11/12 block mx-auto
+										shadow-lg shadow-black/70 text-black`}
+									onChange={(e) => dispatch(editIntensity({ movementId: exerciseEntry.movementId, value: Number(e.target.value) }))}
+									value={exerciseEntry.intensity}
+								>
+									<option value="">
+										Intensity
+									</option>
+									{Array.from({length:10}).map((_, idx) => (
+										<option
+											className='ring-4 ring-primary-blue ring-inset rounded-3xl placeholder:text-slate-600 text-center my-4 py-3 w-11/12 block mx-auto shadow-lg shadow-black/70'
+											key={idx + 1}
+											value={idx + 1}
+										>
+											{idx + 1}
+										</option>
+									))}
+								</select>
 							</div>
 						</Card>
 						<br />
