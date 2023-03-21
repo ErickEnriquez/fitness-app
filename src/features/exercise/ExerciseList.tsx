@@ -18,13 +18,13 @@ const ExerciseList = () => {
 	const exercises = useAppSelector(selectEntries)
 	return (
 		<Card title={'Exercises'}>
-			<ul className='grid grid-cols-2 md:grid-cols-3 mb-4'>
+			<ul className='grid grid-cols-1 md:grid-cols-3 mb-4'>
 				{exercises.map((item, idx) => {
 					return (
 						<Link key={idx} href={`/exercise/${item.id}`}>
 							<li
 								className={
-									`w-11/12 text-white my-6 py-4 rounded-3xl mx-auto shadow-lg shadow-black/70 
+									`w-11/12 text-white my-4 py-4 rounded-3xl mx-auto shadow-lg shadow-black/70 
 									hover:cursor-pointer hover:bg-white hover:ring-4  
 								${item.completed
 										? 'bg-primary-blue hover:text-primary-blue hover:ring-4 text-white'
