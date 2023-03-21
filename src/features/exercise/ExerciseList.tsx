@@ -1,5 +1,5 @@
 /* eslint-disable indent */
-import React from 'react'
+import React, { useMemo } from 'react'
 import Card from '@components/Card'
 import { useAppDispatch, useAppSelector } from '@app/hooks'
 import Link from 'next/link'
@@ -16,10 +16,14 @@ const ExerciseList = () => {
 
 	const dispatch = useAppDispatch()
 	const exercises = useAppSelector(selectEntries)
+	const sortedExercises = useMemo(() => {
+		const temp = [...exercises]
+		return temp.sort((a, b) => Number(a.order) - Number(b.order))
+	},[exercises])
 	return (
 		<Card title={'Exercises'}>
 			<ul className='grid grid-cols-1 md:grid-cols-3 mb-4'>
-				{exercises.map((item, idx) => {
+				{sortedExercises.map((item, idx) => {
 					return (
 						<Link key={idx} href={`/exercise/${item.id}`}>
 							<li
@@ -33,7 +37,7 @@ const ExerciseList = () => {
 								}
 								onClick={() => { dispatch(setActiveEntry(item.id)) }}
 							>
-								<strong className='text-l w-11/12 mx-auto'>{item.name}</strong>
+								<strong className='text-l w-11/12 mx-auto'>{`${item.order && `${item.order} : `}`} {item.name}</strong>
 								<br /> {item.sets} sets x {item.reps} reps
 							</li>
 						</Link>
