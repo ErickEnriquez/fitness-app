@@ -66,7 +66,7 @@ const ExerciseItem = () => {
 										key={i}
 										name='weight'
 										num={weight}
-										changeHandler={(e) => dispatch(editWeight({ movementId: exerciseEntry.movementId, value: Number(e.target.value), setNumber: i }))}
+										changeHandler={(e) => dispatch(editWeight({ movementId: exerciseEntry.movementId, value:e.target.valueAsNumber, setNumber: i }))}
 										blurHandler={toggleCompleted}
 									/>
 								))}
