@@ -5,6 +5,7 @@ import axios from 'axios'
 import type { AppState } from '@app/store'
 import { Cardio } from '@prisma/client'
 import { SerializedCardio } from '@server/cardio/cardio'
+import { CardioFormInputs } from 'src/pages/cardio'
 
 export interface CardioState {
 	status: 'idle' | 'loading' | 'failed' | 'success'
@@ -38,12 +39,10 @@ const initialState: CardioState = {
 
 export const submitCardioInfo = createAsyncThunk(
 	'cardio/submitCardio',
-	async (_, { getState, rejectWithValue }) => {
+	async (data: CardioFormInputs, { rejectWithValue }) => {
 		try {
-			const { cardio } = getState() as AppState
-			//remove selected cardio id from object, since we don't want it when submitting a new cardio
-			const { intensity, time, caloriesBurned, distance, notes, cardioType } = cardio
-			await axios.post('/api/cardio', { intensity, time, caloriesBurned, distance, notes, cardioType })
+			const { intensity, time, caloriesBurned, distance, notes, type } = data
+			await axios.post('/api/cardio', { intensity:Number(intensity), time:Number(time), caloriesBurned:Number(caloriesBurned), distance:Number(distance), notes, cardioType:type })
 		} catch (err) { return rejectWithValue(err) }
 	}
 )

@@ -5,6 +5,7 @@ interface buttonProps {
 	color?: string
 	text: string
 	disabled?: boolean
+	type? : 'button' | 'submit' | 'reset'
 }
 
 const Button = ({ clickHandler, text, color, disabled }: buttonProps) => {
